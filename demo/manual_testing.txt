@@ -1,0 +1,33 @@
+Clear database tables first.
+Go to the project directory and run this command: "python manage.py shell"
+Then "from django.contrib.auth.models import User, Group"
+
+1. Make a dummy user in "user" group and check if the page recognizes it after login.
+	- Type in Python shell: "user = User.objects.create_user(username="jeff", password="123")"
+	- Type in Python shell: "group = Group.objects.create(name="user")"
+	- Type in Python shell: "group.user_set.add(user)"
+	- Now, go to the page and check if login works with above information.
+	- A massege should show "Login Success. Group: user"
+
+2. Make a dummy user in "booker" group and check if the page recognizes it after login.
+	- Type in Python shell: "user = User.objects.create_user(username="lia", password="123")"
+	- Type in Python shell: "group = Group.objects.create(name="booker")"
+	- Type in Python shell: "group.user_set.add(booker)"
+	- Now, go to the page and check if login works with above information.
+	- A massege should show "Login Success. Group: booker"
+
+3. Make a dummy user in "admin" group and check if the page recognizes it after login.
+	- Type in Python shell: "user = User.objects.create_user(username="tae", password="123")"
+	- Type in Python shell: "group = Group.objects.create(name="admin")"
+	- Type in Python shell: "group.user_set.add(admin)"
+	- Now, go to the page and check if login works with above information.
+	- A massege should show "Login Success. Group: admin"
+
+4. Check if a dummy user who does not fall into any of the groups cannot login.
+	- Type in Python shell: "user = User.objects.create_user(username="winston", password="123")"
+	- Type in Python shell: "group = Group.objects.create(name="random")"
+	- Type in Python shell: "group.user_set.add(random)"
+	- Now, go to the page and check if login works with above information.
+	- A massege should show "Weird"
+5. Check if wrong username/password combination is rejected.
+	- Just try with random combinations.

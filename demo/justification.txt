@@ -1,0 +1,14 @@
+Estimation: One day.
+
+Justification:
+	1. It is easy to implement. We could build the same login page using PHP and Django relative quickly, so that we could decide which technology is more appropriate for this project.
+	2. Our project will provide different features for different types of users. So categorizing them is a critical feature.
+	3. It can make us to think about design(e.g, should admin/booker/user use the same login page?).
+	
+Test Cases:
+	1. Make a dummy user in "admin" group and check if the page recognizes it after login.
+	2. Make a dummy user in "booker" group and check if the page recognizes it after login.
+	3. Make a dummy user in "user" group and check if the page recognizes it after login.
+	4. Check if a dummy user who does not fall into any of the groups cannot login. 
+	5. Check if wrong username/password combination is rejected.
+	
