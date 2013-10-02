@@ -32,7 +32,7 @@ body{
 }
 
 p {
-    font-size:16px; /* changes font size of html, remove if wanted */
+    font-size:12px; /* changes font size of html, remove if wanted */
 }
 
 #sidebar{
@@ -71,7 +71,7 @@ p {
 	margin-top:0px;
 	padding-left:23%;
 	font-family: aaargh;
-	font-size: 1.5em;
+	font-size: 0.8em;
 	padding-bottom: 40px;
 }
 
