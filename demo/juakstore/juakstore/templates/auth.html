@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>JuakStore</title>
+<meta charset=utf-8"/>
+</head>
+<body>
+	<h1>JuakStore Login Page</h1>
+	{{ state }}
+	<form action="." method="post">{% csrf_token %}
+		{% if next %}
+		<input type="hidden" name="next" value="{{ next }}" />
+		{% endif %}
+		username:
+		<input type="text" name="username" value="{{ username}}" /><br />
+		password:
+		<input type="password" name="password" value="" /><br />
+
+		<input type="submit" value="Log In" />
+	</form>
+</body>
+</html>
