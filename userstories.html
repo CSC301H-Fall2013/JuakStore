@@ -32,7 +32,226 @@
         <div id="content">
 
 	<h1>User Stories</h1>
-	<p>Here you will find User Stories for the Storefront Project.</p>
+
+	<b>Jahan Malik</b></p>
+	<font size="2">
+
+<li><b>As a supervisor, Jahan would like to be able to access the webapp from any device, so he can check the schedule while he is away from the office.</b></li>
+</p>
+Conversations:<ul>
+<li>What devices will be used? PC, mac, ipad/iphone, android tablet/mobile </li>
+<li>What browser will be used? internet explorer, safari, chrome, mozilla</li></p></ul>
+Test Cases:<ul>
+<li>
+Access webapp from multiple devices</li>
+<li>Access webapp from multiple browsers</li></ul>
+</p>
+
+<li><b>As a supervisor, Jahan would like to be able to confirm requested bookings, so that he can faciliate the booking process.</B></li>
+</p>
+Conversations:<ul>
+
+	<li>How will this be visualized? A coloured legend for empty, booked, request.</li>
+	<li>How will the supervisor be notified? Alert upon sign-in, perhaps e-mail reminder.</li>
+</ul>
+</p>
+Test Cases:	<ul>
+	<li> Check for no alerts when no requests.</li>
+	<li> Check for alerts when there is a request.</li>
+	<li> Check for change from yellow to blue when request is confirmed.</li>
+</ul>
+</p>
+
+
+
+<li><b>As a supervisor, Jahan would like to have access to a client database where he can add and remove clients, to keep track of them.</b></li>
+</br>
+Conversation:</p>
+<ul>
+	<li>What information do you need to keep for the client? Client name, Organization, contact information, special needs.</li>
+	<li>Will the client be able to see and update their own information? No. </li>
+</ul>
+Test Cases:
+<ul>
+<li>Add a new client to an empty database, check that correct client is in the database</li>
+<li>Remove that client, check that database is empty</li>
+<li>Add a new client to non-empty database, check that correct clients are in database</li>
+<li>Remove a client, check that correct clients remain in database</li>
+</ul>
+</p>
+
+
+<li><b>As a supervisor, Jahan would like to be able to view the schedule by day, week, month, or room, to prepare for the future.</b></li>
+</p>
+Conversation:</p>
+<ul>
+	<li>Is there a particular preferred time/date format? No.</li>
+	<li> How do you want the room view to be like? Map visual to take to the day/week schedule.</li>
+</ul>
+
+Test Cases:
+<ul>
+<li>Book client for a timeslot, view schedule for that day and check if booking can be seen</li>
+<li>View schedule by week, check if booking is on correct day</li>
+<li>View schedule by month, check if booking is on correct day of correct week</li>
+<li>View schedule by room, check if correct date/week schedule is booked</li>
+</ul>
+
+
+</p>
+<li><b>As a supervisor, Jahan would like to be able to view a client’s booking history, for data analysis.</b></li>
+</p>
+Conversation:</p>
+<ul>
+	<li>How do you want the data kept? Same day/week/month format.</li>
+	<li>Would you want a chart to go with it? If possible.</li>
+</ul>
+Test Cases:
+<ul>
+<li>Book one or more timeslots for a single client</li>
+<li>View that client's history and check that correct timeslots are present</li>
+</ul>
+</p>
+
+<li><b>As a supervisor, Jahan would like to be able to view room booking history, for data analysis.</b></li>
+</p>
+Conversation:</p>
+<ul>
+	<li></li>
+	<li></li>
+</ul>
+Test Cases:
+<ul>
+<li>Book multiple clients to a single room for different times</li>
+<li>View booking history and check that correct clients are present along with corresponding times</li>
+</ul>
+</p>
+<li><b>As a supervisor, Jahan would like to be able to schedule official booking times for clients, to keep track of information.</b></li>
+</p>
+Conversation:</p>
+<ul>
+	<li></li>
+	<li></li>
+</ul>
+Test Cases:
+<ul>
+
+<li>Book a client at a specific time and room, check that booking schedule holds the correct information</li>
+</ul>
+</p>
+<li><b>As a supervisor, Jahan would like to be able to delete bookings from the schedule using a confirmation prompt, to free up timeslots and prevent accidental deletion.</b></li>
+</p>
+Conversation:</p>
+<ul>
+	<li></li>
+	<li></li>
+</ul>
+Test Cases:
+<ul>
+<li>Book a timeslot for a client, then attempt to delete that booking</li>
+<li>Cancel deletion using prompt, check that booking still remains in timeslot</li>
+<li>Attempt to delete again, approve through the prompt, check that the timeslot is empty</li>
+</ul>
+</p>
+<li><b>As a supervisor, Jahan would like to have an undo delete option, in case of an accidental deletion.</b></li>
+</p>
+Conversation:</p>
+<ul>
+	<li></li>
+	<li></li>
+</ul>
+Test Cases:
+<ul>
+<li>Book a timeslot for client, delete the booking (approve through prompt), check that the timeslot is empty</li>
+<li>Undo the action, check that the timeslot is occupied by the correct client</li>
+</ul>
+</p>
+<li><b>As a supervisor, Jahan would like to be able to approve booking requests made by the counter staff, to prevent unnecessary emails and increase efficiency.</b></li>
+</p>
+Conversation:</p>
+<ul>
+	<li></li>
+	<li></li>
+</ul>
+Test Cases:
+<ul>
+<li>Make a request for booking a client, check that supervisor can see request and that the corresponding timeslot is still empty</li>
+<li>Approve the request, check that the timeslot is booked by the correct client</li>
+</ul>
+</p>
+<li><b>As a supervisor, Jahan would like to be able to add clients to a waitlist, for efficiency and organization.</b></li>
+</p>
+Conversation:</p>
+<ul>
+	<li></li>
+	<li></li>
+</ul>
+Test Cases:
+<ul>
+<li>Book a client for a non-empty timeslot with no waitlist, check that original client is still booked</li>
+<li>View corresponding waitlist, check that only the newly booked client is present</li>
+<li>Book a client for a timeslot with a non-empty waitlist, check that original client is still booked</li>
+<li>View corresponding waitlist, check that it contains correct clients</li>
+</ul>
+</p>
+<li><b>As a supervisor, Jahan would like the next client in a waitlist to be approved automatically if the previous client cancels, to save time and keep track of information.</li></b>Conversation:</p>
+<ul>
+	<li></li>
+	<li></li>
+</ul>
+</p>
+Test Cases:
+<ul>
+<li>Delete a booking which has a waitlist with one client, check that the timeslot now contains the wait-listed client</li>
+<li>Check that the waitlist is now empty</li>
+<li>Delete a booking which has a waitlist with multiple clients, check that the timeslot now contains the first client from the waitlist</li>
+<li>Check that the remaining clients are still in waitlist in correct order</li>
+</ul>
+</p>
+<li><b>As a supervisor, Jahan would like a coloured visual representation of different types of bookings, including request, normal, waitlist, and finished, for organization and ease of use.</b></li>
+</p>
+Conversation:</p>
+<ul>
+	<li></li>
+	<li></li>
+</ul>
+Test Cases:
+<ul>
+<li>Request a booking, check that correct colour is assigned to timeslot</li>
+<li>Make official booking, check that correct colour is assigned to timeslot</li>
+<li>Create a waitlist, check that correct colour is assigned to timeslot</li>
+<li>Make official booking, set status to finished, check that correct colour is assigned to timeslot</li>
+</ul>
+</p>
+<li><b>As a supervisor, Jahan would like to be able to book a client for multiple meeting spaces at once, to save time and prevent repetitive work.</b></li>
+</p>
+Conversation:</p>
+<ul>
+	<li></li>
+	<li></li>
+</ul>
+Test Cases:
+<ul>
+<li>Book a client for a single room at 2 or more different timeslots, check that client is present in all timeslots</li>
+<li>Book a client for 2 or more rooms at a single timeslot, check that all rooms contain correct client</li>
+<li>Book a client for 2 or more rooms at 2 or more different timeslots, check that corresponding rooms and times contain client</li>
+</ul>
+</p>
+<li><b>As a supervisor, Jahan would like to be able to select any booking and view/edit all details related to it (must talk to supervisor to determine necessary details), for staying prepared and organized.</b></li>
+</p>Conversation:</p>
+<ul>
+	<li></li>
+	<li></li>
+</ul>
+Test Cases:
+<ul>
+<li>Book a timeslot, see if correct details can be viewed</li>
+<li>Modify a detail, see if properly changed (repeat for each detail)</li>
+</ul>
+</p>
+</ul>
+
+
 
 <b>Jennifer Wong</b></p>
 	<font size="2">
@@ -76,153 +295,7 @@
 
 
 </p>	
-	<b>Jahan Malik</b></p>
-	<font size="2">
 
-<li>As a supervisor, Jahan would like to be able to access the webapp from any device, so he can check the schedule while he is on the go.</li>
-</p>
-Conversations:
-<ul>What devices will be used? PC, mac, ipad/iphone, android tablet/mobile </ul>
-<ul>What browser will be used? internet explorer, safari, chrome, mozilla</ul></p>
-Test Cases:
-<ul>
-Access webapp from multiple devices</ul>
-<ul>Access weball from multiple browsers</ul>
-</p>
-
-<li>As a supervisor, Jahan would like to be able to confirm requested bookings, so that he can faciliate the booking process.</li>
-</br>
-Conversations:
-
-	<ul>How will this be visualized? A coloured legend for empty, booked, request.</ul>
-	<ul>How will the supervisor be notified? Alert upon sign-in, perhaps e-mail reminder.</ul>
-
-</br>
-Test Cases:	
-	<ul> Check for no alerts when no requests.</ul>
-	<ul> Check for alerts when there is a request.</ul>
-	<ul> Check for change from yellow to blue when request is confirmed.</ul>
-
-</p>
-
-
-
-<li>As a supervisor, Jahan would like to have access to a client database where he can add and remove clients, to keep track of them.</li>
-</p>
-Test Cases:
-<ul>
-<li>Add a new client to an empty database, check that correct client is in the database</li>
-<li>Remove that client, check that database is empty</li>
-<li>Add a new client to non-empty database, check that correct clients are in database</li>
-<li>Remove a client, check that correct clients remain in database</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like to be able to view the schedule by day, week, month, or room, to prepare for the future.</li>
-</p>
-Test Cases:
-<ul>
-<li>Book client for a timeslot, view schedule for that day and check if booking can be seen</li>
-<li>View schedule by week, check if booking is on correct day</li>
-<li>View schedule by month, check if booking is on correct day of correct week</li>
-<li>View schedule by room, check if correct timeslot is booked</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like to be able to view a client’s booking history, for data analysis.</li>
-</p>
-Test Cases:
-<ul>
-<li>Book one or more timeslots for a single client</li>
-<li>View that client's history and check that correct timeslots are present</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like to be able to view room booking history, for data analysis.</li>
-</p>
-Test Cases:
-<ul>
-<li>Book multiple clients to a single room for different times</li>
-<li>View booking history and check that correct clients are present along with corresponding times</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like to be able to schedule official booking times for clients, to keep track of information.</li>
-</p>
-Test Cases:
-<ul>
-<li>Book a client at a specific time and room, check that booking schedule holds the correct information</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like to be able to delete bookings from the schedule using a confirmation prompt, to free up timeslots and prevent accidental deletion.</li>
-</p>
-Test Cases:
-<ul>
-<li>Book a timeslot for a client, then attempt to delete that booking</li>
-<li>Cancel deletion using prompt, check that booking still remains in timeslot</li>
-<li>Attempt to delete again, approve through the prompt, check that the timeslot is empty</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like to have an undo delete option, in case of an accidental deletion.</li>
-</p>
-Test Cases:
-<ul>
-<li>Book a timeslot for client, delete the booking (approve through prompt), check that the timeslot is empty</li>
-<li>Undo the action, check that the timeslot is occupied by the correct client</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like to be able to approve booking requests made by the counter staff, to prevent unnecessary emails and increase efficiency.</li>
-</p>
-Test Cases:
-<ul>
-<li>Make a request for booking a client, check that supervisor can see request and that the corresponding timeslot is still empty</li>
-<li>Approve the request, check that the timeslot is booked by the correct client</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like to be able to add clients to a waitlist, for efficiency and organization.</li>
-</p>
-Test Cases:
-<ul>
-<li>Book a client for a non-empty timeslot with no waitlist, check that original client is still booked</li>
-<li>View corresponding waitlist, check that only the newly booked client is present</li>
-<li>Book a client for a timeslot with a non-empty waitlist, check that original client is still booked</li>
-<li>View corresponding waitlist, check that it contains correct clients</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like the next client in a waitlist to be approved automatically if the previous client cancels, to save time and keep track of information.</li>
-</p>
-Test Cases:
-<ul>
-<li>Delete a booking which has a waitlist with one client, check that the timeslot now contains the wait-listed client</li>
-<li>Check that the waitlist is now empty</li>
-<li>Delete a booking which has a waitlist with multiple clients, check that the timeslot now contains the first client from the waitlist</li>
-<li>Check that the remaining clients are still in waitlist in correct order</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like a coloured visual representation of different types of bookings, including request, normal, waitlist, and finished, for organization and ease of use.</li>
-</p>
-Test Cases:
-<ul>
-<li>Request a booking, check that correct colour is assigned to timeslot</li>
-<li>Make official booking, check that correct colour is assigned to timeslot</li>
-<li>Create a waitlist, check that correct colour is assigned to timeslot</li>
-<li>Make official booking, set status to finished, check that correct colour is assigned to timeslot</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like to be able to book a client for multiple meeting spaces at once, to save time and prevent repetitive work.</li>
-</p>
-Test Cases:
-<ul>
-<li>Book a client for a single room at 2 or more different timeslots, check that client is present in all timeslots</li>
-<li>Book a client for 2 or more rooms at a single timeslot, check that all rooms contain correct client</li>
-<li>Book a client for 2 or more rooms at 2 or more different timeslots, check that corresponding rooms and times contain client</li>
-</ul>
-</p>
-<li>As a supervisor, Jahan would like to be able to select any booking and view/edit all details related to it (must talk to supervisor to determine necessary details), for staying prepared and organized.</li>
-</p>
-Test Cases:
-<ul>
-<li>Book a timeslot, see if correct details can be viewed</li>
-<li>Modify a detail, see if properly changed (repeat for each detail)</li>
-</ul>
-</p>
-</ul>
 </font>
 
 </div>
