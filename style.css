@@ -31,6 +31,10 @@ body{
 	src: url(http://www.aashni.me/fonts/FlexDisplay-Thin.otf);
 }
 
+p {
+    font-size:16px; /* changes font size of html, remove if wanted */
+}
+
 #sidebar{
 	background: #111111;
 	height:100%;
