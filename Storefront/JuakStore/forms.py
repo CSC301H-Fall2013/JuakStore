@@ -1,12 +1,14 @@
 __author__ = 'wyeung'
 from django import forms
-from django.forms.widgets import SplitDateTimeWidget
+from django.forms.extras.widgets import SelectDateWidget
 from django.core.exceptions import ValidationError
 import datetime
 
 from juakstore.models import Booking
 
 class BookingForm(forms.ModelForm):
+    date = forms.DateField(widget=SelectDateWidget)
+
     class Meta:
         model = Booking
 
