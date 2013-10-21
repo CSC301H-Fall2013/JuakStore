@@ -1,0 +1,11 @@
+<h1>Bookings:</h1>
+{% if all_bookings %}
+    <ul>
+        {% for booking in all_bookings %}
+            <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No active bookings</p>
+{% endif %}
+<form action="{%  url 'juakstore:bookingCreate' %}"><input type="submit" value="Add New" /></form>
