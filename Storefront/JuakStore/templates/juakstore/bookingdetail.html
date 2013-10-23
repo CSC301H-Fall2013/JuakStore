@@ -1,7 +1,7 @@
 <h1> {{ booking.name }} </h1>
 <p>{{ booking.notes }}</p>
 <p>Booker: <a href="{% url 'juakstore:userDetail' booking.booker.id %}">{{ booking.booker }}</a></p>
-<p>Room: {{ booking.room }}</p>
+<p>Room: <a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room }}</a></p>
 <p>Date: {{ booking.date }}</p>
 <p>Start: {{ booking.start }}</p>
 <p>End: {{ booking.end }}</p>

@@ -1,0 +1,11 @@
+<h1>{{ room.name }}</h1>
+<p>{{ room.info }}</p>
+
+{% if room.booking_set.all %}
+    <h1>Bookings:</h1>
+    {% for booking in user.booking_set.all %}
+        <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
+    {% endfor %}
+{% else %}
+<p>No bookings!</p>
+{% endif %}

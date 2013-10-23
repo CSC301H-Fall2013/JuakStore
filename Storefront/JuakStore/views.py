@@ -6,14 +6,16 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
 from models import Booking, BookingCategory, Room
-from forms import BookingForm
+from forms import BookingForm, RoomForm
 
 @login_required
 def index(request):
     template = loader.get_template('juakstore/index.html')
     all_bookings = Booking.objects.all()
+    all_rooms = Room.objects.all()
     context = RequestContext(request, {
-        'all_bookings': all_bookings
+        'all_bookings': all_bookings,
+        'all_rooms' : all_rooms
     })
     return HttpResponse(template.render(context))
 
@@ -21,11 +23,11 @@ def addBooking(request):
     if request.method == "POST":
         f = BookingForm(request.POST)
         if f.is_valid():
-            newBooking = Booking(name=request.POST['name'],
-                          notes=request.POST['notes'],
-                          date=request.POST['date'],
-                          start=request.POST['start'],
-                          end=request.POST['end'],
+            newBooking = Booking(name=f.cleaned_data['name'],
+                          notes=f.cleaned_data['notes'],
+                          date=f.cleaned_data['date'],
+                          start=f.cleaned_data['start'],
+                          end=f.cleaned_data['end'],
                           booker=get_object_or_404(User, pk=request.POST['booker']),
                           category=get_object_or_404(BookingCategory, pk=request.POST['category']),
                           room=get_object_or_404(Room, pk=request.POST['room']))
@@ -45,6 +47,7 @@ def updateBooking(request, pk):
     if request.method == "POST":
         b = get_object_or_404(Booking, pk=pk)
         f = BookingForm(request.POST)
+        f.id = pk
         if f.is_valid():
             b.name = request.POST['name']
             b.notes = request.POST['notes']
@@ -59,6 +62,18 @@ def updateBooking(request, pk):
     else:
         form = BookingForm()
         return HttpResponseRedirect(reverse('juakstore:bookingDetail', args=(pk,)))
+
+def submitRoom(request):
+    if request.method == "POST":
+        f = RoomForm(request.POST)
+        if f.is_valid():
+            newRoom = Room(name=request.POST['name'], info=request.POST['info'])
+            newRoom.save()
+            return HttpResponseRedirect(reverse('juakstore:roomDetail', args=(newRoom.id,)))
+        else:
+            return render(request, 'juakstore/room_add.html', {'form' : f})
+    else:
+        return HttpResponseRedirect(reverse('juakstore:roomCreate'))
 
 def displayBooking(request, pk):
     b = get_object_or_404(Booking, pk=pk)
@@ -81,3 +96,12 @@ class BookingUpdate(generic.edit.UpdateView):
 class UserDetailView(generic.DetailView):
     model = User
     template_name = 'juakstore/user.html'
+
+class RoomView(generic.DetailView):
+    model = Room
+    template_name = 'juakstore/room_detail.html'
+
+class RoomCreate(generic.edit.CreateView):
+    model = Room
+    template_name = 'juakstore/room_add.html'
+    form_class = RoomForm

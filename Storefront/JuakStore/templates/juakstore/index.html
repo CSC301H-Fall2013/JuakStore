@@ -9,3 +9,14 @@
     <p>No active bookings</p>
 {% endif %}
 <form action="{%  url 'juakstore:bookingCreate' %}"><input type="submit" value="Add New" /></form>
+<h1>Rooms:</h1>
+{% if all_rooms %}
+    <ul>
+        {% for room in all_rooms %}
+            <li><a href="{% url 'juakstore:roomDetail' room.id %}">{{ room.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No rooms!</p>
+{% endif %}
+<form action="{% url 'juakstore:roomCreate' %}"><input type="submit" value="Add Room" /></form>
