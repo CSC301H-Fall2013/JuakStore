@@ -4,7 +4,9 @@
 {% if room.booking_set.all %}
     <h1>Bookings:</h1>
     {% for booking in user.booking_set.all %}
+        {% if booking.room.id == room.id %}
         <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
+        {% endif %}
     {% endfor %}
 {% else %}
 <p>No bookings!</p>
