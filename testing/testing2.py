@@ -197,6 +197,16 @@ class SprintOneTest(TestCase):
         self.assertEqual(ClientBooking.client_name,'')
 
 
+        
+    """
+    Test schedule
+    This testcase will check the schedule via a blueprint of the facility 
+    sucessfully
+    """
+    def test_scheduled(self):
+        sche = self.client.blueprint.click()
+        self.assertEqual(sche.status_code, 200)
+        
 
     """
     test get room
@@ -209,6 +219,137 @@ class SprintOneTest(TestCase):
         for room in rooms:
             self.assertContains('BA1180', rooms.name)
 
+    """
+    Test weekly booking
+    Check if the reapeat is 'weekly', the booking will 
+    successfully booking repeatly every week
+    """
+    def test_weekly_booking(self):
+        books = self.client.get('/juakstore/booking/')
+        response = c.post('juakstore/booking/create/', {'name': 'Brad Pitt', 'notes': 'test1', 'category': 'stuff',
+                                                         'start date': '2013-12-2', 'end date': '2013-12-9',
+                                                         'start':'7:55:00', 'end':'9:55:00',
+                                                         'booker':'admin','repeat':'weekly' 'room':'BA1170'})
+        self.assertEqual(rooms.status_code, 200)
+        self.assertContains('Brad Pitt'.date, '2013-12-2')
+        self.assertContains('Brad Pitt'.date, '2013-12-9')
+            
+            
+            
 
+    """
+    Test weekly booking
+    Check if the booking successfully remove every
+    week
+    """
+    def test_delete_weekly_booking(self):
+        books = self.client.get('/juakstore/booking/')
+        delete = delete_booking('Brad Pitt', 'weekly')
+        self.assertFalse('Brad Pitt'.date, '2013-12-2')
+        self.assertFalse('Brad Pitt'.date, '2013-12-9')
+            
+            
+    """
+    Test weekly booking
+    Check if the reapeat is 'Monthly', the booking will 
+    successfully booking repeatly every month
+    """
+    def test_monthly_booking(self):
+        books = self.client.get('/juakstore/booking/')
+        response = c.post('juakstore/booking/create/', {'name': 'Brad Pitt', 'notes': 'test1', 'category': 'stuff',
+                                                         'start date': '2013-11-2', 'end date': '2013-11-2',
+                                                         'start':'7:55:00', 'end':'9:55:00',
+                                                         'booker':'admin','repeat':'Monthly' 'room':'BA1170'})
+        self.assertEqual(rooms.status_code, 200)
+        self.assertEqual('Brad Pitt'.date, '2013-11-2')
+        self.assertEqual('Brad Pitt'.date, '2013-12-2')
+        
+    """
+    Test weekly booking
+    Check if the booking successfully remove every 
+    month
+    """
+    def test_delete_montly_booking(self):
+        books = self.client.get('/juakstore/booking/')
+	delete = delete_booking('Brad Pitt', 'montly')
+        self.assertFalse('Brad Pitt'.date, '2013-11-2')
+        self.assertFalse('Brad Pitt'.date, '2013-12-2')
+        
+            
 
+    """
+    Test weekly booking
+    Check if the reapeat is 'One-time', the booking will 
+    successfully booking only one time
+    """
+    def test_one_booking(self):
+        books = self.client.get('/juakstore/booking/')
+        response = c.post('juakstore/booking/create/', {'name': 'Brad Pitt', 'notes': 'test1', 'category': 'stuff',
+                                                         'start date': '2013-11-2',
+                                                         'start':'7:55:00', 'end':'9:55:00',
+                                                         'booker':'admin','repeat':'One-time' 'room':'BA1170'})
+        self.assertEqual(rooms.status_code, 200)
+        self.assertEqual('Brad Pitt'.date, '2013-11-2')
+        self.assertFalse('Brad Pitt'.date, '2013-12-2')
+        self.assertFalse('Brad Pitt'.date, '2013-12-9')
+     
+
+    """
+    Test weekly booking
+    Check if the reapeat is 'One-time', the booking will 
+    successfully booking only one time
+    """
+    def test_delete_one_booking(self):
+        books = self.client.get('/juakstore/booking/')
+        self.assertFalse('Brad Pitt'.date, '2013-11-2')   
+            
+            
+
+    """
+    test book 2
+    This will check the booking and cancelling 
+    2 rooms for one booking is sucessfully
+    """
+    def test_book_2(self):
+        c = Client()
+        response = c.post('juakstore/booking/create/', {'name': 'Brad Pitt', 'notes': 'test1', 'category': 'stuff',
+                                                         'date': '2025-12-2', 'start':'7:55:00', 'end':'9:55:00',
+                                                         'booker':'admin', 'room':'BA1170'})
+        self.assertEqual(response.status_code, 200)
+        response2 =  c.post('juakstore/booking/create/', {'name': 'Brad Pitt', 'notes': 'test1', 'category': 'stuff',
+                                                         'date': '2025-12-2', 'start':'7:55:00', 'end':'9:55:00',
+                                                         'booker':'admin', 'room':'BA1190'})
+        self.assertEqual(response2.status_code, 200)                                                
+
+            
+            
+    """
+    test book 3
+    This will check the booking and cancelling 
+    3 rooms for one booking is sucessfully
+    """
+    def test_book_3(self):
+        c = Client()
+        response = c.post('juakstore/booking/create/', {'name': 'Brad Pitt', 'notes': 'test1', 'category': 'stuff',
+                                                         'date': '2025-12-2', 'start':'7:55:00', 'end':'9:55:00',
+                                                         'booker':'admin', 'room':'BA1170'})
+        self.assertEqual(response.status_code, 200)
+        response2 =  c.post('juakstore/booking/create/', {'name': 'Brad Pitt', 'notes': 'test2', 'category': 'stuff',
+                                                         'date': '2025-12-4', 'start':'7:55:00', 'end':'9:55:00',
+                                                         'booker':'admin', 'room':'BA1190'})
+        self.assertEqual(response.status_code, 200)
+        response3 =  c.post('juakstore/booking/create/', {'name': 'Brad Pitt', 'notes': 'test3', 'category': 'stuff',
+                                                         'date': '2025-12-3', 'start':'7:55:00', 'end':'9:55:00',
+                                                         'booker':'admin', 'room':'BA1180'})
+        self.assertEqual(response3.status_code, 200)                                                
+
+            
+        
+    """
+    Test cancel booking 
+    Booking and cancelling all rooms for one booking is sucessful
+    """
+    def test_cancel_booking(self):
+        cancel = self.client.delete(ClientBooking.delete('Brad Pitt','all'))
+        self.assertEqual(ClientBooking.client_name,'')
 
