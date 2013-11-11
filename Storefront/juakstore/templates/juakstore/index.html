@@ -1,3 +1,5 @@
+{% load juakstore_extras %}
+
 <h1>Bookings:</h1>
 {% if all_bookings %}
     <ul>
@@ -21,4 +23,19 @@
 {% endif %}
 <form action="{% url 'juakstore:roomCreate' %}"><input type="submit" value="Add Room" /></form>
 
-{{ calendar }}
+<div>
+{% calendar all_bookings year month %}
+{% if month == 1 %}
+<a href="{% url 'juakstore:indexyymm' year|add:'-1' 12 %}">Prev</a>
+{% else %}
+<a href="{% url 'juakstore:indexyymm' year month|add:'-1' %}">Prev</a>
+{% endif %}
+</div>
+
+<div>
+{% if month == 12 %}
+<a href="{% url 'juakstore:indexyymm' year|add:'1' 1 %}">Next</a>
+{% else %}
+<a href="{% url 'juakstore:indexyymm' year month|add:'1' %}">Next</a>
+{% endif %}
+</div>
