@@ -1,21 +1,26 @@
 from django.views import generic
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, render_to_response
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
 from models import Booking, BookingCategory, Room
 from forms import BookingForm, RoomForm
+from mycalendar import BookingCalendar
+from django.utils.safestring import mark_safe
 
 @login_required
 def index(request):
     template = loader.get_template('juakstore/index.html')
     all_bookings = Booking.objects.all()
     all_rooms = Room.objects.all()
+    foundBookings = Booking.objects.order_by('date').filter(date__year=2013, date__month=10)
+    cal  = BookingCalendar(foundBookings).formatmonth(2013, 10)
     context = RequestContext(request, {
         'all_bookings': all_bookings,
-        'all_rooms' : all_rooms
+        'all_rooms' : all_rooms,
+        'calendar': mark_safe(cal)
     })
     return HttpResponse(template.render(context))
 
@@ -37,6 +42,11 @@ def addBooking(request):
             return render(request, 'juakstore/booking_add.html', {'form': f})
     else:
         return HttpResponseRedirect(reverse('juakstore:bookingCreate'))
+
+def calendar(request, year, month):
+    foundBookings = Booking.objects.order_by(date__year=year, date__month=month)
+    cal  = BookingCalendar(foundBookings).formatmonth(year, month)
+    return render_to_response('index.html', {'calendar':mark_safe(cal),})
 
 def updateBooking(request, pk):
     #start = request.POST['event_start']
