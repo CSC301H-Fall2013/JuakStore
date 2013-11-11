@@ -3,7 +3,7 @@ from datetime import date
 from itertools import groupby
 
 from django.utils.html import conditional_escape as esc
-
+from django.core.urlresolvers import reverse
 
 
 '''
@@ -28,10 +28,9 @@ class BookingCalendar(HTMLCalendar):
                 body = ['<ul>']
                 for booking in self.bookings[day]:
                     body.append('<li>')
-                    #body.append('<a href="%s">' % booking.get_absolute_url())
+                    body.append('<a href="%s">' % reverse('juakstore:bookingDetail', None, [booking.id]))
                     body.append(esc(booking.name))
-                    body.append('</li>')
-                    #body.append('</a></li>')
+                    body.append('</a></li>')
                 body.append('</ul>')
                 return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
             return self.day_cell(cssclass, day)
