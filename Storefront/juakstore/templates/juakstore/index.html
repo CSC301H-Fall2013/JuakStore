@@ -25,6 +25,9 @@
 
 <div>
 {% calendar all_bookings year month %}
+</div>
+
+<div>
 {% if month == 1 %}
 <a href="{% url 'juakstore:indexyymm' year|add:'-1' 12 %}">Prev</a>
 {% else %}
