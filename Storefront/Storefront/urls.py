@@ -15,7 +15,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^juakstore/', include('juakstore.urls', namespace='juakstore')),
+    url(r'^', include('juakstore.urls', namespace='juakstore')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
 )
 
