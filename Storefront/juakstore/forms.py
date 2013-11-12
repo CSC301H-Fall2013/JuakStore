@@ -2,19 +2,22 @@ __author__ = 'wyeung'
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 from django.core.exceptions import ValidationError
+from widgets import SelectTimeWidget
 import datetime
 from django.db.models import Q
 from juakstore.models import Booking, Room
 
 class BookingForm(forms.ModelForm):
     date = forms.DateField(widget=SelectDateWidget)
-    id = None
+    start = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
+    end = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
 
     class Meta:
         model = Booking
 
     def clean(self):
         cleaned_data = super(BookingForm, self).clean()
+        print cleaned_data
         if (cleaned_data.get('start') >= cleaned_data.get('end')):
             raise ValidationError('Event end must be after the start', code='endbeforestart')
         # now check if there are any bookings that overlap with the submitted one

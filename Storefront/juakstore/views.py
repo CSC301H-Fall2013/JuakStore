@@ -68,13 +68,14 @@ def updateBooking(request, pk):
         b = get_object_or_404(Booking, pk=pk)
         f = BookingForm(request.POST)
         f.id = pk
+
         if f.is_valid():
-            b.name = request.POST['name']
-            b.notes = request.POST['notes']
-            b.start = request.POST['start']
-            b.end = request.POST['end']
-            b.category = get_object_or_404(BookingCategory, pk=request.POST['category'])
-            b.room = get_object_or_404(Room, pk=request.POST['room'])
+            b.name = f.cleaned_data['name']
+            b.notes = f.cleaned_data['notes']
+            b.start = f.cleaned_data['start']
+            b.end = f.cleaned_data['end']
+            b.category = get_object_or_404(BookingCategory, pk=f.cleaned_data['category'].id)
+            b.room = get_object_or_404(Room, pk=f.cleaned_data['room'].id)
             b.save()
             return HttpResponseRedirect(reverse('juakstore:bookingDetail', args=(b.id,)))
         else:
@@ -120,6 +121,21 @@ class UserDetailView(generic.DetailView):
 class RoomView(generic.DetailView):
     model = Room
     template_name = 'juakstore/room_detail.html'
+    year = None
+    month = None
+
+    def get_context_data(self, **kwargs):
+        context = super(RoomView, self).get_context_data(**kwargs)
+        context['room_bookings'] = Booking.objects.all().filter(room_id=kwargs['object'].id)
+        try:
+            context['year'] = int(context['year'])
+        except KeyError:
+            context['year'] = datetime.datetime.now().year
+        try:
+            context['month'] = int(context['month'])
+        except KeyError:
+            context['month'] = datetime.datetime.now().month
+        return context
 
 class RoomCreate(generic.edit.CreateView):
     model = Room

@@ -15,4 +15,5 @@ urlpatterns = patterns('',
                     url(r'^rooms/create/submit/$', views.submitRoom, name='roomSubmit'),
                     url(r'^rooms/create/$', views.RoomCreate.as_view(), name='roomCreate'),
                     url(r'^rooms/(?P<pk>\d+)/$', views.RoomView.as_view(), name='roomDetail'),
+                    url(r'^rooms/(?P<pk>\d+)/date/(?P<year>\d+)/(?P<month>\d+)/$', views.BookingView.as_view(), name='roomDetailyymm'),
 )

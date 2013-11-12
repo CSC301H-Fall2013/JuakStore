@@ -1,13 +1,31 @@
+{% load juakstore_extras %}
+
 <h1>{{ room.name }}</h1>
 <p>{{ room.info }}</p>
 
-{% if room.booking_set.all %}
+{% if room_bookings %}
     <h1>Bookings:</h1>
-    {% for booking in user.booking_set.all %}
-        {% if booking.room.id == room.id %}
+    {% for booking in room_bookings %}
         <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
-        {% endif %}
     {% endfor %}
 {% else %}
 <p>No bookings!</p>
 {% endif %}
+
+{% calendar room_bookings year month %}
+
+<div>
+{% if month == 1 %}
+<a href="{% url 'juakstore:roomDetailyymm' year=year|add:'-1' month=12 %}">Prev</a>
+{% else %}
+<a href="{% url 'juakstore:roomDetailyymm' year=year month=month|add:'-1' %}">Prev</a>
+{% endif %}
+</div>
+
+<div>
+{% if month == 12 %}
+<a href="{% url 'juakstore:roomDetailyymm' year=year|add:'1' month=1 %}">Next</a>
+{% else %}
+<a href="{% url 'juakstore:roomDetailyymm' year=year month=month|add:'1' %}">Next</a>
+{% endif %}
+</div>
