@@ -4,3 +4,7 @@
 Storefront/Storefront/settings.py
 
 Storefront/JuakStoredb
+
+*.pyc
+
+Storefront/Storefront/settings.pyc
