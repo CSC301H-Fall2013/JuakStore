@@ -22,6 +22,7 @@ def index(request, year=None, month=None):
     else:
         month = datetime.datetime.now().month
     template = loader.get_template('juakstore/index.html')
+    newBooking = BookingForm()
     all_bookings = Booking.objects.all()
     all_rooms = Room.objects.all()
     context = RequestContext(request, {
@@ -29,6 +30,7 @@ def index(request, year=None, month=None):
         'all_rooms' : all_rooms,
         'year' : year,
         'month' : month,
+        'form' : newBooking
     })
     return HttpResponse(template.render(context))
 
