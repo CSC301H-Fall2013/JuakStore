@@ -17,6 +17,22 @@
 <div id="rooms_index">
 
 <h1 class="headings_index">Rooms:</h1>
+=======
+{% load juakstore_extras %}
+
+<h1>Bookings:</h1>
+{% if all_bookings %}
+    <ul>
+        {% for booking in all_bookings %}
+            <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No active bookings</p>
+{% endif %}
+<form action="{%  url 'juakstore:bookingCreate' %}"><input type="submit" value="Add New" /></form>
+<h1>Rooms:</h1>
+>>>>>>> b902a8cc2bc3235279d5f09fcf840889ec21143d
 {% if all_rooms %}
     <ul>
         {% for room in all_rooms %}
@@ -32,5 +48,23 @@
 
 <div class="clear"></div>
 
-{{ calendar }}
+<div>
+{% calendar all_bookings year month %}
+</div>
+
+<div>
+{% if month == 1 %}
+<a href="{% url 'juakstore:indexyymm' year|add:'-1' 12 %}">Prev</a>
+{% else %}
+<a href="{% url 'juakstore:indexyymm' year month|add:'-1' %}">Prev</a>
+{% endif %}
+</div>
+
+<div>
+{% if month == 12 %}
+<a href="{% url 'juakstore:indexyymm' year|add:'1' 1 %}">Next</a>
+{% else %}
+<a href="{% url 'juakstore:indexyymm' year month|add:'1' %}">Next</a>
+{% endif %}
+</div>
 {% endblock %}

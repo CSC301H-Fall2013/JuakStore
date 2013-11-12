@@ -9,12 +9,22 @@ from models import Booking, BookingCategory, Room
 from forms import BookingForm, RoomForm
 from mycalendar import BookingCalendar
 from django.utils.safestring import mark_safe
+import datetime
 
 @login_required
-def index(request):
+def index(request, year=None, month=None):
+    if year:
+        year = int(year)
+    else:
+        year = datetime.datetime.now().year
+    if month:
+        month = int(month)
+    else:
+        month = datetime.datetime.now().month
     template = loader.get_template('juakstore/index.html')
     all_bookings = Booking.objects.all()
     all_rooms = Room.objects.all()
+<<<<<<< HEAD
     newBooking = BookingForm()
     foundBookings = Booking.objects.order_by('date').filter(date__year=2013, date__month=10)
     cal  = BookingCalendar(foundBookings).formatmonth(2013, 10)
@@ -23,6 +33,13 @@ def index(request):
         'all_rooms' : all_rooms,
         'calendar': mark_safe(cal),
         'form' : newBooking
+=======
+    context = RequestContext(request, {
+        'all_bookings': all_bookings,
+        'all_rooms' : all_rooms,
+        'year' : year,
+        'month' : month,
+>>>>>>> b902a8cc2bc3235279d5f09fcf840889ec21143d
     })
     return HttpResponse(template.render(context))
 
