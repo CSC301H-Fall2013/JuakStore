@@ -15,12 +15,14 @@ def index(request):
     template = loader.get_template('juakstore/index.html')
     all_bookings = Booking.objects.all()
     all_rooms = Room.objects.all()
+    newBooking = BookingForm()
     foundBookings = Booking.objects.order_by('date').filter(date__year=2013, date__month=10)
     cal  = BookingCalendar(foundBookings).formatmonth(2013, 10)
     context = RequestContext(request, {
         'all_bookings': all_bookings,
         'all_rooms' : all_rooms,
-        'calendar': mark_safe(cal)
+        'calendar': mark_safe(cal),
+        'form' : newBooking
     })
     return HttpResponse(template.render(context))
 

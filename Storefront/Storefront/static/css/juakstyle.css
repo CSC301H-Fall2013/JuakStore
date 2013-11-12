@@ -1,0 +1,23 @@
+#content{
+	margin: 0 34% 0 7.6%;
+	width: 80%;
+	padding-top:none;
+}
+
+#bookings_index{
+	float: left;
+}
+
+.headings_index{
+	font-size:2em;
+}
+
+form p{
+	margin-bottom:.8em;
+}
+
+#rooms_index{
+	float: right;
+}
+
+.clear
