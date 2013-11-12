@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load juakstore_extras %}
 
 
@@ -6,17 +7,10 @@
 
 {% block content %}
 
-
-
 <form action={% url 'juakstore:bookingSubmit' %} method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>
-
-
-
-
-
 
 <h1 class="headings_index">Bookings:</h1>
 <div id="bookings_index">
@@ -43,29 +37,40 @@
     <p>No rooms!</p>
 {% endif %}
 </div>
+
 <!-- general user can't add a room
 <form action="{% url 'juakstore:roomCreate' %}"><input type="submit" value="Add Room" /></form>
 -->
 
 <div class="clear"></div>
 
-<div>
-{% calendar all_bookings year month %}
+<div id="tabs">
+
+    <div id="calendar">
+        {% calendar all_bookings year month %}
+        <div>
+        {% if month == 1 %}
+        <a href="{% url 'juakstore:indexyymm' year|add:'-1' 12 %}">Prev</a>
+        {% else %}
+        <a href="{% url 'juakstore:indexyymm' year month|add:'-1' %}">Prev</a>
+        {% endif %}
+        </div>
+
+        <div>
+        {% if month == 12 %}
+        <a href="{% url 'juakstore:indexyymm' year|add:'1' 1 %}">Next</a>
+        {% else %}
+        <a href="{% url 'juakstore:indexyymm' year month|add:'1' %}">Next</a>
+        {% endif %}
+        </div>
+    </div>
+
+    <div id="agenda">
+        {% agenda all_bookings year month day %}
+    </div>
+
 </div>
 
-<div>
-{% if month == 1 %}
-<a href="{% url 'juakstore:indexyymm' year|add:'-1' 12 %}">Prev</a>
-{% else %}
-<a href="{% url 'juakstore:indexyymm' year month|add:'-1' %}">Prev</a>
-{% endif %}
-</div>
 
-<div>
-{% if month == 12 %}
-<a href="{% url 'juakstore:indexyymm' year|add:'1' 1 %}">Next</a>
-{% else %}
-<a href="{% url 'juakstore:indexyymm' year month|add:'1' %}">Next</a>
-{% endif %}
-</div>
 {% endblock %}
+

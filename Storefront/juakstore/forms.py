@@ -26,8 +26,12 @@ class BookingForm(forms.ModelForm):
                                       Q(start__lte=cleaned_data.get('end')))
                                       | (Q(end__gte=cleaned_data.get('start')) &
                                               Q(end__lte=cleaned_data.get('end'))))
-        if self.id:
-            overlap = overlap.filter(~Q(id=self.id))
+        try:
+            if self.id:
+                overlap = overlap.filter(~Q(id=self.pk))
+        except:
+            pass
+
         print cleaned_data
         print overlap
         if overlap.count() > 0:

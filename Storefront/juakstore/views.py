@@ -12,7 +12,7 @@ from django.utils.safestring import mark_safe
 import datetime
 
 @login_required
-def index(request, year=None, month=None):
+def index(request, year=None, month=None, day=None):
     if year:
         year = int(year)
     else:
@@ -21,16 +21,22 @@ def index(request, year=None, month=None):
         month = int(month)
     else:
         month = datetime.datetime.now().month
+    if day:
+        day = int(day)
+    else:
+        day = datetime.datetime.now().day
+
     template = loader.get_template('juakstore/index.html')
     newBooking = BookingForm()
     all_bookings = Booking.objects.all()
     all_rooms = Room.objects.all()
     context = RequestContext(request, {
         'all_bookings': all_bookings,
-        'all_rooms' : all_rooms,
-        'year' : year,
-        'month' : month,
-        'form' : newBooking
+        'all_rooms': all_rooms,
+        'year': year,
+        'month': month,
+        'day': day,
+        'form': newBooking
     })
     return HttpResponse(template.render(context))
 

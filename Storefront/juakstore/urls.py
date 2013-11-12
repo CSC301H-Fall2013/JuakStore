@@ -6,6 +6,7 @@ from juakstore import views
 urlpatterns = patterns('',
                     url(r'^$', views.index, name='index'),
                     url(r'^(?P<year>\d+)/(?P<month>\d+)/$', views.index, name='indexyymm'),
+                    url(r'^(?P<year>\d+)/(?P<month>\d+)/(?P<day>\d+)/$', views.index, name='indexyymm'),
                     url(r'^booking/(?P<pk>\d+)/$', views.BookingView.as_view(), name='bookingDetail'),
                     url(r'^booking/create/$', views.BookingCreate.as_view(), name='bookingCreate'),
                     url(r'^booking/edit/submit/(?P<pk>\d+)/$', views.updateBooking, name='submitBooking'),
