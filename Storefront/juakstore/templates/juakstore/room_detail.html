@@ -5,9 +5,13 @@
 
 {% if room_bookings %}
     <h1>Bookings:</h1>
+	<ul>
     {% for booking in room_bookings %}
+        {% if booking.room.id == room.id %}
         <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
+        {% endif %}
     {% endfor %}
+	</ul>
 {% else %}
 <p>No bookings!</p>
 {% endif %}
