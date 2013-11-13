@@ -14,6 +14,7 @@
 
 {% calendar room_bookings year month %}
 
+{% comment %}
 <div>
 {% if month == 1 %}
 <a href="{% url 'juakstore:roomDetailyymm' year=year|add:'-1' month=12 %}">Prev</a>
@@ -29,3 +30,4 @@
 <a href="{% url 'juakstore:roomDetailyymm' year=year month=month|add:'1' %}">Next</a>
 {% endif %}
 </div>
+{% endcomment %}
