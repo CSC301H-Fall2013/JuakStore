@@ -23,13 +23,14 @@ class BookingCalendar(HTMLCalendar):
                 cssclass += ' today'
             if day in self.bookings:
                 cssclass += ' filled'
-                body = ['<ul>']
+                body = ['<div id="tribe-events-content" class="tribe-events-month"><div id="tribe-events-header" data-title="Events this {{month}}"><ul class="tribe-events-sub-nav">']
+                body.append('<ul>')
                 for booking in self.bookings[day]:
-                    body.append('<li>')
-                    body.append('<a href="%s">' % reverse('juakstore:bookingDetail', None, [booking.id]))
+                    body.append('<li class="cal-list">')
+                    body.append(' <h3 class="tribe-events-month-event-title summary"><a href="%s" class="url calendar-list">' % reverse('juakstore:bookingDetail', None, [booking.id]))
                     body.append(esc(booking.name))
-                    body.append('</a></li>')
-                body.append('</ul>')
+                    body.append('</a></h3></li>')
+                body.append('</ul></ul></div></div>')
                 return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
             return self.day_cell(cssclass, day)
         return self.day_cell('noday', '&nbsp;')
@@ -51,16 +52,19 @@ class BookingCalendar(HTMLCalendar):
 
 class WeeklyCalendar():
     cssclass = ['mon', 'tues', 'wed', 'thurs', 'fri', 'sat', 'sun']
-    tableheader = "<table class=\"week\">" \
+    tableheader = "<table class=\"week tribe-events-calendar\">" \
+                  "<thead>" \
                   "<tr>" \
-                  "<td>Monday</td>" \
-                  "<td>Tuesday</td>" \
-                  "<td>Wednesday</td>" \
-                  "<td>Thursday</td>" \
-                  "<td>Friday</td>" \
-                  "<td>Saturday</td>" \
-                  "<td>Sunday</td>" \
-                  "</tr>"
+                  "<th id=\"tribe-events-monday\" >Monday</th>" \
+                  "<th id=\"tribe-events-tuesday\" >Tuesday</th>" \
+                  "<th id=\"tribe-events-wednesday\" >Wednesday</th>" \
+                  "<th id=\"tribe-events-thursday\" >Thursday</th>" \
+                  "<th id=\"tribe-events-friday\" >Friday</th>" \
+                  "<th id=\"tribe-events-saturday\" >Saturday</th>" \
+                  "<th id=\"tribe-events-sunday\" >Sunday</th>" \
+                  "</tr>" \
+                  "</thead>" \
+                  "<tbody class=\"hfeed vcalendar\">"
 
     def __init__(self, bookings):
         self.bookings = self.group_by_day(bookings)
@@ -83,7 +87,7 @@ class WeeklyCalendar():
 
         for i in range(0, 7):
             weekHTML += self.formatday(start_of_week, i)
-        weekHTML += '</table>'
+        weekHTML += '</tbody></table>'
         return weekHTML
 
     '''
@@ -95,7 +99,9 @@ class WeeklyCalendar():
         cssclass = self.cssclass[day_of_week]
         current_day = start_of_week + timedelta(days=day_of_week)
 
-        body = ['<div>']
+        body = ['<div id="tribe-events-daynum-']
+        body.append(str(current_day.day))
+        body.append('">')
         body.append(str(current_day.day))
         body.append('</div>')
 
@@ -104,17 +110,17 @@ class WeeklyCalendar():
 
         if current_day in self.bookings:
             cssclass += ' filled'
-            body.append('<ul>')
+            body.append('<div class="hentry vevent tribe-events-vategory-jobs post-1395 tribe_events type-tribe-events status-publish">')
             for booking in self.bookings[current_day]:
-                body.append('<li>')
-                body.append('<a href="%s">' % reverse('juakstore:bookingDetail', None, [booking.id]))
+                body.append('<h3 class="tribe-events-month-event-title summary">')
+                body.append('<a href="%s" class="url">' % reverse('juakstore:bookingDetail', None, [booking.id]))
                 body.append(esc(booking.name))
                 body.append('</a>')
-                body.append('<div class="starttime">')
-                body.append(str(booking.start))
-                body.append('</div>')
-                body.append('</li>')
-            body.append('</ul>')
+                #body.append('<div class="starttime">')
+                #body.append(str(booking.start))
+                #body.append('</div>')
+                body.append('</h3>')
+            body.append('</div></div>')
             print body
             return self.day_cell(cssclass, ''.join(body))
         print body

@@ -20,4 +20,23 @@ form p{
 	float: right;
 }
 
-.clear
+.clear{
+	clear:both;
+}
+
+ul.cal-list li{
+	list-style-type:none;
+}
+
+a.calendar-list, a.calendar-list:active, a.calendar-list:visited{
+	list-style-type:none;
+	padding:none;
+	margin: none;
+}
+
+ul.cal-list li a.calendar-list{
+	list-style-type: none;
+	padding:0;
+	margin: 0;
+	font-size: 40px;
+}
