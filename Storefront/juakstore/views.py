@@ -30,10 +30,13 @@ def index(request, year=None, month=None, day=None):
     newBooking = BookingForm()
     all_bookings = Booking.objects.all()
     all_rooms = Room.objects.all()
+    if request.user.is_authenticated():
+        currentUser = request.user    
     context = RequestContext(request, {
         'all_bookings': all_bookings,
         'all_rooms': all_rooms,
         'year': year,
+        'currentUser' : currentUser,
         'month': month,
         'day': day,
         'form': newBooking
@@ -131,7 +134,9 @@ def submitRoom(request):
 
 def displayBooking(request, pk):
     b = get_object_or_404(Booking, pk=pk)
-    return render(request, 'juakstore/bookingdetail.html', {'booking':b})
+    if request.user.is_authenticated():
+        c = request.user       
+    return render(request, 'juakstore/bookingdetail.html', {'booking':b, 'currentUser':c})
 
 class BookingView(generic.DetailView):
     model = Booking
