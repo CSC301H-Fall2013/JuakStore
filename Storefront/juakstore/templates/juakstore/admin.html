@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="headings_index">Admin Page</h1>
+
+<form action="{% url 'juakstore:roomCreate' %}"><input type="submit" value="Add Room" /></form>
+
+{% endblock %}

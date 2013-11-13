@@ -9,11 +9,15 @@
 
 <script type="text/javascript" src="{{ STATIC_URL }}js/booking_add.js"></script>
 
-<form action={% url 'juakstore:bookingSubmit' %} method="post">{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit" />
-</form>
+<div id="bookings_index">
+    <h1 class="headings_index">Make a Booking</h1>
+    <form action={% url 'juakstore:bookingSubmit' %} method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+    </form>
+</div>
 
+<!-- 
 <h1 class="headings_index">Bookings:</h1>
 <div id="bookings_index">
 {% if all_bookings %}
@@ -27,8 +31,13 @@
 {% endif %}
 </div>
 <form action="{%  url 'juakstore:bookingCreate' %}"><input type="submit" value="Add New" /></form>
-<h1 class="headings_index">Rooms:</h1>
+
+-->
+
+
+
 <div id="rooms_index">
+<h1 class="headings_index">Rooms:</h1>
 {% if all_rooms %}
     <ul>
         {% for room in all_rooms %}
@@ -44,11 +53,17 @@
 <form action="{% url 'juakstore:roomCreate' %}"><input type="submit" value="Add Room" /></form>
 -->
 
+
 <div class="clear"></div>
+
+<div id="tribe-events-content-wrapper" class="tribe-clearfix">
+
+<div id="tribe-events-content" class="tribe-events-month">
 
 <div id="tabs">
 
     <div id="calendar">
+    
         {% calendar all_bookings year month %}
         <div>
         {% if month == 1 %}
@@ -67,12 +82,17 @@
         </div>
     </div>
 
-    <div id="agenda">
+    <div id="agenda" class="tribe-events-content tribe-events-month">
         {% agenda all_bookings year month day %}
     </div>
 
 </div>
 
+</div>
+
+</div>
+
+
+
 
 {% endblock %}
-

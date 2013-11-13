@@ -1,4 +1,8 @@
-<h1> {{ booking.name }} </h1>
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="headings_index">Booking Information: {{ booking.name }} </h1>
 <p>{{ booking.notes }}</p>
 <p>Booker: <a href="{% url 'juakstore:userDetail' booking.booker.id %}">{{ booking.booker }}</a></p>
 <p>Room: <a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room }}</a></p>
@@ -9,3 +13,5 @@
 <form method="get" action="{% url 'juakstore:editBooking' booking.id %}">
     <button type="submit">Edit</button>
 </form>
+
+{% endblock %}

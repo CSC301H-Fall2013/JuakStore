@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="headings_index">Rooms</h1>
+{% if all_rooms %}
+    <ul>
+        {% for room in all_rooms %}
+            <li><a href="{% url 'juakstore:roomDetail' room.id %}">{{ room.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No rooms!</p>
+{% endif %}
+
+{% endblock %}
