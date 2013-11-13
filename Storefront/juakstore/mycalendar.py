@@ -16,7 +16,21 @@ class BookingCalendar(HTMLCalendar):
         super(BookingCalendar, self).__init__()
         self.bookings = self.group_by_day(bookings)
 
+    def formatweekheader(self):
+        row = "<thead><tr>"
+        for i in range(0, 7):
+            row += self.formatweekday(i)
+        row += "</tr></thead>"
+        return row
+
+    def formatweekday(self, day):
+        if day not in range(0, 7):
+            raise IndexError()
+        weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        return '<th id=\"tribe-events-%s\">%s</th>' % (weekdays[day].lower(), weekdays[day])
+
     def formatday(self, day, weekday):
+        print 'YOLO'
         if day != 0:
             cssclass = self.cssclasses[weekday]
             if date.today() == date(self.year, self.month, day):
@@ -37,13 +51,31 @@ class BookingCalendar(HTMLCalendar):
 
     def formatmonth(self, year, month):
         self.year, self.month = year, month
-        return super(BookingCalendar, self).formatmonth(year, month)
+        v = []
+        a = v.append
+        a('<table border="0" cellpadding="0" cellspacing="0" class="month tribe-events-calendar">')
+        a('\n')
+        a(self.formatmonthname(self.year, self.month, withyear=True))
+        a('\n')
+        a(self.formatweekheader())
+        a('\n')
+        for week in self.monthdays2calendar(self.year, self.month):
+            a(self.formatweek(week))
+            a('\n')
+        a('</table>')
+        a('\n')
+        return ''.join(v)
+
+
+        #return super(BookingCalendar, self).formatmonth(year, month)
 
     def group_by_day(self, bookings):
         field = lambda booking: booking.date.day
         return dict(
             [(day, list(items)) for day, items in groupby(bookings, field)]
         )
+
+
 
     def day_cell(self, cssclass, body):
         return '<td class="%s">%s</td>' % (cssclass, body)
@@ -121,9 +153,7 @@ class WeeklyCalendar():
                 #body.append('</div>')
                 body.append('</h3>')
             body.append('</div></div>')
-            print body
             return self.day_cell(cssclass, ''.join(body))
-        print body
         return self.day_cell(cssclass, ''.join(body))
 
 
