@@ -1,6 +1,8 @@
-{% extends "registration/registration_base.html" %}
+{% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Register for an account" %}{% endblock %}
+
+{% block title %}East Scarborough Storefront | Register{% endblock %}
+
 {% block content %}
 <table>
     <form method='post' action=''>{% csrf_token %}
@@ -8,4 +10,5 @@
         <tr><td></td><td><input type="submit" value="{% trans "Request Account" %}" /></td>
     </form>
 </table>
+
 {% endblock %}

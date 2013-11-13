@@ -26,4 +26,12 @@
        <input type="submit" value="login" />
        <input type="hidden" name="next" value="{{ next }}" />
     </form>
+	<br>
+    Don't have an account? Click below to register
+
+    <form>
+	<input type="button" onclick="window.location.href='/partners/register'" value="register" />
+       <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+
 {% endblock %}
