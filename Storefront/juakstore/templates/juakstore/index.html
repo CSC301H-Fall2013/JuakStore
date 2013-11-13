@@ -9,32 +9,22 @@
 
 <script type="text/javascript" src="{{ STATIC_URL }}js/booking_add.js"></script>
 
-<div id="bookings_index">
-    <h1 class="headings_index">Make a Booking</h1>
-    <form action={% url 'juakstore:bookingSubmit' %} method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-    </form>
-</div>
 
 <!-- 
 <h1 class="headings_index">Bookings:</h1>
 <div id="bookings_index">
-{% if all_bookings %}
-    <ul>
-        {% for booking in all_bookings %}
-            <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
-        {% endfor %}
-    </ul> -->
-{% endif %}
 {% if currentUser.is_staff %}
 
 	<script type="text/javascript" src="{{ STATIC_URL }}js/booking_add.js"></script>
 
-	<form action={% url 'juakstore:bookingSubmit' %} method="post">{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Submit" />
-	</form>
+	<div id="bookings_index">
+    <h1 class="headings_index">Make a Booking</h1>
+        <form action={% url 'juakstore:bookingSubmit' %} method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
 
 	<h1 class="headings_index">Bookings:</h1>
 	<div id="bookings_index">
