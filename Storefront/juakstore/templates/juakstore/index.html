@@ -7,6 +7,8 @@
 
 {% block content %}
 
+<script type="text/javascript" src="{{ STATIC_URL }}js/booking_add.js"></script>
+
 <form action={% url 'juakstore:bookingSubmit' %} method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />

@@ -53,6 +53,29 @@ def addBooking(request):
                           category=get_object_or_404(BookingCategory, pk=request.POST['category']),
                           room=get_object_or_404(Room, pk=request.POST['room']))
             newBooking.save()
+
+            if (f.cleaned_data['repeat']): # repeat is specified
+                curr_date = f.cleaned_data['date']
+
+                ''' Timestep will be the increment for the repeat '''
+                if f.cleaned_data['repeat_frequency_unit'] == 'day':
+                    timestep =  datetime.timedelta(days=f.cleaned_data['repeat_frequency'])
+                elif f.cleaned_data['repeat_frequency_unit'] == 'week':
+                    timestep = datetime.timedelta(weeks=f.cleaned_data['repeat_frequency'])
+                elif f.cleaned_data['repeat_frequency_unit'] == 'month':
+                    timestep = datetime.timedelta(weeks=4 * f.cleaned_data['repeat_frequency'])
+
+                while curr_date + timestep <= f.cleaned_data['repeat_end'] and timestep:
+                    curr_date += timestep
+                    repeatBooking = Booking(name=f.cleaned_data['name'],
+                          notes=f.cleaned_data['notes'],
+                          date=curr_date,
+                          start=f.cleaned_data['start'],
+                          end=f.cleaned_data['end'],
+                          booker=get_object_or_404(User, pk=request.POST['booker']),
+                          category=get_object_or_404(BookingCategory, pk=request.POST['category']),
+                          room=get_object_or_404(Room, pk=request.POST['room']))
+                    repeatBooking.save()
             return HttpResponseRedirect(reverse('juakstore:bookingDetail', args=(newBooking.id,)))
         else:
             return render(request, 'juakstore/booking_add.html', {'form': f})
