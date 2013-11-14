@@ -15,6 +15,14 @@ from mycalendar import BookingCalendar
 from django.utils.safestring import mark_safe
 import datetime
 
+from django import forms
+from django.forms.extras.widgets import SelectDateWidget
+from django.core.exceptions import ValidationError
+from widgets import SelectTimeWidget
+import datetime
+from django.db.models import Q
+from juakstore.models import Booking, Room
+
 import re
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms.widgets import Widget, Select, MultiWidget
@@ -201,7 +209,7 @@ class WidgetsTest(unittest.TestCase):
     def setUp(self):
         self.client = Client()
         
-    def SelectTimeWidget(self,Widget):
+    #def SelectTimeWidget(self,Widget):
     	
         
         
@@ -209,7 +217,36 @@ class WidgetsTest(unittest.TestCase):
 class mycalendarTest(unittest.TestCase):     
     def setUp(self):
         self.client = Client()
+        
+        
 
 class formsTest(unittest.TestCase):     
     def setUp(self):
         self.client = Client()
+        
+    def test_BookingForm(self):
+	    repeat_choices = [
+	        ('day', 'day(s)'),
+	        ('week', 'week(s)'),
+	        ('month', 'month(s)')
+	    ]
+	
+	    date = forms.DateField(widget=SelectDateWidget)
+	    start = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
+	    end = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
+	    rooms = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
+	
+	    #repeat = forms.BooleanField(widget=forms.CheckboxInput(attrs={'onChange': 'showHideFrequency(this.value)'}))
+	    repeat = forms.BooleanField(required=False)
+	
+	    repeat_frequency = forms.IntegerField(required=False)
+	    repeat_frequency_unit = forms.ChoiceField(choices=repeat_choices, required=False)
+	    repeat_end = forms.DateField(widget=SelectDateWidget, required=False)
+	    
+	    self.assertEquals(repeat_frequency_unit, repeat_frequency_unit)
+        
+        
+    def test_BookingForm(self):
+    	class Meta:
+    		model = Room
+	    	
