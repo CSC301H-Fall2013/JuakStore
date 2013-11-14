@@ -37,13 +37,13 @@ class BookingCalendar(HTMLCalendar):
                 cssclass += ' today'
             if day in self.bookings:
                 cssclass += ' filled'
-                body = ['<div id="tribe-events-content" class="tribe-events-month"><div id="tribe-events-header" data-title="Events this November><ul class="tribe-events-sub-nav">']
+                body = ['<div id="tribe-events-content" class="tribe-events-month"><div id="tribe-events-header" data-title="Events this November">']
                 for booking in self.bookings[day]:
                     body.append('<li class="cal-list">')
                     body.append(' <h3 class="tribe-events-month-event-title summary"><a href="%s" class="url calendar-list">' % reverse('juakstore:bookingDetail', None, [booking.id]))
                     body.append(esc(booking.name))
                     body.append('</a></h3></li>')
-                body.append('</ul></div></div>')
+                body.append('</div></div>')
                 return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
             return self.day_cell(cssclass, day)
         return self.day_cell('noday', '&nbsp;')
