@@ -4,6 +4,30 @@ when you run "manage.py test".
 
 Replace this with more appropriate tests for your application.
 """
+from django.views import generic
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render, render_to_response
+from django.contrib.auth.decorators import login_required
+from django.template import *
+from django.contrib.auth.models import User
+from mycalendar import BookingCalendar
+from django.utils.safestring import mark_safe
+import datetime
+
+import re
+from django.forms.extras.widgets import SelectDateWidget
+from django.forms.widgets import Widget, Select, MultiWidget
+from django.utils.safestring import mark_safe
+
+from calendar import HTMLCalendar
+from datetime import date, timedelta
+from itertools import groupby
+
+from django.utils.html import conditional_escape as esc
+from django.core.urlresolvers import reverse
+
+
 import unittest
 from django.test import TestCase
 from django.test.client import Client
@@ -129,5 +153,63 @@ class ModelTest(unittest.TestCase):
 class ViewTest(unittest.TestCase):     
     def setUp(self):
         self.client = Client()
+    
+            
+    """
+    Test login page
+    This test case will test if people can login to the admin account
+    with password admin and password JuakfrontPassword1 successfully
+    """
+    def test_login(self):
+        login_check = self.client.login(username='admin', password='JuakfrontPassword1')
+        #self.assertEqual(login_check,True)
+        self.assertRaises(TypeError,login_check,False)
+    
+    def test_index(self):
+    	response = self.client.get('/')
+    	self.failUnlessEqual(response.status_code,302)    	
+    
+    
+    def test_addBooking(self):
+    	user3 = User.objects.create_user('user3','chang@gmail.com','1');
+        bookCate = BookingCategory.objects.create(name = "Badminton class")        
+        room1 = Room.objects.create(name="BA1190", info="lecture room")
+    	response = self.client.get('/booking/create/')
+    	self.failUnlessEqual(response.status_code,200)
+    	#response1 = self.client.post('/booking/create/',{'name' : "booking1", 'notes' : "This is booking 1", 'category' : bookCate, 'date' : '2013-12-25', 'start' : '14:00:00','end' : '15:00:00', 'booker' : 'user3', 'room' : 'BA1190' })
+        								
+        self.assertEquals(response.status_code, 200)
+        
+        
+    def test_updateBooking(self):
+    	response = self.client.get('booking/edit/1/')
+    	#self.failUnlessEqual(response.status_code,302)   
 
-	
+
+    def test_room(self):
+    	response = self.client.get('/#ADDROOMSLINKHERE/')
+    	self.failUnlessEqual(response.status_code,302)
+    	#self.failUnlessEqual(response.status_code,200)    
+    	
+    	
+   	def test_calendar(self):
+   		foundBookings = Booking.objects.order_by(date__year=2013, date__month=12)
+    	#cal  = BookingCalendar(Booking.objects.order_by(date__year='2013', date__month='12')).formatmonth(2013, 12)
+    	#self.assertEquals(render_to_response('index.html', {'calendar':mark_safe(cal),}),2)
+    
+class WidgetsTest(unittest.TestCase):     
+    def setUp(self):
+        self.client = Client()
+        
+    def SelectTimeWidget(self,Widget):
+    	
+        
+        
+
+class mycalendarTest(unittest.TestCase):     
+    def setUp(self):
+        self.client = Client()
+
+class formsTest(unittest.TestCase):     
+    def setUp(self):
+        self.client = Client()
