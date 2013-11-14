@@ -41,6 +41,10 @@ ul.cal-list li a.calendar-list{
 	font-size: 40px;
 }
 
+#menu-item-1278, #menu-item-1279, #menu-item-1525{
+    width: 18em;
+}
+
 dl.image_map {display:block; width:800px; height:600px; background:url(http://www.image-maps.com/uploaded_files/5201311131707512_LAMEBLUEPRINT.jpg); position:relative; margin:2px auto 2px auto;}
 	a.LINK0 {left:119px; top:40px; background:transparent;}
 	a.LINK0 {display:block; width:192px; height:0; padding-top:246px; overflow:hidden; position:absolute;}
