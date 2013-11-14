@@ -62,8 +62,6 @@ class ModelTest(unittest.TestCase):
         self.assertEqual(login_check,False)   
         
         
-        
-        
     """
     Test login page
     This test case will test if people can login to the admin account
@@ -73,6 +71,8 @@ class ModelTest(unittest.TestCase):
         login_check = self.client.login(username='admin', password='JuakfrontPassword1')
         #self.assertEqual(login_check,True)
         self.assertRaises(TypeError,login_check,False)
+        # Raise an type error, check if the login_check is false
+        
     
     """
     Test model Room(database)
@@ -209,17 +209,59 @@ class WidgetsTest(unittest.TestCase):
     def setUp(self):
         self.client = Client()
         
-    #def SelectTimeWidget(self,Widget):
-    	
-        
-        
+    def test_BookingForm(self):
+    	hour_field = '%s_hour'
+    	minute_field = '%s_minute'
+    	second_field = '%s_second'
+    	meridiem_field = '%s_meridiem'
+    	twelve_hr = False 
 
 class mycalendarTest(unittest.TestCase):     
     def setUp(self):
         self.client = Client()
         
-        
+    def test_BookingCalendar(self):
+    	#foundBookings = Booking.objects.order_by(date__year=2013, date__month=12)
+    	#cal  = BookingCalendar(Booking.objects.order_by(date__year='2013', date__month='12')).formatmonth(2013, 12)
+    	#self.assertEquals(render_to_response('index.html', {'calendar':mark_safe(cal),}),2)
+    	room1 = Room.objects.create(name="BA1190", info="lecture room")
+        room2 = Room.objects.create(name="BA1180", info="another lecture room")
+    	self.assertEquals(room1.name, "BA1190")
+    	self.assertEquals(room1.info,"lecture room")
+        self.assertEquals(room2.name, "BA1180")
+    	self.assertEquals(room2.info,"another lecture room")
+    	
+    	
+    def test_WeeklyCalendar(self):
+    	room1 = Room.objects.create(name="BA1190", info="lecture room")
+        room2 = Room.objects.create(name="BA1180", info="another lecture room")
+    	self.assertEquals(room1.name, "BA1190")
+    	self.assertEquals(room1.info,"lecture room")
+        self.assertEquals(room2.name, "BA1180")
+    	self.assertEquals(room2.info,"another lecture room")
 
+
+    def test_model_ClientBookingCategro(self):
+    	user = User.objects.create_user('user9','changyingyu1991@gmail.com','1234');
+        bookCate = BookingCategory.objects.create(name = "Badminton class")        
+        room1 = Room.objects.create(name="BA1190", info="lecture room")
+    	book = Booking.objects.create(name = "booking1", notes = "This is booking 1", 
+    									category = bookCate, date = "2013-12-25", start = "14:00:00",
+    									end = "15:00:00", booker = user, room = room1 )
+    	
+        ClientBook = ClientBooking.objects.create(start = "2013-12-25 14:00:00", 
+        											end = "2013-12-25 15:00:00", client_name = "Ying" , 
+        											client_email = "changyingyu1991@gmail.com", 
+        											phone_number = "4aa", booking = book,)
+        
+    	self.assertEquals(ClientBook.start, "2013-12-25 14:00:00")
+    	self.assertEquals(ClientBook.end, "2013-12-25 15:00:00")
+    	self.assertEquals(ClientBook.client_name, "Ying")
+    	self.assertEquals(ClientBook.client_email, "changyingyu1991@gmail.com")
+    	self.assertRaises(TypeError,ClientBook.phone_number, "4aa") 
+    	# restricted on numbers? some intergers?
+    	self.assertEquals(ClientBook.booking.name, "booking1")
+    	
 class formsTest(unittest.TestCase):     
     def setUp(self):
         self.client = Client()
