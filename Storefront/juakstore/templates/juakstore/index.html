@@ -98,6 +98,24 @@
         <form action="{% url 'juakstore:roomCreate' %}"><input type="submit" value="Add Room" /></form>
         -->
 
+{% if not currentUser.is_staff %}
+    <div id="bookings_index">
+    <h1 class="headings_index">My Bookings:</h1>
+    {% if all_bookings %}
+	<ul>
+	    {% for booking in all_bookings %}
+		{% ifequal currentUser booking.booker %}
+		    <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
+		{% endifequal %}
+	    {% endfor %}
+	</ul>
+    {% else %}
+	<p>No active bookings</p>
+    {% endif %}
+    </div>
+{% endif %}
+
+<div class="clear"></div>
 
 <div id="rooms_index">
 <h1 class="headings_index">Rooms:</h1>
