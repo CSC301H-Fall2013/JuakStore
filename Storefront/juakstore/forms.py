@@ -4,8 +4,10 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.core.exceptions import ValidationError
 from widgets import SelectTimeWidget
 import datetime
+from django.contrib.auth.models import User
 from django.db.models import Q
 from juakstore.models import Booking, Room
+
 
 class BookingForm(forms.ModelForm):
     repeat_choices = [
@@ -17,7 +19,10 @@ class BookingForm(forms.ModelForm):
     date = forms.DateField(widget=SelectDateWidget)
     start = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
     end = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
-    rooms = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
+    room = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
+    booker = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput(), required=False)
+    #rooms = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Room.objects.all(), required=False)
+
 
     #repeat = forms.BooleanField(widget=forms.CheckboxInput(attrs={'onChange': 'showHideFrequency(this.value)'}))
     repeat = forms.BooleanField(required=False)
@@ -26,8 +31,12 @@ class BookingForm(forms.ModelForm):
     repeat_frequency_unit = forms.ChoiceField(choices=repeat_choices, required=False)
     repeat_end = forms.DateField(widget=SelectDateWidget, required=False)
 
+    def __init__(self, *args, **kwargs):
+        super(BookingForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Booking
+        exclude = ('booker', 'room',)
 
     def clean(self):
         error = []
@@ -35,7 +44,7 @@ class BookingForm(forms.ModelForm):
         if (cleaned_data.get('start') >= cleaned_data.get('end')):
             raise ValidationError('Event end must be after the start', code='endbeforestart')
         # now check if there are any bookings that overlap with the submitted one
-        for room in self.cleaned_data.get('rooms'):
+        for room in self.cleaned_data.get('room'):
             overlap = Booking.objects.all().filter(room_id=room).filter(date=cleaned_data.get('date')).filter(
                                         (Q(start__gte=cleaned_data.get('start')) &
                                           Q(start__lte=cleaned_data.get('end')))

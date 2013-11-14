@@ -45,16 +45,16 @@ def index(request, year=None, month=None, day=None):
 
 def addBooking(request):
     if request.method == "POST":
-        f = BookingForm(request.POST)
+        f = BookingForm(request.POST, initial={'booker':request.user, 'room':0})
         if f.is_valid():
             first_booking = 0
-            for room in f.cleaned_data['rooms']:
+            for room in f.cleaned_data['room']:
                 newBooking = Booking(name=f.cleaned_data['name'],
                               notes=f.cleaned_data['notes'],
                               date=f.cleaned_data['date'],
                               start=f.cleaned_data['start'],
                               end=f.cleaned_data['end'],
-                              booker=get_object_or_404(User, pk=request.POST['booker']),
+                              booker=get_object_or_404(User, pk=request.user.id),
                               category=get_object_or_404(BookingCategory, pk=request.POST['category']),
                               room=get_object_or_404(Room, pk=room.pk))
                 newBooking.save()
