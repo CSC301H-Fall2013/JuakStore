@@ -142,7 +142,7 @@ def displayBooking(request, pk):
 
 def logoutStorefront(request):
     logout(request)
-    return HttpResponseRedirect('http://www.thestorefront.org/')
+    return HttpResponseRedirect(reverse('juakstore:index'))
 
 class BookingView(generic.DetailView):
     model = Booking
