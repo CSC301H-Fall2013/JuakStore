@@ -159,6 +159,14 @@ class BookingCreate(generic.edit.CreateView):
     template_name = 'juakstore/booking_add.html'
     form_class = BookingForm
 
+    def get_context_data(self, **kwargs):
+        print kwargs
+        context = super(BookingCreate, self).get_context_data(**kwargs)
+        context['allbookings'] = Booking.objects.all()
+        context['year'] = datetime.datetime.now().year
+        context['month'] = datetime.datetime.now().month
+        return context
+
 class BookingUpdate(generic.edit.UpdateView):
     model = Booking
     template_name = 'juakstore/booking_update.html'
