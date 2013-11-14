@@ -2,7 +2,14 @@
 This file demonstrates writing tests using the unittest module. These will pass
 when you run "manage.py test".
 
-Replace this with more appropriate tests for your application.
+This testcases include every file in the juakstore file
+files include:
+mycalendar.py
+forms.py
+models.py
+widgets.py
+view.py
+
 """
 from django.views import generic
 from django.core.urlresolvers import reverse
@@ -66,6 +73,7 @@ class ModelTest(unittest.TestCase):
     Test login page
     This test case will test if people can login to the admin account
     with password admin and password JuakfrontPassword1 successfully
+    (There is an error check in this test cases)
     """
     def test_login(self):
         login_check = self.client.login(username='admin', password='JuakfrontPassword1')
@@ -76,6 +84,8 @@ class ModelTest(unittest.TestCase):
     
     """
     Test model Room(database)
+    This test case test class model room under the models.py file
+    This test case check every input number whether can run successfully
     """
     def test_model_Room(self):
         room1 = Room.objects.create(name="BA1190", info="lecture room")
@@ -87,6 +97,8 @@ class ModelTest(unittest.TestCase):
     	
     """
     Test model Partner(database)
+    This test case test class model_Partner under the models.py file
+    This test case check every input number whether can run successfully
     """
     def test_model_Partner(self):
     	user = User.objects.create_user('user','changyingyu1991@gmail.com','1234');
@@ -101,7 +113,9 @@ class ModelTest(unittest.TestCase):
     	
     	
     """
-    Test model Partner(database)
+    Test model BookingCategory(database)
+    This test case test class PartnerCategory under the models.py file
+    This test case check every input number whether can run successfully
     """
     def test_model_BookingCategroy(self):
         bookCate = BookingCategory.objects.create(name = "Badminton class")
@@ -109,9 +123,10 @@ class ModelTest(unittest.TestCase):
     
     
  
-    
     """
-    Test model Partner(database)
+    Test model Booking(database)
+    This test case test class Booking under the models.py file
+    This test case check every input number whether can run successfully
     """
     def test_model_Booking(self):
         user = User.objects.create_user('user1','changyingyu1991@gmail.com','1234');
@@ -131,7 +146,12 @@ class ModelTest(unittest.TestCase):
     
     
     """
-    Test model Partner(database)
+    Test model clientBookingCategory(database)
+    This test case test class clientBookingCategory under the models.py file
+    This test case check every input number whether can run successfully
+    
+    one error is raised in this function: phone nubmer should be int and cannot 
+    compare with 4aa(string) and should not successfully
     """
     def test_model_ClientBookingCategroy(self):
     	user = User.objects.create_user('user2','changyingyu1991@gmail.com','1234');
@@ -172,12 +192,24 @@ class ViewTest(unittest.TestCase):
         login_check = self.client.login(username='admin', password='JuakfrontPassword1')
         #self.assertEqual(login_check,True)
         self.assertRaises(TypeError,login_check,False)
+
+    """
+    Test index
+    This test case will test if the index page is found
+    and will fail unless the response status is 302
+    test the index in views.oy
+    """
     
     def test_index(self):
     	response = self.client.get('/')
     	self.failUnlessEqual(response.status_code,302)    	
     
-    
+    """
+    Test addBooking
+    This test case will test if an booking can be successfuly added
+    and response correctly
+    test addBooking in the views.py
+    """    
     def test_addBooking(self):
     	user3 = User.objects.create_user('user3','chang@gmail.com','1');
         bookCate = BookingCategory.objects.create(name = "Badminton class")        
@@ -188,27 +220,51 @@ class ViewTest(unittest.TestCase):
         								
         self.assertEquals(response.status_code, 200)
         
-        
+    """
+    Test updateBooking
+    This test case will test if the update booking can be updated 
+    successfully
+    test updateBooking in the views.py
+    """        
     def test_updateBooking(self):
     	response = self.client.get('booking/edit/1/')
     	#self.failUnlessEqual(response.status_code,302)   
 
-
+    """
+    Test room
+    This test case will test if the room and be run successfully
+    in this time Room cannot run successfully and it will not 
+    response to 200
+    room is in the views.py
+    """
     def test_room(self):
     	response = self.client.get('/#ADDROOMSLINKHERE/')
     	self.failUnlessEqual(response.status_code,302)
     	#self.failUnlessEqual(response.status_code,200)    
     	
-    	
-   	def test_calendar(self):
-   		foundBookings = Booking.objects.order_by(date__year=2013, date__month=12)
+    """
+    Test calendar
+    This test case will test if the calendar can be work successfully
+    calendar is in view.py
+    """    	
+    def test_calendar(self):
+   		#foundBookings = Booking.objects.order_by(date__year=2013, date__month=12)
     	#cal  = BookingCalendar(Booking.objects.order_by(date__year='2013', date__month='12')).formatmonth(2013, 12)
     	#self.assertEquals(render_to_response('index.html', {'calendar':mark_safe(cal),}),2)
     
-class WidgetsTest(unittest.TestCase):     
+
+
+
+class WidgetsTest(unittest.TestCase):   
+  
     def setUp(self):
         self.client = Client()
         
+    """
+    Test BookingForm
+    This test case will test if the Booking form in the widgets.py work correctly
+    only one class found in the widgets.py
+    """ 
     def test_BookingForm(self):
     	hour_field = '%s_hour'
     	minute_field = '%s_minute'
@@ -219,7 +275,14 @@ class WidgetsTest(unittest.TestCase):
 class mycalendarTest(unittest.TestCase):     
     def setUp(self):
         self.client = Client()
-        
+   
+   
+    """
+    Test BookingFrom
+    This test case will test bookingform class under the froms.py
+    It will test if the BookingFrom can book some information
+    and save it into the database
+    """         
     def test_BookingCalendar(self):
     	#foundBookings = Booking.objects.order_by(date__year=2013, date__month=12)
     	#cal  = BookingCalendar(Booking.objects.order_by(date__year='2013', date__month='12')).formatmonth(2013, 12)
@@ -231,7 +294,11 @@ class mycalendarTest(unittest.TestCase):
         self.assertEquals(room2.name, "BA1180")
     	self.assertEquals(room2.info,"another lecture room")
     	
-    	
+    """
+    Test weeklyCalendar
+    This test case will test weeklycalendar under the mycalendar.py
+    it will test if the calendar can show up with weekly
+    """        	
     def test_WeeklyCalendar(self):
     	room1 = Room.objects.create(name="BA1190", info="lecture room")
         room2 = Room.objects.create(name="BA1180", info="another lecture room")
@@ -240,7 +307,13 @@ class mycalendarTest(unittest.TestCase):
         self.assertEquals(room2.name, "BA1180")
     	self.assertEquals(room2.info,"another lecture room")
 
-
+    """
+    Test client booking categroy)
+    This test case test class clientBookingCategor
+    This test case check every input number whether can run successfully
+    one error is raised in this function: phone numbers should be int and cannot 
+    compare with 4aa(string) and should not successfully
+    """    
     def test_model_ClientBookingCategro(self):
     	user = User.objects.create_user('user9','changyingyu1991@gmail.com','1234');
         bookCate = BookingCategory.objects.create(name = "Badminton class")        
@@ -265,7 +338,13 @@ class mycalendarTest(unittest.TestCase):
 class formsTest(unittest.TestCase):     
     def setUp(self):
         self.client = Client()
-        
+    
+    """
+    Test BookingFrom
+    This test case will test bookingform class under the froms.py
+    It will test if the BookingFrom can book some information
+    and save it into the database
+    """     
     def test_BookingForm(self):
 	    repeat_choices = [
 	        ('day', 'day(s)'),
@@ -288,7 +367,4 @@ class formsTest(unittest.TestCase):
 	    self.assertEquals(repeat_frequency_unit, repeat_frequency_unit)
         
         
-    def test_BookingForm(self):
-    	class Meta:
-    		model = Room
 	    	
