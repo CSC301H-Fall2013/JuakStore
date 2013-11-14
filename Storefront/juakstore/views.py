@@ -44,6 +44,7 @@ def index(request, year=None, month=None, day=None):
     })
     return HttpResponse(template.render(context))
 
+@login_required
 def addBooking(request):
     if request.method == "POST":
         f = BookingForm(request.POST, initial={'booker':request.user, 'room':0})
@@ -90,11 +91,13 @@ def addBooking(request):
     else:
         return HttpResponseRedirect(reverse('juakstore:bookingCreate'))
 
+@login_required
 def calendar(request, year, month):
     foundBookings = Booking.objects.order_by(date__year=year, date__month=month)
     cal  = BookingCalendar(foundBookings).formatmonth(year, month)
     return render_to_response('index.html', {'calendar':mark_safe(cal),})
 
+@login_required
 def updateBooking(request, pk):
     #start = request.POST['event_start']
     #end = request.POST['event_end']
@@ -122,6 +125,7 @@ def updateBooking(request, pk):
         form = BookingForm()
         return HttpResponseRedirect(reverse('juakstore:bookingDetail', args=(pk,)))
 
+@login_required
 def submitRoom(request):
     if request.method == "POST":
         f = RoomForm(request.POST)
@@ -134,12 +138,14 @@ def submitRoom(request):
     else:
         return HttpResponseRedirect(reverse('juakstore:roomCreate'))
 
+@login_required
 def displayBooking(request, pk):
     b = get_object_or_404(Booking, pk=pk)
     if request.user.is_authenticated():
         c = request.user       
     return render(request, 'juakstore/bookingdetail.html', {'booking':b, 'currentUser':c})
 
+@login_required
 def logoutStorefront(request):
     logout(request)
     return HttpResponseRedirect(reverse('juakstore:index'))
