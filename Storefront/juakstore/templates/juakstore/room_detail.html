@@ -20,7 +20,19 @@
 <p>No bookings!</p>
 {% endif %}
 
-{% calendar room_bookings year month %}
+<div id="tribe-events-content-wrapper" class="tribe-clearfix">
+
+<div id="tribe-events-content" class="tribe-events-month">
+
+<div id="tabs">
+
+    
+<div id="calendar">
+    {% calendar room_bookings year month %}
+</div>
+
+</div>
+</div>
 
 {% comment %}
 <div>

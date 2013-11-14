@@ -30,7 +30,6 @@ class BookingCalendar(HTMLCalendar):
         return '<th id=\"tribe-events-%s\">%s</th>' % (weekdays[day].lower(), weekdays[day])
 
     def formatday(self, day, weekday):
-        print 'YOLO'
         if day != 0:
             cssclass = self.cssclasses[weekday]
             if date.today() == date(self.year, self.month, day):
