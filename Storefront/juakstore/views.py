@@ -157,6 +157,10 @@ class UserDetailView(generic.DetailView):
     model = User
     template_name = 'juakstore/user.html'
 
+class RoomList(generic.ListView):
+    model = Room
+    template_name = "juakstore/room_list.html"
+
 class RoomView(generic.DetailView):
     model = Room
     template_name = 'juakstore/room_detail.html'

@@ -40,3 +40,26 @@ ul.cal-list li a.calendar-list{
 	margin: 0;
 	font-size: 40px;
 }
+
+dl.image_map {display:block; width:800px; height:600px; background:url(http://www.image-maps.com/uploaded_files/5201311131707512_LAMEBLUEPRINT.jpg); position:relative; margin:2px auto 2px auto;}
+	a.LINK0 {left:119px; top:40px; background:transparent;}
+	a.LINK0 {display:block; width:192px; height:0; padding-top:246px; overflow:hidden; position:absolute;}
+	a.LINK0:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.LINK1 {left:371px; top:36px; background:transparent;}
+	a.LINK1 {display:block; width:111px; height:0; padding-top:92px; overflow:hidden; position:absolute;}
+	a.LINK1:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.LINK2 {left:116px; top:324px; background:transparent;}
+	a.LINK2 {display:block; width:67px; height:0; padding-top:64px; overflow:hidden; position:absolute;}
+	a.LINK2:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.LINK3 {left:500px; top:217px; background:transparent;}
+	a.LINK3 {display:block; width:96px; height:0; padding-top:105px; overflow:hidden; position:absolute;}
+	a.LINK3:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.LINK4 {left:617px; top:214px; background:transparent;}
+	a.LINK4 {display:block; width:95px; height:0; padding-top:127px; overflow:hidden; position:absolute;}
+	a.LINK4:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.LINK5 {left:470px; top:450px; background:transparent;}
+	a.LINK5 {display:block; width:96px; height:0; padding-top:97px; overflow:hidden; position:absolute;}
+	a.LINK5:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.LINK6 {left:590px; top:380px; background:transparent;}
+	a.LINK6 {display:block; width:120px; height:0; padding-top:173px; overflow:hidden; position:absolute;}
+	a.LINK6:hover  {background:transparent; border:1px dashed black; color:black;}
