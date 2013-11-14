@@ -2,6 +2,7 @@ from django.views import generic
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, render_to_response
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
@@ -138,6 +139,10 @@ def displayBooking(request, pk):
     if request.user.is_authenticated():
         c = request.user       
     return render(request, 'juakstore/bookingdetail.html', {'booking':b, 'currentUser':c})
+
+def logoutStorefront(request):
+    logout(request)
+    return HttpResponseRedirect('http://www.thestorefront.org/')
 
 class BookingView(generic.DetailView):
     model = Booking
