@@ -78,6 +78,20 @@ class BookingForm(forms.ModelForm):
 
         return cleaned_data
 
+
+class BookingEditForm(BookingForm):
+    repeat_choices = [
+        ('day', 'day(s)'),
+        ('week', 'week(s)'),
+        ('month', 'month(s)')
+    ]
+
+    repeat = forms.BooleanField(required=False, widget=forms.HiddenInput(), initial=False)
+    room = forms.ModelChoiceField(queryset=Room.objects.all())
+    repeat_frequency = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    repeat_frequency_unit = forms.ChoiceField(widget=forms.HiddenInput(), choices=repeat_choices, required=False)
+    repeat_end = forms.DateField(widget=forms.HiddenInput(), required=False)
+
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room

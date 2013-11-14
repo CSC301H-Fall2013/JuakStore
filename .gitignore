@@ -3,3 +3,5 @@
 *.pyc
 
 Storefront/JuakStoredb
+
+*.pyc
