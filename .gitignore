@@ -3,5 +3,8 @@
 *.pyc
 
 Storefront/JuakStoredb
+settings.py
 
 *.pyc
+
+env/
