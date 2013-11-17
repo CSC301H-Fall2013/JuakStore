@@ -45,7 +45,7 @@ ul.cal-list li a.calendar-list{
     width: 18em;
 }
 
-dl.image_map {display:block; width:800px; height:600px; background:url(http://www.image-maps.com/uploaded_files/5201311131707512_LAMEBLUEPRINT.jpg); position:relative; margin:2px auto 2px auto;}
+dl.image_map {display:block; width:800px; height:600px; background:url("../img/LAMEBLUEPRINT.jpg"); position:relative; margin:2px auto 2px auto;}
 	a.LINK0 {left:119px; top:40px; background:transparent;}
 	a.LINK0 {display:block; width:192px; height:0; padding-top:246px; overflow:hidden; position:absolute;}
 	a.LINK0:hover  {background:transparent; border:1px dashed black; color:black;}
