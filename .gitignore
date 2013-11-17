@@ -3,7 +3,7 @@
 *.pyc
 
 Storefront/JuakStoredb
-settings.py
+Storefront/juakstore/settings.py
 
 *.pyc
 
