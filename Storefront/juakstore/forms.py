@@ -47,9 +47,13 @@ class BookingForm(forms.ModelForm):
         for room in self.cleaned_data.get('room'):
             overlap = Booking.objects.all().filter(room_id=room).filter(date=cleaned_data.get('date')).filter(
                                         (Q(start__gte=cleaned_data.get('start')) &
-                                          Q(start__lte=cleaned_data.get('end')))
-                                          | (Q(end__gte=cleaned_data.get('start')) &
-                                                  Q(end__lte=cleaned_data.get('end'))))
+                                          Q(start__lt=cleaned_data.get('end')))
+                                          | (Q(end__gt=cleaned_data.get('start')) &
+                                                  Q(end__lte=cleaned_data.get('end')))
+					  | (Q(start__lt=cleaned_data.get('start')) &
+						Q(end__gt=cleaned_data.get('end')))
+					  | (Q(start__gt=cleaned_data.get('start')) &
+						Q(end__lt=cleaned_data.get('end'))))
 
             try:
                 if self.id:

@@ -83,11 +83,11 @@ def addBooking(request):
                               end=f.cleaned_data['end'],
                               booker=get_object_or_404(User, pk=request.user.id),
                               category=get_object_or_404(BookingCategory, pk=request.POST['category']),
-                              room=get_object_or_404(Room, pk=request.POST['room'].pk))
+                              room=get_object_or_404(Room, pk=room.pk))
                         repeatBooking.save()
             return HttpResponseRedirect(reverse('juakstore:bookingDetail', args=(first_booking,)))
         else:
-            return render(request, 'juakstore/booking_add.html', {'form': f})
+            return render(request, 'juakstore/booking_add.html', {'form': f, 'allbookings':Booking.objects.all(),'year':datetime.datetime.now().year, 'month':datetime.datetime.now().month})
     else:
         return HttpResponseRedirect(reverse('juakstore:bookingCreate'))
 

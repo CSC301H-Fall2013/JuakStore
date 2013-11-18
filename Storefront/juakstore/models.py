@@ -21,10 +21,21 @@ class BookingCategory(models.Model):
 
 class Partner(models.Model):
     uID = models.ForeignKey(User)
-    company = models.CharField(max_length=30)
-    info = models.CharField(max_length=500)
-    name = models.CharField(max_length=30)
-    approved = models.BooleanField()
+    company = models.CharField(max_length=30, verbose_name="Agency Name")
+    info = models.CharField(max_length=200, verbose_name="Additional Info")
+    name = models.CharField(max_length=30, verbose_name="Manager Name") 
+    approved = models.BooleanField() 
+
+    program = models.CharField(max_length=30, verbose_name="Program Name") 
+    facilitator = models.CharField(max_length=30, verbose_name="Program Facilitator") 
+    position = models.CharField(max_length=30, verbose_name="Position") 
+    address = models.CharField(max_length=100)
+    phones = models.CharField(max_length=80, verbose_name="Phone Numbers")
+    faxes = models.CharField(max_length=80, verbose_name="Fax Numbers")
+    email = models.EmailField()
+    astatus = models.CharField(max_length=30, verbose_name="Agreement Status")
+    istatus = models.CharField(max_length=30, verbose_name="Insurance Status")
+
 
 class Booking(models.Model):
     name = models.CharField(max_length=200)

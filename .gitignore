@@ -3,5 +3,9 @@
 *.pyc
 
 Storefront/JuakStoredb
+Storefront/juakstore/settings.py
+Storefront/Storefront/settings.py
 
 *.pyc
+
+env/
