@@ -12,6 +12,8 @@ from mycalendar import BookingCalendar
 from django.utils.safestring import mark_safe
 import datetime
 
+from django.forms.models import model_to_dict
+
 @login_required
 def index(request, year=None, month=None, day=None):
     if year:

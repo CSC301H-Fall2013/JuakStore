@@ -1,0 +1,28 @@
+<html>
+<head>
+    <title>Search</title>
+</head>
+<body>
+	 {% if errors %}
+        <ul>
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <p>You searched for: <strong>{{ query }}</strong></p>
+
+    {% if rooms %}
+        <ul>
+            {% for r in rooms %}
+            <li>  {{ r }}</li>
+            {% endfor %}
+         </ul>
+	{% endif %}
+    <form action="/search/" method="get">
+        <input type="text" name="q">
+        <input type="submit" value="Search">
+    </form>
+</body>
+</html>

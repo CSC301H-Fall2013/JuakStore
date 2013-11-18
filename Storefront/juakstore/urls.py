@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
 from juakstore import views
+from juakstore import search
 
 urlpatterns = patterns('',
                     url(r'^$', views.index, name='index'),
@@ -21,4 +22,6 @@ urlpatterns = patterns('',
                     url(r'^rooms/create/$', login_required(views.RoomCreate.as_view()), name='roomCreate'),
                     url(r'^rooms/(?P<pk>\d+)/$', login_required(views.RoomView.as_view()), name='roomDetail'),
                     url(r'^rooms/(?P<pk>\d+)/date/(?P<year>\d+)/(?P<month>\d+)/$', login_required(views.BookingView.as_view()), name='roomDetailyymm'),
+                    # testing search
+                    (r'^search/$', search.search_booking),
 )

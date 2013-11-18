@@ -1,0 +1,8 @@
+<p>You searched for: <strong>{{ query }}</strong></p>
+
+{% if room %}
+    <p>Found {{ room }}.</p>
+
+{% else %}
+    <p>Room {{ query }} is not found.</p>
+{% endif %}
