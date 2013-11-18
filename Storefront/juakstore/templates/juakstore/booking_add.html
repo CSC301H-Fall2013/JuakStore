@@ -13,8 +13,36 @@
 
 
 <div id="calendar">
-    {% calendar allbookings year month %}
 
+    {% calendar all_bookings year month %}
+
+    <div>
+    <form action={% url 'juakstore:bookingCreate' %} method="get">
+    {% if month == 1 %}
+        <input id="year" name="year" type="hidden" value={{ year|add:-1 }}>
+        <input id="month" name="month" type="hidden" value="12">
+{#        <a href="{% url 'juakstore:indexyymm' year|add:'-1' 12 %}">Prev</a>#}
+    {% else %}
+        <input id="year" name="year" type="hidden" value={{ year }}>
+        <input id="month" name="month" type="hidden" value={{ month|add:'-1' }}>
+{#        <a href="{% url 'juakstore:indexyymm' year month|add:'-1' %}">Prev</a>#}
+    {% endif %}
+        <input type="submit" value="Prev">
+    </form>
+    </div>
+
+    <div>
+    <form action={% url 'juakstore:bookingCreate' %} method="get">
+    {% if month == 12 %}
+        <input id="year" name="year" type="hidden" value={{ year|add:1 }}>
+        <input id="month" name="month" type="hidden" value="1">
+    {% else %}
+        <input id="year" name="year" type="hidden" value={{ year }}>
+        <input id="month" name="month" type="hidden" value={{ month|add:'1' }}>
+    {% endif %}
+    <input type="submit" value="Next">
+    </form>
+    </div>
 </div>
 
 </div>

@@ -15,19 +15,20 @@ import datetime
 from django.forms.models import model_to_dict
 
 @login_required
-def index(request, year=None, month=None, day=None):
-    if year:
-        year = int(year)
-    else:
-        year = datetime.datetime.now().year
-    if month:
-        month = int(month)
-    else:
-        month = datetime.datetime.now().month
-    if day:
-        day = int(day)
-    else:
-        day = datetime.datetime.now().day
+def index(request):
+    if request.method == "GET":
+        if 'year' in request.GET:
+            year = int(request.GET['year'])
+        else:
+            year = datetime.datetime.now().year
+        if 'month' in request.GET:
+            month = int(request.GET['month'])
+        else:
+            month = datetime.datetime.now().month
+        if 'day' in request.GET:
+            day = int(request.GET['day'])
+        else:
+            day = datetime.datetime.now().day
 
     template = loader.get_template('juakstore/index.html')
     newBooking = BookingForm()
@@ -87,9 +88,14 @@ def addBooking(request):
                               category=get_object_or_404(BookingCategory, pk=request.POST['category']),
                               room=get_object_or_404(Room, pk=room.pk))
                         repeatBooking.save()
-            return HttpResponseRedirect(reverse('juakstore:bookingDetail', args=(first_booking,)))
+            return HttpResponseRedirect(reverse('juakstore:bookingDetail',
+                                                args=(first_booking,)))
         else:
-            return render(request, 'juakstore/booking_add.html', {'form': f, 'allbookings':Booking.objects.all(),'year':datetime.datetime.now().year, 'month':datetime.datetime.now().month})
+            return render(request, 'juakstore/booking_add.html', {'form': f,
+                                                                  'all_bookings':Booking.objects.all(),
+                                                                  'year': datetime.datetime.now().year,
+                                                                  'month': datetime.datetime.now().month,
+                                                                  })
     else:
         return HttpResponseRedirect(reverse('juakstore:bookingCreate'))
 
@@ -160,9 +166,32 @@ class BookingCreate(generic.edit.CreateView):
     model = Booking
     template_name = 'juakstore/booking_add.html'
     form_class = BookingForm
+    year = datetime.datetime.now().year
+    month = datetime.datetime.now().month
+
+    def get(self, request):
+        if 'year' in request.GET:
+            self.year = int(request.GET['year'])
+        #else:
+        #    year = datetime.datetime.now().year
+        if 'month' in request.GET:
+            self.month = int(request.GET['month'])
+        #else:
+        #    month = datetime.datetime.now().month
+        all_bookings = Booking.objects.all()
+        form = self.form_class(initial=self.initial)
+        template = loader.get_template(self.template_name)
+        context = RequestContext(request, {
+            'year': self.year,
+            'month': self.month,
+            'form': form,
+            'all_bookings': all_bookings,
+        })
+        return HttpResponse(template.render(context))
+
+
 
     def get_context_data(self, **kwargs):
-        print kwargs
         context = super(BookingCreate, self).get_context_data(**kwargs)
         context['allbookings'] = Booking.objects.all()
         context['year'] = datetime.datetime.now().year
@@ -185,18 +214,35 @@ class RoomList(generic.ListView):
 class RoomView(generic.DetailView):
     model = Room
     template_name = 'juakstore/room_detail.html'
-    year = None
-    month = None
+
+    def get(self, request, *args, **kwargs):
+        if 'year' in request.GET:
+            year = int(request.GET['year'])
+        else:
+            year = datetime.datetime.now().year
+        if 'month' in request.GET:
+            month = int(request.GET['month'])
+        else:
+            month = datetime.datetime.now().month
+        room_bookings = Booking.objects.all().filter(room_id=kwargs['pk'])
+        context = RequestContext(request, {
+            'year': year,
+            'month': month,
+            'room_bookings': room_bookings,
+            'room': Room.objects.all().filter(id=kwargs['pk'])[0]
+        })
+        template = loader.get_template(self.template_name)
+        return HttpResponse(template.render(context))
 
     def get_context_data(self, **kwargs):
         context = super(RoomView, self).get_context_data(**kwargs)
         context['room_bookings'] = Booking.objects.all().filter(room_id=kwargs['object'].id)
         try:
-            context['year'] = int(context['year'])
+            context['year'] = self.year
         except KeyError:
             context['year'] = datetime.datetime.now().year
         try:
-            context['month'] = int(context['month'])
+            context['month'] = self.month
         except KeyError:
             context['month'] = datetime.datetime.now().month
         return context

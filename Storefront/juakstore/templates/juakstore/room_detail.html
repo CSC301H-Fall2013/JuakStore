@@ -11,9 +11,7 @@
     <h1 class="headings_index">All Bookings:</h1>
 	<ul>
     {% for booking in room_bookings %}
-        {% if booking.room.id == room.id %}
         <li>{{ booking.date }}: <a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
-        {% endif %}
     {% endfor %}
 	</ul>
 {% else %}
@@ -26,10 +24,38 @@
 
 <div id="tabs">
 
-    
+
 <div id="calendar">
-    {% calendar room_bookings year month %}
-</div>
+
+        {% calendar room_bookings year month %}
+
+        <div>
+        <form action={% url 'juakstore:roomDetail' room.id %} method="get">
+        {% if month == 1 %}
+            <input id="year" name="year" type="hidden" value={{ year|add:-1 }}>
+            <input id="month" name="month" type="hidden" value="12">
+{#        <a href="{% url 'juakstore:indexyymm' year|add:'-1' 12 %}">Prev</a>#}
+        {% else %}
+            <input id="year" name="year" type="hidden" value={{ year }}>
+            <input id="month" name="month" type="hidden" value={{ month|add:'-1' }}>
+{#        <a href="{% url 'juakstore:indexyymm' year month|add:'-1' %}">Prev</a>#}
+        {% endif %}
+            <input type="submit" value="Prev">
+        </form>
+        </div>
+
+        <div>
+        <form action={% url 'juakstore:roomDetail' room.id %} method="get">
+        {% if month == 12 %}
+            <input id="year" name="year" type="hidden" value={{ year|add:1 }}>
+            <input id="month" name="month" type="hidden" value="1">
+        {% else %}
+            <input id="year" name="year" type="hidden" value={{ year }}>
+            <input id="month" name="month" type="hidden" value={{ month|add:'1' }}>
+        {% endif %}
+        <input type="submit" value="Next">
+        </form>
+        </div>
 
 </div>
 </div>
