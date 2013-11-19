@@ -7,8 +7,8 @@ from datetime import datetime
 
 class Room(models.Model):
     name = models.CharField(max_length=20)
+    type = models.CharField(max_length=20)
     info = models.CharField(max_length=500)
-
 
     def __unicode__(self):
         return self.name
@@ -61,3 +61,4 @@ class ClientBooking(models.Model):
     # NOTE: see when creating form: http://stackoverflow.com/questions/19130942/whats-the-best-way-to-store-phone-number-in-django-models
     phone_number = models.CharField(max_length=20)
     booking = models.ForeignKey(Booking)
+    

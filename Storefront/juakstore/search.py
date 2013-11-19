@@ -2,11 +2,8 @@ __author__ = 'MISSCATLADY'
 
 import datetime
 from django.shortcuts import render
-#from django.forms.models import modelformset_factory
-#from django.shortcuts import render_to_response
 from django.http import HttpResponse
-from juakstore.models import Room, BookingCategory, Partner, Booking
-
+from models import *
 
 
 def search_booking(request):
@@ -17,10 +14,29 @@ def search_booking(request):
 			errors.append("Enter a room to search.")
 		else:
 			rooms = Room.objects.filter(name__icontains=q)
-			return render(request, 'juakstore/SEARCH.html', 
+			return render(request, 'bookingApp/search.html', 
 				{'rooms': rooms, 'query': q})
 
-	return render(request, 'juakstore/SEARCH.html', {'errors' : errors})
+	return render(request, 'bookingApp/search.html', {'errors' : errors})
 
 
+# Search available rooms with given date and time period.
+# Return list of Room objects.
+def search_available_rooms(date, start_time, end_time):
 
+	all_rooms = Room.objects.all()
+	booked_rooms = Room.objects.filter(booking__date=date)
+	unavailable_rooms_one = booked_rooms.filter(booking__start__gte=start_time).filter(booking__start__lt=end_time)
+	unavailable_rooms_two = booked_rooms.filter(booking__end__lte=end_time).filter(booking__start__gt=start_time)
+
+	return all_rooms - unavailable_rooms_one - unavailable_rooms_two
+
+# Search available rooms with given date, time period and room type.
+# Return list of Room objects.
+def search_available_rooms_with_type(date, start_time, end_time, room_type):
+	all_rooms = Room.objects.all().filter(type=room_type)
+	booked_rooms = Room.objects.filter(booking__date=date)
+	unavailable_rooms_one = booked_rooms.filter(booking__start__gte=start_time).filter(booking__start__lt=end_time)
+	unavailable_rooms_two = booked_rooms.filter(booking__end__lte=end_time).filter(booking__start__gt=start_time)
+
+	return all_rooms - unavailable_rooms_one - unavailable_rooms_two
