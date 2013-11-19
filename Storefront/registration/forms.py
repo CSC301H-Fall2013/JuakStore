@@ -38,10 +38,15 @@ class RegistrationForm(forms.Form):
                                 label=_("Password"))
     password2 = forms.CharField(widget=forms.PasswordInput,
                                 label=_("Password (again)"))
-    name = forms.RegexField(regex=r'^[\w.@+-]+$',
-                                max_length=30,
-                                label=_("Name"),
-                                error_messages={'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters .")})  
+    company = forms.CharField(  max_length=30,
+                                label=_("Agency Name"),
+                                )  
+    name = forms.CharField(     max_length=30,
+                                label=_("Manager Name"),
+                                )  
+    info = forms.CharField(     max_length=200,
+                                label=_("Additional Info"),
+                                )      
     
     def clean_username(self):
         """

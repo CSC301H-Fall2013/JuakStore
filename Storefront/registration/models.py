@@ -10,6 +10,8 @@ from django.db import transaction
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
+from juakstore.models import Partner
+
 
 try:
     from django.contrib.auth import get_user_model
@@ -71,7 +73,7 @@ class RegistrationManager(models.Manager):
                 return user
         return False
     
-    def create_inactive_user(self, username, email, password, name,
+    def create_inactive_user(self, username, email, password, name, company, info,
                              site, send_email=True):
         """
         Create a new, inactive ``User``, generate a
@@ -85,6 +87,15 @@ class RegistrationManager(models.Manager):
         new_user = User.objects.create_user(username, email, password)
         new_user.is_active = False
         new_user.save()
+        
+        p = Partner()
+        p.name = name
+        p.uID = new_user
+        p.name = name
+        p.company = company
+        p.info = info
+        p.email = email
+        p.save()
 
         registration_profile = self.create_profile(new_user)
         
