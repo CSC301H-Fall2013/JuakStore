@@ -9,6 +9,7 @@ from django.db import models
 from django.db import transaction
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
+from django.core.mail import send_mail
 
 try:
     from django.contrib.auth import get_user_model
@@ -70,7 +71,7 @@ class RegistrationManager(models.Manager):
                 return user
         return False
     
-    def create_inactive_user(self, username, email, password,
+    def create_inactive_user(self, username, email, password, name,
                              site, send_email=True):
         """
         Create a new, inactive ``User``, generate a
@@ -87,7 +88,13 @@ class RegistrationManager(models.Manager):
 
         registration_profile = self.create_profile(new_user)
         
-        # uncomment below to send activation code email
+        subject = 'East Scarborough Storefront - Partner Account Request'
+        message = new_user.username + " has requested a partner account at East Scarborough Storefront."
+        
+        # notify all admins of account request
+        admins = User.objects.filter(is_staff=True) 
+        for a in admins:
+            a.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
         #if send_email:
         #   registration_profile.send_activation_email(site)
 
