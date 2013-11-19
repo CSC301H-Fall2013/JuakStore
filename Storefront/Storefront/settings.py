@@ -131,7 +131,16 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'juakstore',
+    'registration',
 )
+
+ACCOUNT_ACTIVATION_DAYS = 365
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'eaststorefront@gmail.com'
+EMAIL_HOST_PASSWORD = 'JuakfrontPassword1'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
