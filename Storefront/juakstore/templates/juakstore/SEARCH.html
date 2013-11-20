@@ -11,18 +11,29 @@
         </ul>
     {% endif %}
 
-    <p>You searched for: <strong>{{ query }}</strong></p>
+    {% if notfirst %}
+        <p>You searched for:</p>
+        Room <strong> {{ room }}</strong> 
+        with start date <strong>{{ start_date_day }}-{{ start_date_month }}-{{ start_date_year }}</strong> 
+        and end date <strong>{{ end_date_day }}-{{ end_date_month }}-{{ end_date_year}} </strong></p>
 
-    {% if rooms %}
+    {% if room %}
         <ul>
-            {% for r in rooms %}
+            {% for r in room %}
             <li>  {{ r }}</li>
             {% endfor %}
          </ul>
 	{% endif %}
-    <form action="/search/" method="get">
-        <input type="text" name="q">
-        <input type="submit" value="Search">
-    </form>
+    {% endif %}
+
+<form action="/search/" method="POST">
+    {% csrf_token %}  
+    {{ form.room }}</p>
+    {{ form.start_date }}</p>
+    {{ form.end_date }}</p>
+
+<input type="submit" value="Submit" />
+</form>
+
 </body>
 </html>

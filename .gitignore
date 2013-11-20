@@ -9,3 +9,6 @@ Storefront/Storefront/settings.py
 *.pyc
 
 env/
+juakstore/settings.py
+Storefront/settings.py
+sotrefrontdb

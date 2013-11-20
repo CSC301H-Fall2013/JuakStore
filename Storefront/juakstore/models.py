@@ -7,7 +7,6 @@ from datetime import datetime
 
 class Room(models.Model):
     name = models.CharField(max_length=20)
-    type = models.CharField(max_length=20)
     info = models.CharField(max_length=500)
 
     def __unicode__(self):
