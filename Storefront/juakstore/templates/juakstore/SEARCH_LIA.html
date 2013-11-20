@@ -10,22 +10,24 @@
         </ul>
     {% endif %}
 
-    {% if notfirst %}
+{% if notfirst %}
         <p>You searched for:</p>
-        Room <strong> {{ room }}</strong> 
-        with start date <strong>{{ start_date}}</strong> 
-        and end date <strong>{{ end_date }} </strong> </p>
-        on days <strong>{{ days }}</strong> 
-        between the times of <strong>{{ start_time}} </strong> and <strong>{{ end_time }}</strong></p>
-
-    {% if room %}
-        <ul>
+        Room(s):
+        {% if room %}
+                <ul>
             {% for r in room %}
             <li>  {{ r }}</li>
             {% endfor %}
          </ul>
-	{% endif %}
     {% endif %}
+        Between <strong>{{ start_date}}</strong> to <strong>{{ end_date }} </strong>, on days
+        {% if days %}
+        {% for d in days %}
+         <strong>{{ d }}</strong>
+         {% endfor %}
+         {% endif %} 
+        between the times of <strong>{{ start_time}} </strong> and <strong>{{ end_time }}</strong></p>
+ {% endif %}
 
 <form action={% url 'juakstore:search' %} method="POST">
     {% csrf_token %}  

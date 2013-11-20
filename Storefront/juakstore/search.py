@@ -16,7 +16,8 @@ class RoomForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    DAYS = (('1', 'Mon'), ('2', 'Tues'), ('3', 'Wed'), ('4', 'Thur'), ('5', 'Fri'), ('6', 'Sat'), ('7', 'Sun'))
+    DAYS = (('Mon','Mon'), ('Tues', 'Tues'), ('Wed', 'Wed'), ('Thur', 'Thur'), 
+    	('Fri', 'Fri'), ('Six', 'Sat'), ('Sat', 'Sun'))
     room = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
     start_date = forms.DateField(label="Start Date", widget=SelectDateWidget)
     end_date = forms.DateField(label="End Date", widget=SelectDateWidget)
@@ -34,16 +35,16 @@ def search_form(request):
             notfirst = True
             errors.append("HERE")
             room = form.cleaned_data['room']
-            sd = form.cleaned_data.get['start_date']
-            ed = form.cleaned_data.get['end_date']
-            st = form.cleaned_data.get['start_time']
-            et = form.cleaned_data.get['end_time']
-            days = form.cleaned_data.get['days']
+            sd = form.cleaned_data['start_date']
+            ed = form.cleaned_data['end_date']
+            st = form.cleaned_data['start_time']
+            et = form.cleaned_data['end_time']
+            days = form.cleaned_data['days']
 
             return render(request, 'juakstore/SEARCH_LIA.html',
                           {'room': room,
-                           'start_date_day': sd, 'start_date_month': sm, 'start_date_year': sy,
-                           'end_date_day': ed, 'end_date_month': em, 'end_date_year': ey,
+                           'start_date': sd, 
+                           'end_date': ed, 
                            'start_time': st, 'end_time': et,
                            'form': form, 'notfirst': notfirst, 'days': days})
         else:
