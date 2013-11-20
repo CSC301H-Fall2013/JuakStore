@@ -1,10 +1,11 @@
 __author__ = 'MISSCATLADY'
 
 import datetime
+from models import *
+from widgets import SelectTimeWidget
 from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import *
 from django.forms.extras.widgets import SelectDateWidget
 
 
@@ -14,9 +15,14 @@ class RoomForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
 
+	DAYS = (('1', 'Mon'), ('2', 'Tues'), ('3','Wed'), ('4','Thur'), ('5','Fri'), 
+		('6','Sat'), ('7','Sun'))
 	room = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
 	start_date = forms.DateField(label="Start Date", widget=SelectDateWidget)
 	end_date = forms.DateField(label="End Date", widget=SelectDateWidget)
+	days = forms.MultipleChoiceField(label="Days", widget=forms.CheckboxSelectMultiple, choices=DAYS)
+	start_time = forms.TimeField(label="Start Time", widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
+	end_time = forms.TimeField(label="End Time", widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
 
 def search_form(request):
 	errors = []
@@ -37,13 +43,20 @@ def search_form(request):
 		ey = request.POST.get('end_date_year', '')
 		if not ed and em and ey:
 			errors.append('Enter an end date.')
+		if not request.POST.get('days', ''):
+			erros.append('Please check a day of the week.')
+		if not request.POST.get('start_time', ''):
+			errors.append('Enter a start time.')
+		if not request.POST.get('end_time', ''):
+			errors.append('Enter a end time.')
 		if not errors:
 			return render(request, 'juakstore/SEARCH.html',
 	 	#only gets last room WHY?! how turn back to query set?
         {'room': request.POST.get('room','') , 
         'start_date_day': sd, 'start_date_month': sm, 'start_date_year': sy,
         'end_date_day': ed, 'end_date_month': em, 'end_date_year': ey,
-        'form': form, 'notfirst': notfirst})
+        'start_time': request.POST.get('start_time', ''), 'end_time': request.POST.get('end_time', ''),
+        'form': form, 'notfirst': notfirst, 'days': days})
 
 	return render(request, 'juakstore/SEARCH.html',
         {'errors': errors,

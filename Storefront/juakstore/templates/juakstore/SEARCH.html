@@ -28,9 +28,14 @@
 
 <form action="/search/" method="POST">
     {% csrf_token %}  
+    Press ctrl while selecting multiple rooms.</p>
     {{ form.room }}</p>
-    {{ form.start_date }}</p>
-    {{ form.end_date }}</p>
+    Search days between Start Date - End Date:</p>
+    Start Date: {{ form.start_date }}</p>
+    End Date: {{ form.end_date }}</p>
+     {{form.days}}</p>
+    Start Time: {{ form.start_time }} </p>
+    End Time: {{ form.end_time }}</p>
 
 <input type="submit" value="Submit" />
 </form>
