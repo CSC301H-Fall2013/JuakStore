@@ -14,8 +14,10 @@
     {% if notfirst %}
         <p>You searched for:</p>
         Room <strong> {{ room }}</strong> 
-        with start date <strong>{{ start_date_day }}-{{ start_date_month }}-{{ start_date_year }}</strong> 
-        and end date <strong>{{ end_date_day }}-{{ end_date_month }}-{{ end_date_year}} </strong></p>
+        with start date <strong>{{ start_date}}</strong> 
+        and end date <strong>{{ end_date }} </strong> </p>
+        on days <strong>{{ days }}</strong> 
+        between the times of <strong>{{ start_time}} </strong> and <strong>{{ end_time }}</strong></p>
 
     {% if room %}
         <ul>

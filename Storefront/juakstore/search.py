@@ -34,20 +34,16 @@ def search_form(request):
 			notfirst = True
 			errors.append("HERE")
 			room = form.cleaned_data['room'] 
-			sd = form.cleaned_data.get['start_date_day'] 
-			sm = form.cleaned_data.get['start_date_month'] 
-			sy = form.cleaned_data.get['start_date_year'] 
-			ed = form.cleaned_data.get['end_date_day'] 
-			em = form.cleaned_data.get['end_date_month'] 
-			ey = form.cleaned_data.get['end_date_year'] 
+			sd = form.cleaned_data.get['start_date'] 
+			ed = form.cleaned_data.get['end_date'] 
 			st = form.cleaned_data.get['start_time']
 			et = form.cleaned_data.get['end_time']
 			days = form.cleaned_data.get['days']
 
 			return render(request, 'juakstore/SEARCH.html',
         	{'room': room , 
-        	'start_date_day': sd, 'start_date_month': sm, 'start_date_year': sy,
-        	'end_date_day': ed, 'end_date_month': em, 'end_date_year': ey,
+        	'start_date': sd,
+        	'end_date': ed, 
         	'start_time': st, 'end_time': et,
         	'form': form, 'notfirst': notfirst, 'days': days})
 
