@@ -7,6 +7,7 @@ from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.forms.extras.widgets import SelectDateWidget
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 class RoomForm(forms.ModelForm):
@@ -29,8 +30,28 @@ def search_form(request):
 	notfirst = False
 	form = SearchForm(request.POST)
 	if request.method == 'POST':
-		notfirst = True
-		if not request.POST.get('room',''):
+		if form.is_valid():
+			notfirst = True
+			errors.append("HERE")
+			room = form.cleaned_data['room'] 
+			sd = form.cleaned_data.get['start_date_day'] 
+			sm = form.cleaned_data.get['start_date_month'] 
+			sy = form.cleaned_data.get['start_date_year'] 
+			ed = form.cleaned_data.get['end_date_day'] 
+			em = form.cleaned_data.get['end_date_month'] 
+			ey = form.cleaned_data.get['end_date_year'] 
+			st = form.cleaned_data.get['start_time']
+			et = form.cleaned_data.get['end_time']
+			days = form.cleaned_data.get['days']
+
+			return render(request, 'juakstore/SEARCH.html',
+        	{'room': room , 
+        	'start_date_day': sd, 'start_date_month': sm, 'start_date_year': sy,
+        	'end_date_day': ed, 'end_date_month': em, 'end_date_year': ey,
+        	'start_time': st, 'end_time': et,
+        	'form': form, 'notfirst': notfirst, 'days': days})
+
+		'''if not request.POST.get('room',''):
 			errors.append('Enter a room.')
 		#why does start_date split up into these?! friggin django
 		sd = request.POST.get('start_date_day', '') 
@@ -52,15 +73,14 @@ def search_form(request):
 		if not errors:
 			return render(request, 'juakstore/SEARCH.html',
 	 	#only gets last room WHY?! how turn back to query set?
-        {'room': request.POST.get('room','') , 
+        {'room': form.cleaned_data['room'] , 
         'start_date_day': sd, 'start_date_month': sm, 'start_date_year': sy,
         'end_date_day': ed, 'end_date_month': em, 'end_date_year': ey,
         'start_time': request.POST.get('start_time', ''), 'end_time': request.POST.get('end_time', ''),
-        'form': form, 'notfirst': notfirst, 'days': days})
+        'form': form, 'notfirst': notfirst, 'days': days})'''
 
-	return render(request, 'juakstore/SEARCH.html',
-        {'errors': errors,
-        'form': form, 'notfirst': notfirst})
+	
+	return render(request, 'juakstore/SEARCH.html', {'errors':errors, 'notfirst':notfirst, 'form':form})
 
 # Search available rooms with given date and time period.
 # Return list of Room objects.
