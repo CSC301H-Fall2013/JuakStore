@@ -42,8 +42,8 @@ def search_form(request):
 
 			return render(request, 'juakstore/SEARCH.html',
         	{'room': room , 
-        	'start_date_day': sd, 'start_date_month': sm, 'start_date_year': sy,
-        	'end_date_day': ed, 'end_date_month': em, 'end_date_year': ey,
+        	'start_date': sd,
+        	'end_date': ed,
         	'start_time': st, 'end_time': et,
         	'form': form, 'notfirst': notfirst, 'days': days})
 
