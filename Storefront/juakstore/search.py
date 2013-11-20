@@ -17,7 +17,7 @@ class RoomForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     DAYS = (('Mon','Mon'), ('Tues', 'Tues'), ('Wed', 'Wed'), ('Thur', 'Thur'), 
-    	('Fri', 'Fri'), ('Six', 'Sat'), ('Sat', 'Sun'))
+    	('Fri', 'Fri'), ('Sat', 'Sat'), ('Sun', 'Sun'))
     room = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
     start_date = forms.DateField(label="Start Date", widget=SelectDateWidget)
     end_date = forms.DateField(label="End Date", widget=SelectDateWidget)
@@ -41,46 +41,29 @@ def search_form(request):
             et = form.cleaned_data['end_time']
             days = form.cleaned_data['days']
 
+            #need new vars for actual results
+            #filter days
+            low_bound = Booking.objects.filter(date__gte=sd)
+            upper_bound = Booking.objects.filter(date__lte=ed)
+            RDates = list(low_bound & upper_bound)
+
+            RTimes = ()
+            for d in RDates:
+            	RTimes = list(low_bound.filter(start__gte=st) 
+            		& upper_bound.filter(end__lte=et))
+
+
             return render(request, 'juakstore/SEARCH_LIA.html',
                           {'room': room,
-                           'start_date': sd, 
+                           'start_date': sd, 'booked': RTimes,
                            'end_date': ed, 
                            'start_time': st, 'end_time': et,
                            'form': form, 'notfirst': notfirst, 'days': days})
         else:
             return render(request, 'juakstore/SEARCH_LIA.html', {'form': form})
-
-        '''if not request.POST.get('room',''):
-            errors.append('Enter a room.')
-        #why does start_date split up into these?! friggin django
-        sd = request.POST.get('start_date_day', '')
-        sm = request.POST.get('start_date_month', '')
-        sy = request.POST.get('start_date_year', '')
-        if not sd and not sm and not sy:
-            errors.append('Enter a start date.')
-        ed = request.POST.get('end_date_day', '')
-        em = request.POST.get('end_date_month', '')
-        ey = request.POST.get('end_date_year', '')
-        if not ed and em and ey:
-            errors.append('Enter an end date.')
-        if not request.POST.get('days', ''):
-            erros.append('Please check a day of the week.')
-        if not request.POST.get('start_time', ''):
-            errors.append('Enter a start time.')
-        if not request.POST.get('end_time', ''):
-            errors.append('Enter a end time.')
-        if not errors:
-            return render(request, 'juakstore/SEARCH_LIA.html',
-        #only gets last room WHY?! how turn back to query set?
-        {'room': form.cleaned_data['room'] ,
-        'start_date_day': sd, 'start_date_month': sm, 'start_date_year': sy,
-        'end_date_day': ed, 'end_date_month': em, 'end_date_year': ey,
-        'start_time': request.POST.get('start_time', ''), 'end_time': request.POST.get('end_time', ''),
-        'form': form, 'notfirst': notfirst, 'days': days})'''
     else:
         form = SearchForm()
         return render(request, 'juakstore/SEARCH_LIA.html', {'form': form})
-        #return render(request, 'juakstore/SEARCH_LIA.html', {'errors': errors, 'notfirst': notfirst, 'form': form})
 
 # Search available rooms with given date and time period.
 # Return list of Room objects.

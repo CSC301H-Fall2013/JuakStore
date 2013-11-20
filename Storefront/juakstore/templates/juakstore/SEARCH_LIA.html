@@ -20,13 +20,22 @@
             {% endfor %}
          </ul>
     {% endif %}
-        Between <strong>{{ start_date}}</strong> to <strong>{{ end_date }} </strong>, on days
+        Between <strong>{{ start_date}}</strong> to <strong>{{ end_date }} </strong>, on
         {% if days %}
         {% for d in days %}
          <strong>{{ d }}</strong>
          {% endfor %}
          {% endif %} 
         between the times of <strong>{{ start_time}} </strong> and <strong>{{ end_time }}</strong></p>
+        {% if booked %}
+        {% for b in booked %}
+        These are booked times:</p>
+            {{ booked }}</p>
+                     {% endfor %}
+         {% endif %} 
+
+
+
  {% endif %}
 
 <form action={% url 'juakstore:search' %} method="POST">

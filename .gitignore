@@ -11,4 +11,6 @@ Storefront/Storefront/settings.py
 env/
 juakstore/settings.py
 Storefront/settings2.py
+Storefront/dbstore
+dbstore
 sotrefrontdb
