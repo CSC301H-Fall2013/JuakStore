@@ -38,7 +38,7 @@ class SelectTimeWidget(Widget):
     meridiem_field = '%s_meridiem'
     twelve_hr = False # Default to 24hr.
 
-    def __init__(self, attrs=None, hour_step=None, minute_step=None, second_step=False, twelve_hr=False):
+    def __init__(self, attrs=None, hour_step=None, minute_step=None, second_step=None, twelve_hr=False):
         """
         hour_step, minute_step, second_step are optional step values for
         for the range of values for the associated select element
@@ -67,7 +67,7 @@ class SelectTimeWidget(Widget):
         if second_step:
             self.seconds = range(0,60,second_step)
         else:
-            self.seconds = range(0,0)
+            self.seconds = range(0,60)
 
     def render(self, name, value, attrs=None):
         try: # try to get time values from a datetime.time object (value)
@@ -133,11 +133,11 @@ class SelectTimeWidget(Widget):
         select_html = Select(choices=minute_choices).render(self.minute_field % name, minute_val, local_attrs)
         output.append(select_html)
 
-        if self.seconds:
-            second_choices = [("%.2d"%i, "%.2d"%i) for i in self.seconds]
-            local_attrs['id'] = self.second_field % id_
-            select_html = Select(choices=second_choices).render(self.second_field % name, second_val, local_attrs)
-            output.append(select_html)
+        
+        second_choices = [("%.2d"%i, "%.2d"%i) for i in self.seconds]
+        local_attrs['id'] = self.second_field % id_
+        select_html = Select(choices=second_choices).render(self.second_field % name, second_val, local_attrs)
+        output.append(select_html)
 
         if self.twelve_hr:
             #  If we were given an initial value, make sure the correct meridiem gets selected.
