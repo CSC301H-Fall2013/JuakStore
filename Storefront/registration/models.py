@@ -100,7 +100,7 @@ class RegistrationManager(models.Manager):
         registration_profile = self.create_profile(new_user)
         
         subject = 'East Scarborough Storefront - Partner Account Request'
-        message = new_user.username + " has requested a partner account at East Scarborough Storefront."
+        message = p.company + " has requested a partner account at East Scarborough Storefront."
         
         # notify all admins of account request
         admins = User.objects.filter(is_staff=True) 

@@ -10,6 +10,7 @@ from models import Booking, BookingCategory, Room
 from forms import BookingForm, RoomForm, BookingEditForm
 from mycalendar import BookingCalendar
 from django.utils.safestring import mark_safe
+from django.contrib.admin.views.decorators import staff_member_required
 import datetime
 
 from django.forms.models import model_to_dict
@@ -43,6 +44,22 @@ def index(request):
         'currentUser' : currentUser,
         'month': month,
         'day': day,
+        'form': newBooking
+    })
+    return HttpResponse(template.render(context))
+
+@staff_member_required
+def adminView(request):
+    template = loader.get_template('juakstore/admin_view.html')
+    newBooking = BookingForm()
+    all_bookings = Booking.objects.all()
+    all_rooms = Room.objects.all()
+    if request.user.is_authenticated():
+        currentUser = request.user    
+    context = RequestContext(request, {
+        'all_bookings': all_bookings,
+        'all_rooms': all_rooms,
+        'currentUser' : currentUser,
         'form': newBooking
     })
     return HttpResponse(template.render(context))

@@ -7,6 +7,7 @@ from juakstore import search
 
 urlpatterns = patterns('',
                     url(r'^$', views.index, name='index'),
+                    url(r'^adminview/$', views.adminView, name='adminView'),
                     url(r'^logout/$', views.logoutStorefront, name='logout'),
                     url(r'^(?P<year>\d+)/(?P<month>\d+)/$', views.index, name='indexyymm'),
                     url(r'^(?P<year>\d+)/(?P<month>\d+)/(?P<day>\d+)/$', views.index, name='indexyymm'),
