@@ -1,23 +1,53 @@
 __author__ = 'MISSCATLADY'
 
 import datetime
+from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse
 from models import *
+from django.forms.extras.widgets import SelectDateWidget
 
 
-def search_booking(request):
+class RoomForm(forms.ModelForm):
+	class Meta:
+		model = Room
+
+class SearchForm(forms.Form):
+
+	room = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
+	start_date = forms.DateField(label="Start Date", widget=SelectDateWidget)
+	end_date = forms.DateField(label="End Date", widget=SelectDateWidget)
+
+def search_form(request):
 	errors = []
-	if 'q' in request.GET:
-		q = request.GET['q']
-		if not q:
-			errors.append("Enter a room to search.")
-		else:
-			rooms = Room.objects.filter(name__icontains=q)
-			return render(request, 'bookingApp/search.html', 
-				{'rooms': rooms, 'query': q})
+	notfirst = False
+	form = SearchForm(request.POST)
+	if request.method == 'POST':
+		notfirst = True
+		if not request.POST.get('room',''):
+			errors.append('Enter a room.')
+		#why does start_date split up into these?! friggin django
+		sd = request.POST.get('start_date_day', '') 
+		sm = request.POST.get('start_date_month', '')
+		sy = request.POST.get('start_date_year', '')
+		if not sd and not sm and not sy:
+			errors.append('Enter a start date.')
+		ed = request.POST.get('end_date_day', '')
+		em = request.POST.get('end_date_month', '')
+		ey = request.POST.get('end_date_year', '')
+		if not ed and em and ey:
+			errors.append('Enter an end date.')
+		if not errors:
+			return render(request, 'juakstore/SEARCH.html',
+	 	#only gets last room WHY?! how turn back to query set?
+        {'room': request.POST.get('room','') , 
+        'start_date_day': sd, 'start_date_month': sm, 'start_date_year': sy,
+        'end_date_day': ed, 'end_date_month': em, 'end_date_year': ey,
+        'form': form, 'notfirst': notfirst})
 
-	return render(request, 'bookingApp/search.html', {'errors' : errors})
+	return render(request, 'juakstore/SEARCH.html',
+        {'errors': errors,
+        'form': form, 'notfirst': notfirst})
 
 
 # Search available rooms with given date and time period.
@@ -40,3 +70,4 @@ def search_available_rooms_with_type(date, start_time, end_time, room_type):
 	unavailable_rooms_two = booked_rooms.filter(booking__end__lte=end_time).filter(booking__start__gt=start_time)
 
 	return all_rooms - unavailable_rooms_one - unavailable_rooms_two
+
