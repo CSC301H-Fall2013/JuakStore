@@ -25,5 +25,5 @@ urlpatterns = patterns('',
                     url(r'^rooms/(?P<pk>\d+)/date/(?P<year>\d+)/(?P<month>\d+)/$', login_required(views.BookingView.as_view()), name='roomDetailyymm'),
                     
                     # testing search
-                    (r'^search/$', search.search_form),
+                    url(r'^search/$', search.search_form, name='search'),
 )
