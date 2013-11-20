@@ -36,7 +36,6 @@ class Partner(models.Model):
     astatus = models.CharField(max_length=30, verbose_name="Agreement Status")
     istatus = models.CharField(max_length=30, verbose_name="Insurance Status")
 
-
 class Booking(models.Model):
     name = models.CharField(max_length=200)
     notes = models.CharField(max_length=500)
