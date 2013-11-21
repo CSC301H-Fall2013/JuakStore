@@ -15,8 +15,13 @@
         Room(s):
         {% if room %}
                 <ul>
+    <p>You searched for:</p>
+    Room(s):
+    {% if room %}
+        <ul>
             {% for r in room %}
             <li>  {{ r }}</li>
+            <li>  {{ r }}   </li>
             {% endfor %}
          </ul>
     {% endif %}
@@ -37,6 +42,16 @@
         <strong>{{DATE}}</strong> / <strong> {{TIME}}</strong></p>
 
          {% endif %} 
+            {% for d in days %}
+                <strong>{{ d }}</strong>
+            {% endfor %}
+        {% endif %}
+            between the times of <strong>{{ start_time}} </strong> and <strong>{{ end_time }}</strong></p>
+            {% if booked %}
+            {% for b in booked %}
+            These are booked times:<p> {{ booked }}</p>
+            {% endfor %}
+        {% endif %}
 
 
 
