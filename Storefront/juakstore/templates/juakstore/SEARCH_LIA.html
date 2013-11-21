@@ -27,7 +27,7 @@
          <strong>{{ d }}</strong>
          {% endfor %}
          {% endif %} 
-        between the times of <strong>{{ start_time}} </strong> and <strong>{{ end_time }}</strong></p>
+        between the times of <strong>{{ start_time }} </strong> and <strong>{{ end_time }}</strong></p>
         {% if booked %}
         {% for b in booked %}
         These are booked times:</p>
@@ -35,13 +35,13 @@
                      {% endfor %}
 
         These are the available times:</p>
-        {% if DATE.months %}
-        {% for m in DATE.months|get_range %}
-        <strong> {{ start_date | date:"M"}} </strong> </p>
-        
-                {% if TIME.hours %}
-        {% for t in TIME.hours|get_range %}
-        <strong> {{ start_time | time:"h"}} </strong></p>
+        {% if DATE %}
+        {% for m in DATE%}
+        <strong> {{ m }} </strong> </p>
+
+                {% if TIME %}
+        {% for t in TIME %}
+        <strong> {{ t }} </strong></p>
         {% endfor %}
         {% endif %}
 

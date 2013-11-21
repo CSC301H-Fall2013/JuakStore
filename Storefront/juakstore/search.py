@@ -12,88 +12,69 @@ from datetime import *
 from dateutil.relativedelta import *
 
 
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = BookingCategory
+
+class PartnerForm(forms.ModelForm):
+    class Meta:
+        model = Partner
+
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
 
-
-class SearchForm(forms.Form):
-    DAYS = ((2,'Mon'), (3, 'Tues'), (4, 'Wed'), (5, 'Thur'), 
-    	(6, 'Fri'), (7, 'Sat'), (1, 'Sun'))
+class SEARCHFORM(forms.Form):
+    category = forms.ModelMultipleChoiceField(queryset=BookingCategory.objects.all())
+    partner = forms.ModelMultipleChoiceField(queryset=Partner.objects.all())
     room = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
     start_date = forms.DateField(label="Start Date", widget=SelectDateWidget)
     end_date = forms.DateField(label="End Date", widget=SelectDateWidget)
-    days = forms.MultipleChoiceField(label="Days", widget=forms.CheckboxSelectMultiple, choices=DAYS)
-    start_time = forms.TimeField(label="Start Time", widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
-    end_time = forms.TimeField(label="End Time", widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
 
-
-def search_form(request):
+def search_cat(request):
     errors = []
     notfirst = False
     if request.method == 'POST':
-        form = SearchForm(request.POST)
+        form = SEARCHFORM(request.POST)
         if form.is_valid():
             notfirst = True
             room = form.cleaned_data['room']
-            print room
+            partner = form.cleaned_data['partner']
+            category = form.cleaned_data['category']
             sd = form.cleaned_data['start_date']
             ed = form.cleaned_data['end_date']
-            st = form.cleaned_data['start_time']
-            et = form.cleaned_data['end_time']
-            days = form.cleaned_data['days']
-             
 
-
-            if st > et:
-                errors.append["Please make sure your start time is before your end time."]
-                return render(request, 'juakstore/SEARCH_LIA.html', {'form': form, 'errors': errors})
-
-            if sd >= ed:
-                errors.append["Please make sure your start date is before your end date."]
-                return render(request, 'juakstore/SEARCH_LIA.html', {'form': form, 'errors': errors})
-            DATE = relativedelta(ed, sd)
-            TIME = relativedelta(datetime.combine(date.today(), et), datetime.combine(date.today(), st))
-                
-
-
-            #need new vars for actual results
             #filter days
             low_bound = Booking.objects.filter(date__gte=sd)
             upper_bound = Booking.objects.filter(date__lte=ed)
-            RDates = (low_bound & upper_bound)
+            TOTAL = (low_bound & upper_bound)
 
-            RTimes = ()
-            for d in RDates:
-            	RTimes = (low_bound.filter(start__gte=st) 
-            		& upper_bound.filter(end__lte=et))
-
-            RT_tmp = Room.objects.none()
-            for d in days:
-                RT_tmp = (RT_tmp | RTimes.filter(date__week_day=d))
-
-            RTimes = RT_tmp 
-
-            RT_tmp2 = Room.objects.none()
+            #filter rooms
+            tmp = Room.objects.none()
             for r in room:
-                RT_tmp2 = (RT_tmp2 | RTimes.filter(room__exact=r)) 
+                tmp = (tmp | TOTAL.filter(room__exact=r))
+            #filter partner
+            TOTAL = tmp
+            tmp = Room.objects.none()
+            for p in partner:
+                tmp = (tmp | TOTAL.filter(booker__exact=p.uID))
+            #filter category
+            TOTAL = tmp
+            tmp = Room.objects.none()
+            for c in category:
+                tmp = (tmp | TOTAL.filter(category__exact=c))
 
-            RTimes = RT_tmp2 #all the booked times
+            TOTAL = tmp
 
-
-
-
-            return render(request, 'juakstore/SEARCH_LIA.html',
-                          {'room': room,
-                           'start_date': sd, 'booked': RTimes,
-                           'end_date': ed, 'DATE': DATE, 'TIME': TIME,
-                           'start_time': st, 'end_time': et,
-                           'form': form, 'notfirst': notfirst, 'days': days})
+            return render(request, 'juakstore/search_category.html', {'form': form,
+                'category': category, 'room': room, 'notfirst': notfirst,
+                'sd':sd, 'ed': ed })
         else:
-            return render(request, 'juakstore/SEARCH_LIA.html', {'form': form})
+            return render(request, 'juakstore/search_category.html', {'form': form})
     else:
-        form = SearchForm()
-        return render(request, 'juakstore/SEARCH_LIA.html', {'form': form})
+        form = SEARCHFORM()
+        return render(request, 'juakstore/search_category.html', {'form': form})
+
 
 # Search available rooms with given date and time period.
 # Return list of Room objects.

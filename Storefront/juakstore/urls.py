@@ -28,4 +28,5 @@ urlpatterns = patterns('',
                     
                     # testing search
                     url(r'^search/$', search.search_form, name='search'),
+                    url(r'^search_cat/$', search.search_cat, name='category'),
 )

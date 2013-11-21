@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load range %}
+
+{% block content %}
+
+	{% if errors %}
+        <ul>
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+{% if notfirst %}
+
+You've searched for bookings from <strong>{{ sd | date:"D M d Y"}}</strong> to <strong>{{ ed | date:"D d M Y"}}</strong> </p>
+Category: 
+{% if category %}
+{% for c in category %}
+<li>{{c}}</li>
+{% endfor %}
+{% endif %}</p>
+
+Partner:
+{% if partner %}
+{% for p in partner %}
+<li>{{p}}</li>
+{% endfor %}
+{% endif %}</p>
+
+Room:
+{% if room %}
+{% for r in room %}
+<li>{{r}}</li>
+{% endfor %}
+{% endif %}</p>
+
+
+{% endif %}
+
+<form action={% url 'juakstore:category' %} method="POST">
+    {% csrf_token %}  
+    {{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+
+{% endblock %}
