@@ -22,7 +22,6 @@
     {% endif %}
         Between <strong>{{ start_date | date:"D M d Y" }}</strong> to <strong>{{ end_date | date:"D M d Y" }} </strong>, on
         {% if days %}
-<<<<<<< HEAD
         {% for d in days %}
          <strong>{{ d }}</strong>
          {% endfor %}
@@ -38,7 +37,6 @@
         <strong>{{DATE}}</strong> / <strong> {{TIME}}</strong></p>
 
          {% endif %} 
-=======
             {% for d in days %}
                 <strong>{{ d }}</strong>
             {% endfor %}
@@ -49,9 +47,6 @@
             These are booked times:<p> {{ booked }}</p>
             {% endfor %}
         {% endif %}
->>>>>>> 6659d3adca117c5e1eb423ad49f1e93854834df1
-
-
 
  {% endif %}
 
