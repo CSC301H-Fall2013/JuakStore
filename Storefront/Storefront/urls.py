@@ -19,6 +19,8 @@ urlpatterns = patterns('',
     url(r'^', include('juakstore.urls', namespace='juakstore')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     (r'^accounts/', include('registration.backends.default.urls')),
+
+    url(r'^search/$', search.search_form, name='search'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()
