@@ -295,20 +295,3 @@ class RoomCreate(generic.edit.CreateView):
     model = Room
     template_name = 'juakstore/room_add.html'
     form_class = RoomForm
-
-class PartnerCreate(generic.edit.CreateView):
-    model = User
-    template_name = 'juakstore/partner_create.html'
-    form_class = PartnerForm
-
-    def get(self, request):
-        all_bookings = Booking.objects.all()
-        form = self.form_class(initial=self.initial)
-        template = loader.get_template(self.template_name)
-        context = RequestContext(request, {
-            #'year': self.year,
-            #'month': self.month,
-            'form': form,
-            'all_bookings': all_bookings,
-        })
-        return HttpResponse(template.render(context))
