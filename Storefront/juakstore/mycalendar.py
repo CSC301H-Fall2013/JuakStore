@@ -41,6 +41,8 @@ class BookingCalendar(HTMLCalendar):
                     body.append('<li class="cal-list">')
                     body.append(' <h3 class="tribe-events-month-event-title summary"><a href="%s" class="url calendar-list">' % reverse('juakstore:bookingDetail', None, [booking.id]))
                     body.append(esc(booking.name))
+                    if booking.approved == False:
+                        body.append(' (request)')
                     body.append('</a></h3></li>')
                 body.append('</div></div>')
                 return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
@@ -145,6 +147,8 @@ class WeeklyCalendar():
                 body.append('<h3 class="tribe-events-month-event-title summary">')
                 body.append('<a href="%s" class="url">' % reverse('juakstore:bookingDetail', None, [booking.id]))
                 body.append(esc(booking.name))
+                if booking.approved == False:
+                    body.append(' (request)')                
                 body.append('</a>')
                 #body.append('<div class="starttime">')
                 #body.append(str(booking.start))

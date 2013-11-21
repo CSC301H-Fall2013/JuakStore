@@ -7,10 +7,47 @@
 
 {% block content %}
 
-<h1 class="headings_index">Administration</h1>
+<h1 class="headings_index">Partner Account Requests</h1>
+<div id="partners_index">
+{% if partners %}
+	<ul>
+		{% for user in partners %}
+			{% if not user.uID.is_active %}
+				<li>{{ user.company }}
+				<form name="form" method="post" action="{% url 'juakstore:adminAccept' user.uID.id %}">{% csrf_token %}
+					<!--{{ form.as_p }}-->
+					<input type="submit" value="Approve" />
+				</form> </li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+{% endif %}
+{% if noUsers %}
+	No new requests.
+{% endif %}
+</div>
 
-<a href="arequests"> Partner Account Requests </a>
-<br>
-<a href="brequests"> Booking Requests </a>
+<h1 class="headings_index">Booking Requests</h1>
+<div id="partners_index">
+{% if bookings %}
+	<ul>
+		{% for booking in bookings %}
+			{% if not booking.approved %}
+				<li>{{ booking.name }}
+				<form name="form" method="post" action="{% url 'juakstore:adminAcceptBooking' booking.id %}">{% csrf_token %}
+					<!--{{ form.as_p }}-->
+					<input type="submit" value="Approve" />
+				</form> </li></li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+{% endif %}
+{% if noBookings %}
+	No new requests.
+{% endif %}
+</div>
+
+<form action="{% url 'juakstore:roomCreate' %}"><input type="submit" value="Add Room" /></form>
+<form action="{% url 'juakstore:bookingCreate' %}"><input type="submit" value="Make Booking" /></form>
 
 {% endblock %}

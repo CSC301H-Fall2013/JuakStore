@@ -44,6 +44,7 @@ class Booking(models.Model):
     end = models.TimeField()
     booker = models.ForeignKey(User)
     room = models.ForeignKey(Room)
+    approved = models.BooleanField() 
 
     def is_active(self):
         return datetime.combine(self.date, self.end) >= timezone.now()

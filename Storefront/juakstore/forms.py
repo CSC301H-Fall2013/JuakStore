@@ -21,8 +21,8 @@ class BookingForm(forms.ModelForm):
     end = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
     room = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
     booker = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput(), required=False)
+    approved = forms.BooleanField(widget=forms.HiddenInput(), required=False) 
     #rooms = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Room.objects.all(), required=False)
-
 
     #repeat = forms.BooleanField(widget=forms.CheckboxInput(attrs={'onChange': 'showHideFrequency(this.value)'}))
     repeat = forms.BooleanField(required=False)
@@ -99,3 +99,23 @@ class BookingEditForm(BookingForm):
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
+        
+class PartnerForm(forms.Form):
+    activate = forms.BooleanField(label="Activate")     
+    partner = forms.ModelChoiceField(queryset=User.objects.all())
+    activate = forms.BooleanField(
+        error_messages={'required': 'You must accept the terms and conditions'},
+        label="Terms&Conditions")    
+
+    def __init__(self, *args, **kwargs):
+        super(PartnerForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = User
+        #exclude = ('booker', 'room',)
+
+    def clean(self):
+        error = []
+        cleaned_data = super(PartnerForm, self).clean()
+
+        return cleaned_data
