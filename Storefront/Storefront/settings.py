@@ -13,9 +13,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-    
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'Juakstore',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '/Users/wyeung/documents/csc301/juakstore/storefront/JuakStoredb',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
         'PASSWORD': 'JuakfrontPassword1',
@@ -117,7 +116,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    'home/JuakfrontUser/juakstore/Storefront/Templates',
+    '/Users/wyeung/documents/csc301/juakstore/storefront/Templates',
 )
 
 INSTALLED_APPS = (
@@ -135,13 +134,7 @@ INSTALLED_APPS = (
     'registration',
 )
 
-ACCOUNT_ACTIVATION_DAYS = 365
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'eaststorefront@gmail.com'
-EMAIL_HOST_PASSWORD = 'JuakfrontPassword1'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+ACCOUNT_ACTIVATION_DAYS = 7
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 

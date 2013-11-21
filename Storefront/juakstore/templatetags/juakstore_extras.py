@@ -2,6 +2,7 @@ from django import template
 from juakstore.models import Booking
 from juakstore.mycalendar import BookingCalendar, WeeklyCalendar
 from django.utils.safestring import mark_safe
+from datetime import datetime, timedelta
 
 
 register = template.Library()
@@ -33,6 +34,22 @@ def populate_week_agenda(parser, token):
     except ValueError:
         raise template.TemplateSyntaxError("Tag requires 4 arguments")
     return WeekAgendaNode(booking_set, year, month, day)
+
+def oneWeekDiff(year, month, day, timeValue, diff):
+    curr = datetime(year, month, day)
+    if diff == 'next':
+        lastWeek = curr + timedelta(days=7)
+    elif diff == 'last':
+        lastWeek = curr - timedelta(days=7)
+    if timeValue == 'day':
+        return lastWeek.day
+    elif timeValue == 'month':
+        return lastWeek.month
+    elif timeValue == 'year':
+        return lastWeek.year
+
+register.simple_tag(oneWeekDiff)
+
 
 class WeekAgendaNode(template.Node):
     def __init__(self, booking_set, year, month, day):

@@ -35,6 +35,7 @@ def search_form(request):
             notfirst = True
             errors.append("HERE")
             room = form.cleaned_data['room']
+            print room
             sd = form.cleaned_data['start_date']
             ed = form.cleaned_data['end_date']
             st = form.cleaned_data['start_time']
