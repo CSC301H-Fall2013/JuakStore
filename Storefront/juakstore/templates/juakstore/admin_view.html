@@ -25,12 +25,27 @@
 {% if noUsers %}
 	No new requests.
 {% endif %}
-
 </div>
 
-<br>
-<a href="brequests"> Booking Requests </a>
-<br>
+<h1 class="headings_index">Booking Requests</h1>
+<div id="partners_index">
+{% if bookings %}
+	<ul>
+		{% for booking in bookings %}
+			{% if not booking.approved %}
+				<li>{{ booking.name }}
+				<form name="form" method="post" action="{% url 'juakstore:adminAcceptBooking' booking.id %}">{% csrf_token %}
+					<!--{{ form.as_p }}-->
+					<input type="submit" value="Approve" />
+				</form> </li></li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+{% endif %}
+{% if noBookings %}
+	No new requests.
+{% endif %}
+</div>
 
 <form action="{% url 'juakstore:roomCreate' %}"><input type="submit" value="Add Room" /></form>
 <form action="{% url 'juakstore:bookingCreate' %}"><input type="submit" value="Make Booking" /></form>

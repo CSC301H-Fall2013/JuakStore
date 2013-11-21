@@ -56,19 +56,29 @@ def adminView(request):
     template = loader.get_template('juakstore/admin_view.html')
     partners = Partner.objects.all()
     users = User.objects.all()
+    bookings = Booking.objects.all()
     noUsers = False
+    noBookings = False
     count = 0
+    bcount = 0
     for u in users:
         if u.is_active == False:
             count = count + 1
     if count == 0:
         noUsers = True
+    for b in bookings:
+        if b.approved == False:
+            bcount = bcount + 1
+    if bcount == 0:
+        noBookings = True        
     if request.user.is_authenticated():
         currentUser = request.user    
     context = RequestContext(request, {
         'partners': partners,
         'currentUser': currentUser,
-        'noUsers': noUsers
+        'bookings': bookings,
+        'noUsers': noUsers,
+        'noBookings': noBookings
     }) 
     return HttpResponse(template.render(context)) 
 
@@ -89,6 +99,24 @@ def accept(request, pk):
     else:
         form = BookingForm()
         return HttpResponseRedirect(reverse('juakstore/admin_accept.html', args=(pk,)))
+    
+@staff_member_required
+def acceptBooking(request, pk):
+    if request.method == "POST":
+        b = get_object_or_404(Booking, pk=pk)
+        f = BookingForm(request.POST)
+        f.id = pk
+        
+        b.approved = True
+        b.save()
+        #send email notification
+        subject = "East Scarborough Storefront - Booking Approved"
+        message = "Dear " + b.booker.username + ",\n\nYour booking request '" + b.name + "' at East Scarborough Storefront has been approved.\nYou can login at <URL>.\n\nThank you"
+        b.booker.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        return render(request, 'juakstore/admin_acceptBooking.html', {'booking': b})
+    else:
+        form = BookingForm()
+        return HttpResponseRedirect(reverse('juakstore/admin_acceptBooking.html', args=(pk,)))
    
 
 @login_required
@@ -132,6 +160,12 @@ def addBooking(request):
                               category=get_object_or_404(BookingCategory, pk=request.POST['category']),
                               room=get_object_or_404(Room, pk=room.pk))
                         repeatBooking.save()
+            # notify all admins of booking request
+            admins = User.objects.filter(is_staff=True) 
+            subject = "East Scarborough Storefront - Booking Request"
+            message = request.user.username + " has requested a booking.\n\nBooking info:\n <INFO>"
+            for a in admins:
+                a.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)                        
             return HttpResponseRedirect(reverse('juakstore:bookingDetail',
                                                 args=(first_booking,)))
         else:
@@ -160,7 +194,7 @@ def updateBooking(request, pk):
         b = get_object_or_404(Booking, pk=pk)
         f = BookingForm(request.POST)
         f.id = pk
-
+        
         if f.is_valid():
             for room in f.cleaned_data['room']:
                 b.name = f.cleaned_data['name']
@@ -232,8 +266,6 @@ class BookingCreate(generic.edit.CreateView):
             'all_bookings': all_bookings,
         })
         return HttpResponse(template.render(context))
-
-
 
     def get_context_data(self, **kwargs):
         context = super(BookingCreate, self).get_context_data(**kwargs)

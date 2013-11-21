@@ -21,8 +21,8 @@ class BookingForm(forms.ModelForm):
     end = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
     room = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
     booker = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput(), required=False)
+    approved = forms.BooleanField(widget=forms.HiddenInput(), required=False) 
     #rooms = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Room.objects.all(), required=False)
-
 
     #repeat = forms.BooleanField(widget=forms.CheckboxInput(attrs={'onChange': 'showHideFrequency(this.value)'}))
     repeat = forms.BooleanField(required=False)
