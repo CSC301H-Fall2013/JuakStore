@@ -20,7 +20,7 @@
             {% endfor %}
          </ul>
     {% endif %}
-        Between <strong>{{ start_date}}</strong> to <strong>{{ end_date }} </strong>, on
+        Between <strong>{{ start_date | date:"D M d Y" }}</strong> to <strong>{{ end_date | date:"D M d Y" }} </strong>, on
         {% if days %}
         {% for d in days %}
          <strong>{{ d }}</strong>
@@ -32,6 +32,10 @@
         These are booked times:</p>
             {{ booked }}</p>
                      {% endfor %}
+
+        These are the available times:</p>
+        <strong>{{DATE}}</strong> / <strong> {{TIME}}</strong></p>
+
          {% endif %} 
 
 
@@ -42,5 +46,6 @@
     {% csrf_token %}  
     {{ form.as_p }}
 <input type="submit" value="Submit" />
+</form>
 
 {% endblock %}
