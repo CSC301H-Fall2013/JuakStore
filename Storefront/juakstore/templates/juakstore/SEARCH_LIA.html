@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load range %}
 
 {% block content %}
 
@@ -34,7 +35,21 @@
                      {% endfor %}
 
         These are the available times:</p>
-        <strong>{{DATE}}</strong> / <strong> {{TIME}}</strong></p>
+        {% if DATE.months %}
+        {% for m in DATE.months|get_range %}
+        <strong> {{ start_date | date:"M"}} </strong> </p>
+        
+                {% if TIME.hours %}
+        {% for t in TIME.hours|get_range %}
+        <strong> {{ start_time | time:"h"}} </strong></p>
+        {% endfor %}
+        {% endif %}
+
+        {% endfor %}
+        {% endif %}
+
+
+  
 
         {% endif %}
 
