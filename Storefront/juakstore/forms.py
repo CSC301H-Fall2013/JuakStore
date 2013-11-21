@@ -99,3 +99,23 @@ class BookingEditForm(BookingForm):
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
+        
+class PartnerForm(forms.Form):
+    activate = forms.BooleanField(label="Activate")     
+    partner = forms.ModelChoiceField(queryset=User.objects.all())
+    activate = forms.BooleanField(
+        error_messages={'required': 'You must accept the terms and conditions'},
+        label="Terms&Conditions")    
+
+    def __init__(self, *args, **kwargs):
+        super(PartnerForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = User
+        #exclude = ('booker', 'room',)
+
+    def clean(self):
+        error = []
+        cleaned_data = super(PartnerForm, self).clean()
+
+        return cleaned_data

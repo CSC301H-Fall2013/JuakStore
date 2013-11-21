@@ -7,10 +7,32 @@
 
 {% block content %}
 
-<h1 class="headings_index">Administration</h1>
+<h1 class="headings_index">Partner Account Requests</h1>
+<div id="partners_index">
+{% if partners %}
+	<ul>
+		{% for user in partners %}
+			{% if not user.uID.is_active %}
+				<li>{{ user.company }}
+				<form name="form" method="post" action="{% url 'juakstore:adminAccept' user.uID.id %}">{% csrf_token %}
+					<!--{{ form.as_p }}-->
+					<input type="submit" value="Approve" />
+				</form> </li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+{% endif %}
+{% if noUsers %}
+	No new requests.
+{% endif %}
 
-<a href="arequests"> Partner Account Requests </a>
+</div>
+
 <br>
 <a href="brequests"> Booking Requests </a>
+<br>
+
+<form action="{% url 'juakstore:roomCreate' %}"><input type="submit" value="Add Room" /></form>
+<form action="{% url 'juakstore:bookingCreate' %}"><input type="submit" value="Make Booking" /></form>
 
 {% endblock %}
