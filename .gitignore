@@ -3,8 +3,6 @@
 *.pyc
 
 Storefront/JuakStoredb
-Storefront/juakstore/settings.py
-Storefront/Storefront/settings.py
 
 *.pyc
 
@@ -14,5 +12,3 @@ Storefront/settings2.py
 Storefront/dbstore
 dbstore
 sotrefrontdb
-
-Storefront/Storefront/settings.py
