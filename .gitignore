@@ -14,3 +14,5 @@ Storefront/settings2.py
 Storefront/dbstore
 dbstore
 sotrefrontdb
+
+Storefront/Storefront/settings.py
