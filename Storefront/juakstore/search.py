@@ -25,9 +25,9 @@ class RoomForm(forms.ModelForm):
         model = Room
 
 class SEARCHFORM(forms.Form):
-    category = forms.ModelMultipleChoiceField(queryset=BookingCategory.objects.all())
-    partner = forms.ModelMultipleChoiceField(queryset=Partner.objects.all())
-    room = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
+    category = forms.ModelMultipleChoiceField(required=False, queryset=BookingCategory.objects.all())
+    partner = forms.ModelMultipleChoiceField(required=False, queryset=Partner.objects.all())
+    room = forms.ModelMultipleChoiceField(required=False, queryset=Room.objects.all())
     start_date = forms.DateField(label="Start Date", widget=SelectDateWidget)
     end_date = forms.DateField(label="End Date", widget=SelectDateWidget)
 
@@ -51,26 +51,32 @@ def search_category(request):
 
             #filter rooms
             tmp = Room.objects.none()
-            for r in room:
-                tmp = (tmp | TOTAL.filter(room__exact=r))
-            #filter partner
-            TOTAL_rooms = tmp
-            tmp = Room.objects.none()
-            for p in partner:
-                tmp = (tmp | TOTAL.filter(booker__exact=p))
-            #filter category
-            TOTAL = tmp
-            tmp = Room.objects.none()
-            for c in category:
-                tmp = (tmp | TOTAL.filter(category__exact=c))
+            if room:
+                for r in room:
+                    tmp = (tmp | TOTAL.filter(room__exact=r))
+                TOTAL_rooms = tmp
 
-            TOTAL = tmp
+            #filter partner
+            tmp = Room.objects.none()
+            if partner:
+                for p in partner:
+                    tmp = (tmp | TOTAL.filter(booker__exact=p))
+                TOTAL = tmp
+
+            #filter category
+            tmp = Room.objects.none()
+            if category:
+                for c in category:
+                    tmp = (tmp | TOTAL.filter(category__exact=c))
+                TOTAL = tmp
+
             BOOKINGS = tmp.count()
             TIME = get_hrs(TOTAL)
 
             return render(request, 'juakstore/search_category.html', {'form': form,
                 'category': category, 'room': room, 'notfirst': notfirst, 'partner':partner,
-                'sd':sd, 'ed': ed, 'TOTAL': TOTAL, 'TIME':TIME, 'BOOKINGS':BOOKINGS  })
+                'sd':sd, 'ed': ed, 'TOTAL': TOTAL, 'TIME':TIME, 'BOOKINGS':BOOKINGS,
+                'errors':errors  })
         else:
             return render(request, 'juakstore/search_category.html', {'form': form})
     else:

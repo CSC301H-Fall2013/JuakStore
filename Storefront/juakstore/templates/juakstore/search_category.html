@@ -19,19 +19,24 @@ Categories:
 {% for c in category %}
 <strong>[ {{c}} ]</strong>
 {% endfor %}
-{% endif %}</p>
+{% endif %}
+{% if not category %} None selected {% endif %} </p>
+
 Partners:
 {% if partner %}
 {% for p in partner %}
 <strong>[ {{p}} ]</strong>
 {% endfor %}
-{% endif %} </p>
+{% endif %} 
+{% if not partner %} None selected {% endif %}</p>
+
 Rooms:
 {% if room %}
 {% for r in room %}
 <strong>[ {{r}} ]</strong>
 {% endfor %}
-{% endif %}</p>
+{% endif %}
+{% if not room %} None selected {% endif %}</p>
 
 <strong>Search Results:</strong></br>
 {% if TOTAL%}
