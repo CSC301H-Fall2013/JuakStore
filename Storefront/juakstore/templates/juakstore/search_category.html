@@ -14,30 +14,40 @@
 {% if notfirst %}
 
 You've searched for bookings from <strong>{{ sd | date:"D M d Y"}}</strong> to <strong>{{ ed | date:"D d M Y"}}</strong> </p>
-Category: 
+Categories:
 {% if category %}
 {% for c in category %}
-<li>{{c}}</li>
+<strong>[ {{c}} ]</strong>
 {% endfor %}
 {% endif %}</p>
-
-Partner:
+Partners:
 {% if partner %}
 {% for p in partner %}
-<li>{{p}}</li>
+<strong>[ {{p}} ]</strong>
 {% endfor %}
-{% endif %}</p>
-
-Room:
+{% endif %} </p>
+Rooms:
 {% if room %}
 {% for r in room %}
-<li>{{r}}</li>
+<strong>[ {{r}} ]</strong>
 {% endfor %}
 {% endif %}</p>
 
+<strong>Search Results:</strong></br>
+{% if TOTAL%}
+{% for t in TOTAL%}
+<li>{{t}}</li>
+{% endfor %}
+{% endif %}</br>
 
+{% if TIME %}
+Number of hours booked during this period: {{ TIME }}</br>
+{% endif%}
+{% if BOOKINGS %}
+Number of bookings during this period: {{ BOOKINGS }}</p>
+{% endif%}
 {% endif %}
-
+</p>
 <form action={% url 'juakstore:category' %} method="POST">
     {% csrf_token %}  
     {{ form.as_p }}

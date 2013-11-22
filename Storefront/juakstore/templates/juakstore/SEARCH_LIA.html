@@ -24,7 +24,13 @@
         Between <strong>{{ start_date | date:"D M d Y" }}</strong> to <strong>{{ end_date | date:"D M d Y" }} </strong>, on
         {% if days %}
         {% for d in days %}
-         <strong>{{ d }}</strong>
+            {% if d == "1" %} <strong> Sun </strong> {% endif %}     
+             {% if d == "2" %} <strong> Mon </strong> {% endif %}  
+              {% if d == "3" %} <strong> Tues </strong> {% endif %}  
+               {% if d == "4" %} <strong> Wed </strong> {% endif %}  
+                {% if d == "5" %} <strong> Thurs </strong> {% endif %}  
+                 {% if d == "6" %} <strong> Fri </strong> {% endif %}  
+                  {% if d == "7" %} <strong> Sat </strong> {% endif %}    
          {% endfor %}
          {% endif %} 
         between the times of <strong>{{ start_time }} </strong> and <strong>{{ end_time }}</strong></p>
