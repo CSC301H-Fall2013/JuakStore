@@ -3,7 +3,7 @@
 
 {% block content %}
 
-{% if currentUser == booking.booker or currentUser.is_staff%}
+{% if currentUser.is_staff %}
 	<h1 class="headings_index">Booking Information: {{ booking.name }} </h1>
 	<p>{{ booking.notes }}</p>
 	<p>Booker: <a href="{% url 'juakstore:userDetail' booking.booker.id %}">{{ booking.booker }}</a></p>
@@ -21,6 +21,8 @@
 	<p>Date: {{ booking.date }}</p>
 	<p>Start: {{ booking.start }}</p>
 	<p>End: {{ booking.end }}</p>
+	<br>
+	Please call Storefront if you would like to make any changes.
 {% endif %}
 
 {% endblock %}

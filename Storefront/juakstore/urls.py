@@ -1,6 +1,7 @@
 __author__ = 'wyeung'
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from juakstore import views
 from juakstore import search
@@ -18,7 +19,7 @@ urlpatterns = patterns('',
                     url(r'^booking/create/(?P<year>\d+)/(?P<month>\d+)/$', login_required(views.BookingCreate.as_view()), name='bookingCreateyymm'),
                     url(r'^booking/edit/submit/(?P<pk>\d+)/$', views.updateBooking, name='submitBooking'),
                     url(r'booking/create/submit/$', views.addBooking, name='bookingSubmit'),
-                    url(r'^booking/edit/(?P<pk>\d+)/$', login_required(views.BookingUpdate.as_view()), name='editBooking'),
+                    url(r'^booking/edit/(?P<pk>\d+)/$', staff_member_required(views.BookingUpdate.as_view()), name='editBooking'),
                     url(r'^users/(?P<pk>\d+)/$', login_required(views.UserDetailView.as_view()), name='userDetail'),
                     url(r'^rooms/$', login_required(views.RoomList.as_view()), name='roomList'),
                     url(r'^rooms/create/submit/$', views.submitRoom, name='roomSubmit'),
@@ -27,6 +28,6 @@ urlpatterns = patterns('',
                     url(r'^rooms/(?P<pk>\d+)/date/(?P<year>\d+)/(?P<month>\d+)/$', login_required(views.BookingView.as_view()), name='roomDetailyymm'),
                     
                     # testing search
-                    url(r'^search/$', search.search_form, name='search'),
+                    url(r'^search/$', search.SEARCHFORM, name='search'),
                     url(r'^search_cat/$', search.search_cat, name='category'),
 )
