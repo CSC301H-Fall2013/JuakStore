@@ -99,6 +99,22 @@ def accept(request, pk):
     else:
         form = BookingForm()
         return HttpResponseRedirect(reverse('juakstore/admin_accept.html', args=(pk,)))
+
+@staff_member_required
+def decline(request, pk):
+    if request.method == "POST":
+        b = get_object_or_404(User, pk=pk)
+        f = PartnerForm(request.POST)
+        f.id = pk
+        #send email notification
+        subject = "East Scarborough Storefront - Account Denied"
+        message = "Dear " + b.username + ",\n\nYour account request at East Scarborough Storefront has been denied.\nPlease call the Storefront for more details.\n\nThank you"
+        b.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        b.delete()
+        return render(request, 'juakstore/admin_decline.html')
+    else:
+        form = BookingForm()
+        return HttpResponseRedirect(reverse('juakstore/admin_decline.html', args=(pk,)))
     
 @staff_member_required
 def acceptBooking(request, pk):
@@ -117,6 +133,22 @@ def acceptBooking(request, pk):
     else:
         form = BookingForm()
         return HttpResponseRedirect(reverse('juakstore/admin_acceptBooking.html', args=(pk,)))
+
+@staff_member_required
+def declineBooking(request, pk):
+    if request.method == "POST":
+        b = get_object_or_404(Booking, pk=pk)
+        f = BookingForm(request.POST)
+        f.id = pk
+        #send email notification
+        subject = "East Scarborough Storefront - Booking Approved"
+        message = "Dear " + b.booker.username + ",\n\nYour booking request '" + b.name + "' at East Scarborough Storefront has been declined.\nPlease call the Storefront for more details.\n\nThank you"
+        b.booker.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        b.delete()
+        return render(request, 'juakstore/admin_declineBooking.html')
+    else:
+        form = BookingForm()
+        return HttpResponseRedirect(reverse('juakstore/admin_declineBooking.html', args=(pk,)))
    
 
 @login_required
@@ -134,6 +166,9 @@ def addBooking(request):
                               booker=get_object_or_404(User, pk=request.user.id),
                               category=get_object_or_404(BookingCategory, pk=request.POST['category']),
                               room=get_object_or_404(Room, pk=room.pk))
+                #auto-approve if admin
+                if request.user.is_staff:
+                    newBooking.approved = True
                 newBooking.save()
                 if first_booking == 0:
                     first_booking = newBooking.id
