@@ -54,7 +54,21 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/booking_add.js"></script>
 
 <form action={% url 'juakstore:bookingSubmit' %} method="post">{% csrf_token %}
-{{ form.as_p }}
+
+    {# Include the hidden fields #}
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+
+    <p><label for="id_name">Name:</label> {{ form.name }}</p>
+    <p><label for="id_notes">Notes:</label> {{ form.notes }}</p>
+    <p><label for="id_category">Category:</label> {{ form.category }}</p>
+    <p><label for="id_date_month">Date:</label>{{ form.date }}</p>
+    <p><label for="id_start_hour">Start:</label> {{ form.start }}</p>
+    <p><label for="id_end_hour">Start:</label> {{ form.end }}</p>
+    <p><label for="id_room">Room:</label> {{ form.room }}</p>
+    <p><label for="id_repeat">Repeat:</label> {{ form.repeat }}</p>
+    <p id="repeat_fields">Repeat every {{ form.repeat_frequency }} {{ form.repeat_frequency_unit }} until {{ form.repeat_end }}</p>
 <input type="submit" value="Submit" />
 </form>
 

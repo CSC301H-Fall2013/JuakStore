@@ -29,7 +29,7 @@ class BookingForm(forms.ModelForm):
 
     repeat_frequency = forms.IntegerField(required=False)
     repeat_frequency_unit = forms.ChoiceField(choices=repeat_choices, required=False)
-    repeat_end = forms.DateField(widget=SelectDateWidget, required=False)
+    repeat_end = forms.DateField(widget=SelectDateWidget, required=False, label="Repeat until")
 
     def __init__(self, *args, **kwargs):
         super(BookingForm, self).__init__(*args, **kwargs)
@@ -42,30 +42,30 @@ class BookingForm(forms.ModelForm):
         error = []
         cleaned_data = super(BookingForm, self).clean()
         if (cleaned_data.get('start') >= cleaned_data.get('end')):
-            raise ValidationError('Event end must be after the start', code='endbeforestart')
+            error.append('Event end must be after the start')
         # now check if there are any bookings that overlap with the submitted one
-        for room in self.cleaned_data.get('room'):
-            overlap = Booking.objects.all().filter(room_id=room).filter(date=cleaned_data.get('date')).filter(
-                                        (Q(start__gte=cleaned_data.get('start')) &
-                                          Q(start__lt=cleaned_data.get('end')))
-                                          | (Q(end__gt=cleaned_data.get('start')) &
-                                                  Q(end__lte=cleaned_data.get('end')))
-					  | (Q(start__lt=cleaned_data.get('start')) &
-						Q(end__gt=cleaned_data.get('end')))
-					  | (Q(start__gt=cleaned_data.get('start')) &
-						Q(end__lt=cleaned_data.get('end'))))
-
-            try:
-                if self.id:
-                    # filter for the ones that are not itself, in the case of
-                    # an edit, the booking will conflict with itself
-                    overlap = overlap.filter(~Q(id=self.id))
-            except:
-                # must be a new booking since there is no id
-                pass
-
-            if overlap.count() > 0:
-                error.append('Conflicts with another booking in room %s' % room.name)
+        #for room in self.cleaned_data.get('room'):
+        #    overlap = Booking.objects.all().filter(room_id=room).filter(date=cleaned_data.get('date')).filter(
+        #                                (Q(start__gte=cleaned_data.get('start')) &
+        #                                  Q(start__lt=cleaned_data.get('end')))
+        #                                  | (Q(end__gt=cleaned_data.get('start')) &
+        #                                          Q(end__lte=cleaned_data.get('end')))
+			#		  | (Q(start__lt=cleaned_data.get('start')) &
+			#			Q(end__gt=cleaned_data.get('end')))
+			#		  | (Q(start__gt=cleaned_data.get('start')) &
+			#			Q(end__lt=cleaned_data.get('end'))))
+        #
+        #    try:
+        #        if self.id:
+        #            # filter for the ones that are not itself, in the case of
+        #            # an edit, the booking will conflict with itself
+        #            overlap = overlap.filter(~Q(id=self.id))
+        #    except:
+        #        # must be a new booking since there is no id
+        #        pass
+        #
+        #    if overlap.count() > 0:
+        #        error.append('Conflicts with another booking in room %s' % room.name)
 
         if (cleaned_data.get('repeat')): # repeat is requested
             if not cleaned_data.get('repeat_frequency'): #repeat is requested, but not filled out
@@ -95,6 +95,11 @@ class BookingEditForm(BookingForm):
     repeat_frequency = forms.IntegerField(widget=forms.HiddenInput(), required=False)
     repeat_frequency_unit = forms.ChoiceField(widget=forms.HiddenInput(), choices=repeat_choices, required=False)
     repeat_end = forms.DateField(widget=forms.HiddenInput(), required=False)
+    updateSeries = forms.BooleanField(required=False,label="Update Series")
+
+    class Meta:
+        model = Booking
+
 
 class RoomForm(forms.ModelForm):
     class Meta:

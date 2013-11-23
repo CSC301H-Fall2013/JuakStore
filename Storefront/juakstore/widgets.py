@@ -34,7 +34,7 @@ class SelectTimeWidget(Widget):
     """
     hour_field = '%s_hour'
     minute_field = '%s_minute'
-    second_field = '%s_second'
+    #second_field = '%s_second'
     meridiem_field = '%s_meridiem'
     twelve_hr = False # Default to 24hr.
 
@@ -64,10 +64,10 @@ class SelectTimeWidget(Widget):
         else:
             self.minutes = range(0,60)
 
-        if second_step:
-            self.seconds = range(0,60,second_step)
-        else:
-            self.seconds = range(0,60)
+        #if second_step:
+        #    self.seconds = range(0,60,second_step)
+        #else:
+        #    self.seconds = range(0,60)
 
     def render(self, name, value, attrs=None):
         try: # try to get time values from a datetime.time object (value)
@@ -121,7 +121,7 @@ class SelectTimeWidget(Widget):
         # When Select builds a list of options, it checks against Unicode values
         hour_val = u"%.2d" % hour_val
         minute_val = u"%.2d" % minute_val
-        second_val = u"%.2d" % second_val
+        #second_val = u"%.2d" % second_val
 
         hour_choices = [("%.2d"%i, "%.2d"%i) for i in self.hours]
         local_attrs = self.build_attrs(id=self.hour_field % id_)
@@ -134,10 +134,10 @@ class SelectTimeWidget(Widget):
         output.append(select_html)
 
         
-        second_choices = [("%.2d"%i, "%.2d"%i) for i in self.seconds]
-        local_attrs['id'] = self.second_field % id_
-        select_html = Select(choices=second_choices).render(self.second_field % name, second_val, local_attrs)
-        output.append(select_html)
+        #second_choices = [("%.2d"%i, "%.2d"%i) for i in self.seconds]
+        #local_attrs['id'] = self.second_field % id_
+        #select_html = Select(choices=second_choices).render(self.second_field % name, second_val, local_attrs)
+        #output.append(select_html)
 
         if self.twelve_hr:
             #  If we were given an initial value, make sure the correct meridiem gets selected.
@@ -160,7 +160,7 @@ class SelectTimeWidget(Widget):
         # if there's not h:m:s data, assume zero:
         h = data.get(self.hour_field % name, 0) # hour
         m = data.get(self.minute_field % name, 0) # minute
-        s = data.get(self.second_field % name, 0) # second
+        #s = data.get(self.second_field % name, 0) # second
 
         meridiem = data.get(self.meridiem_field % name, None)
 
@@ -171,7 +171,7 @@ class SelectTimeWidget(Widget):
             elif meridiem.lower().startswith('a') and int(h) == 12:
                 h = 0
 
-        if (int(h) == 0 or h) and m and s:
-            return '%s:%s:%s' % (h, m, s)
+        if (int(h) == 0 or h) and m:
+            return '%s:%s:%s' % (h, m, 0)
 
         return data.get(name, None)
