@@ -28,9 +28,6 @@ urlpatterns = patterns('',
                     url(r'^rooms/create/$', login_required(views.RoomCreate.as_view()), name='roomCreate'),
                     url(r'^rooms/(?P<pk>\d+)/$', login_required(views.RoomView.as_view()), name='roomDetail'),
                     url(r'^rooms/(?P<pk>\d+)/date/(?P<year>\d+)/(?P<month>\d+)/$', login_required(views.BookingView.as_view()), name='roomDetailyymm'),
-                    
-                    # testing search
-
                     url(r'^search/$', search.search_form, name='search'),
                     url(r'^search_cat/$', search.search_category, name='category'),
 

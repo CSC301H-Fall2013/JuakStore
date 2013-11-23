@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
-from models import Booking, BookingCategory, Room, Partner
+from models import Booking, BookingCategory, Room, Partner, MultiRoomBooking, RepeatBooking, getRepeatBookings
 from forms import BookingForm, RoomForm, BookingEditForm, PartnerForm
 from mycalendar import BookingCalendar
 from django.utils.safestring import mark_safe
@@ -157,7 +157,17 @@ def addBooking(request):
         f = BookingForm(request.POST, initial={'booker':request.user, 'room':0})
         if f.is_valid():
             first_booking = 0
+            '''
+                In order to keep track of related bookings, a two dimensional array will be used
+                Each row indicates a collection of repeated bookings in a room
+                Each column indicates a collection of multiroom bookings in a given repeat
+                An entry will be None if there is no booking for that repeat iteration
+            '''
+            relatedBookings = []
             for room in f.cleaned_data['room']:
+                '''
+                    TODO: check if this booking will conflict with any others
+                '''
                 newBooking = Booking(name=f.cleaned_data['name'],
                               notes=f.cleaned_data['notes'],
                               date=f.cleaned_data['date'],
@@ -171,7 +181,9 @@ def addBooking(request):
                     newBooking.approved = True
                 newBooking.save()
                 if first_booking == 0:
-                    first_booking = newBooking.id
+                    first_booking = newBooking
+                relatedBookings.append([newBooking])
+
 
                 if (f.cleaned_data['repeat']): # repeat is specified
                     curr_date = f.cleaned_data['date']
@@ -186,6 +198,9 @@ def addBooking(request):
 
                     while curr_date + timestep <= f.cleaned_data['repeat_end'] and timestep:
                         curr_date += timestep
+                        '''
+                            TODO: check if this booking conflicts with any others
+                        '''
                         repeatBooking = Booking(name=f.cleaned_data['name'],
                               notes=f.cleaned_data['notes'],
                               date=curr_date,
@@ -195,6 +210,20 @@ def addBooking(request):
                               category=get_object_or_404(BookingCategory, pk=request.POST['category']),
                               room=get_object_or_404(Room, pk=room.pk))
                         repeatBooking.save()
+                        relatedBookings[-1].append(repeatBooking)
+
+            if len(relatedBookings[0]) > 1:
+                for i in range(0, len(relatedBookings)):
+                    for j in range(1, len(relatedBookings[i])):
+                        if not relatedBookings[i][j] is None:
+                            RepeatBooking(source=relatedBookings[i][0], target=relatedBookings[i][j]).save()
+
+            #if len(relatedBookings) > 1:
+            #    for j in range(0, len(relatedBookings[0])):
+            #        for i in range(1, len(relatedBookings)):
+            #            if not relatedBookings[i][j] is None:
+            #                MultiRoomBooking(source=relatedBookings[0][j], target=relatedBookings[i][j]).save()
+
             # notify all admins of booking request
             admins = User.objects.filter(is_staff=True) 
             subject = "East Scarborough Storefront - Booking Request"
@@ -202,7 +231,7 @@ def addBooking(request):
             for a in admins:
                 a.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)                        
             return HttpResponseRedirect(reverse('juakstore:bookingDetail',
-                                                args=(first_booking,)))
+                                                args=(first_booking.id,)))
         else:
             return render(request, 'juakstore/booking_add.html', {'form': f,
                                                                   'all_bookings':Booking.objects.all(),
@@ -220,25 +249,39 @@ def calendar(request, year, month):
 
 @login_required
 def updateBooking(request, pk):
-    #start = request.POST['event_start']
-    #end = request.POST['event_end']
-    #if end < start:
-    #    return render(request, {'form': request.POST, 'error': 'End time must be after start time'})
-    #else:
     if request.method == "POST":
         b = get_object_or_404(Booking, pk=pk)
-        f = BookingForm(request.POST)
+        f = BookingEditForm(request.POST)
         f.id = pk
         
         if f.is_valid():
-            for room in f.cleaned_data['room']:
-                b.name = f.cleaned_data['name']
-                b.notes = f.cleaned_data['notes']
-                b.start = f.cleaned_data['start']
-                b.end = f.cleaned_data['end']
-                b.category = get_object_or_404(BookingCategory, pk=request.POST['category'])
-                b.room = get_object_or_404(Room, pk=room.pk)
+            conflicts = []
+            b.name = f.cleaned_data['name']
+            b.notes = f.cleaned_data['notes']
+            b.start = f.cleaned_data['start']
+            b.end = f.cleaned_data['end']
+            b.date = f.cleaned_data['date']
+            b.category = get_object_or_404(BookingCategory, pk=request.POST['category'])
+            b.room = get_object_or_404(Room, pk=f.cleaned_data['room'].id)
+            if b.has_conflict():
+                conflicts.append(b)
+            else:
                 b.save()
+            if request.POST.get('updateSeries') == 'on':
+                repeatBookings = getRepeatBookings(b)
+                for repeat in repeatBookings:
+                    repeat.name = f.cleaned_data['name']
+                    repeat.notes = f.cleaned_data['notes']
+                    repeat.start = f.cleaned_data['start']
+                    repeat.end = f.cleaned_data['end']
+                    repeat.category = get_object_or_404(BookingCategory, pk=request.POST['category'])
+                    repeat.room = get_object_or_404(Room, pk=f.cleaned_data['room'].id)
+                    if repeat.has_conflict():
+                        conflicts.append(repeat)
+                    else:
+                        repeat.save()
+            if len(conflicts) > 0:
+                return render(request, 'juakstore/booking_update.html', {'form':f, 'booking':b, 'conflicts':conflicts})
             return HttpResponseRedirect(reverse('juakstore:bookingDetail', args=(b.id,)))
         else:
             return render(request, 'juakstore/booking_update.html', {'form': f, 'booking': b})

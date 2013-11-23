@@ -24,16 +24,19 @@ $(document).ready(function(){
     $("label[for=id_repeat_end_year], #id_repeat_end_year").hide();
     $("label[for=id_repeat_end_month], #id_repeat_end_month").hide();
     $("label[for=id_repeat_end_day], #id_repeat_end_day").hide();
+     $("#repeat_fields").hide();
 
     $("#id_repeat").change(function(){
         console.log($("#id_repeat").val());
         if ($("#id_repeat").prop('checked')){
+            $("#repeat_fields").show();
             $("label[for=id_repeat_frequency], #id_repeat_frequency").show();
             $("label[for=id_repeat_frequency_unit], #id_repeat_frequency_unit").show();
             $("label[for=id_repeat_end_year], #id_repeat_end_year").show();
             $("label[for=id_repeat_end_month], #id_repeat_end_month").show();
             $("label[for=id_repeat_end_day], #id_repeat_end_day").show();
         } else {
+            $("#repeat_fields").hide();
             $("label[for=id_repeat_frequency], #id_repeat_frequency").hide();
             $("label[for=id_repeat_frequency_unit], #id_repeat_frequency_unit").hide();
             $("label[for=id_repeat_end_year], #id_repeat_end_year").hide();
