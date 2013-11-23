@@ -197,7 +197,7 @@ def get_time_per_partner():
     time_per_partnder = {}
     for p in Partner.objects.all():
         bookings = Booking.objects.filter(booker_id__exact=p.uID)
-        time = timedelta(0)
+        time = timedelta()
         for booking in bookings:
             length = booking.end - booking.start
             time = time + length
@@ -212,7 +212,7 @@ def get_time_per_booking_category():
     time_per_category = {}
     for ca in BookingCategory.objects.all():
         bookings = Booking.objects.filter(category_id__exact=ca.id)
-        time = timedelta(0)
+        time = timedelta()
         for booking in bookings:
             length = booking.end - booking.start
             time = time + length
