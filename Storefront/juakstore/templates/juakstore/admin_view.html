@@ -2,10 +2,13 @@
 {% load i18n %}
 {% load juakstore_extras %}
 
-
 {% block title %}East Scarborough Storefront | Admin{% endblock %}
 
 {% block content %}
+
+<style>
+	form { display: inline; }
+</style>
 
 <h1 class="headings_index">Partner Account Requests</h1>
 <div id="partners_index">
@@ -13,11 +16,15 @@
 	<ul>
 		{% for user in partners %}
 			{% if not user.uID.is_active %}
-				<li>{{ user.company }}
+				<li>{{ user.company }} <br>
 				<form name="form" method="post" action="{% url 'juakstore:adminAccept' user.uID.id %}">{% csrf_token %}
 					<!--{{ form.as_p }}-->
 					<input type="submit" value="Approve" />
-				</form> </li>
+				</form>
+				<form name="form" method="post" action="{% url 'juakstore:adminDecline' user.uID.id %}">{% csrf_token %}
+					<!--{{ form.as_p }}-->
+					<input type="submit" value="Decline" />
+				</form>	</li>
 			{% endif %}
 		{% endfor %}
 	</ul>
@@ -33,11 +40,13 @@
 	<ul>
 		{% for booking in bookings %}
 			{% if not booking.approved %}
-				<li>{{ booking.name }}
+				<li>{{ booking.name }} <br>
 				<form name="form" method="post" action="{% url 'juakstore:adminAcceptBooking' booking.id %}">{% csrf_token %}
-					<!--{{ form.as_p }}-->
 					<input type="submit" value="Approve" />
-				</form> </li></li>
+				</form>
+				<form name="form" method="post" action="{% url 'juakstore:adminDeclineBooking' booking.id %}">{% csrf_token %}
+					<input type="submit" value="Decline" />
+				</form>	</li>
 			{% endif %}
 		{% endfor %}
 	</ul>
@@ -47,7 +56,11 @@
 {% endif %}
 </div>
 
+<h1 class="headings_index">Administration</h1>
+<div id="administration_index">
 <form action="{% url 'juakstore:roomCreate' %}"><input type="submit" value="Add Room" /></form>
+<br>
 <form action="{% url 'juakstore:bookingCreate' %}"><input type="submit" value="Make Booking" /></form>
+</div>
 
 {% endblock %}

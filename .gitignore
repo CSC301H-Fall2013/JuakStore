@@ -9,6 +9,7 @@ Storefront/JuakStoredb
 env/
 juakstore/settings.py
 Storefront/settings2.py
+manage2.py
 Storefront/dbstore
 dbstore
 sotrefrontdb
