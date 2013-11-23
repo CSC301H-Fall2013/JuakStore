@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
-from models import Booking, BookingCategory, Room, Partner, MultiRoomBooking, RepeatBooking, getRepeatBookings
+from models import Booking, BookingCategory, Room, Partner, RepeatBooking, getRepeatBookings
 from forms import BookingForm, RoomForm, BookingEditForm, PartnerForm
 from mycalendar import BookingCalendar
 from django.utils.safestring import mark_safe
@@ -302,6 +302,7 @@ def submitRoom(request):
     else:
         return HttpResponseRedirect(reverse('juakstore:roomCreate'))
 
+@login_required
 def display_conflics(request, pk):
     b = get_object_or_404(Booking, pk=pk)
     conflictingBookings = b.get_conflicts()

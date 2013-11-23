@@ -51,7 +51,9 @@ class Booking(models.Model):
     approved = models.BooleanField() 
 
     def is_active(self):
-        return datetime.combine(self.date, self.end) >= timezone.now()
+        return timezone.make_aware(datetime.combine(self.date, self.start),
+                                   timezone.get_default_timezone()) \
+               >= timezone.localtime(timezone.now())
 
     def __unicode__(self):
         return self.name
@@ -74,14 +76,14 @@ class Booking(models.Model):
             | (Q(start__lt=self.start) & Q(end__gt=self.end))
             | (Q(start__gt=self.start) & Q(end__lt=self.end))))
         return overlap
-
-class MultiRoomBooking(models.Model):
-    source = models.ForeignKey(Booking, related_name="multi_source")
-    target = models.ForeignKey(Booking, related_name="multi_target")
+#
+#class MultiRoomBooking(models.Model):
+#    source = models.ForeignKey(Booking, related_name="multi_source")
+#    target = models.ForeignKey(Booking, related_name="multi_target")
 
 class RepeatBooking(models.Model):
-    source = models.ForeignKey(Booking, related_name="repeat_source")
-    target = models.ForeignKey(Booking, related_name="repeat_target")
+    source = models.ForeignKey(Booking, related_name="repeat_source", on_delete=models.CASCADE)
+    target = models.ForeignKey(Booking, related_name="repeat_target", on_delete=models.CASCADE)
 
 
 def _getTargetBookingID(sourceSet):

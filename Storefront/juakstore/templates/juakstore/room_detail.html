@@ -11,7 +11,9 @@
     <h1 class="headings_index">All Bookings:</h1>
 	<ul>
     {% for booking in room_bookings %}
-        <li>{{ booking.date }}: <a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
+        {% if booking.is_active %}
+            <li>{{ booking.date }}: <a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></li>
+        {% endif %}
     {% endfor %}
 	</ul>
 {% else %}
