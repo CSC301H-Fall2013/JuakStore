@@ -1,0 +1,15 @@
+{% extends "juakstore/bookingdetail.html" %}
+
+{% block conflicts %}
+<h1>This booking conflicts with the following:</h1>
+
+{% if conflictBookings %}
+    <ul>
+    {% for c in conflictBookings %}
+        <li><a href="{% url 'juakstore:bookingDetail' c.id %}">{{ c.name }}</a>: {{ c.date }} {{ c.start }} - {{ c.end }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+
+{% endblock %}

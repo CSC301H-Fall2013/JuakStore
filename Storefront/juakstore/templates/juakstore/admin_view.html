@@ -37,19 +37,29 @@
 <h1 class="headings_index">Booking Requests</h1>
 <div id="partners_index">
 {% if bookings %}
-	<ul>
-		{% for booking in bookings %}
-			{% if not booking.approved %}
-				<li>{{ booking.name }} <br>
-				<form name="form" method="post" action="{% url 'juakstore:adminAcceptBooking' booking.id %}">{% csrf_token %}
-					<input type="submit" value="Approve" />
-				</form>
-				<form name="form" method="post" action="{% url 'juakstore:adminDeclineBooking' booking.id %}">{% csrf_token %}
-					<input type="submit" value="Decline" />
-				</form>	</li>
-			{% endif %}
-		{% endfor %}
-	</ul>
+    <table id="approval_table">
+        <thead><tr><th>Booking</th><th>Booker</th><th>Room</th><th>Date</th><th>Start</th><th>End</th><th>Conflict</th><th></th><th></th></tr></thead>
+        {% for booking in bookings %}
+            {% if not booking.approved %}
+                <tr>
+                <td><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a></td>
+                <td><a href="{% url 'juakstore:userDetail' booking.booker.id %}">{{ booking.booker }}</a></td>
+                <td><a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room }}</a></td>
+                <td>{{ booking.date }}</td>
+                <td>{{ booking.start }}</td>
+                <td>{{ booking.end }}</td>
+                <td>{% if booking.has_conflict %}<a href="{% url 'juakstore:conflictDetail' booking.id %}">Yes</a>{% else %}No{% endif %}</td>
+                <td>
+                    <form name="form" method="post" action="{% url 'juakstore:adminAcceptBooking' booking.id %}">{% csrf_token %}
+					<input type="submit" value="Approve" /></form>
+                </td>
+                <td><form name="form" method="post" action="{% url 'juakstore:adminDeclineBooking' booking.id %}">{% csrf_token %}
+					<input type="submit" value="Decline" /></form>
+                </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
 {% endif %}
 {% if noBookings %}
 	No new requests.

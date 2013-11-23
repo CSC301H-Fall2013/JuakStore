@@ -36,7 +36,7 @@ def index(request):
 
     template = loader.get_template('juakstore/index.html')
     newBooking = BookingForm()
-    all_bookings = Booking.objects.all()
+    all_bookings = Booking.objects.all().filter(approved=True)
     all_rooms = Room.objects.all()
     if request.user.is_authenticated():
         currentUser = request.user    
@@ -302,6 +302,12 @@ def submitRoom(request):
     else:
         return HttpResponseRedirect(reverse('juakstore:roomCreate'))
 
+def display_conflics(request, pk):
+    b = get_object_or_404(Booking, pk=pk)
+    conflictingBookings = b.get_conflicts()
+    return render(request, 'juakstore/conflictBooking.html', {'booking':b, 'conflictBookings': conflictingBookings})
+
+
 @login_required
 def displayBooking(request, pk):
     b = get_object_or_404(Booking, pk=pk)
@@ -378,7 +384,7 @@ class RoomView(generic.DetailView):
             month = int(request.GET['month'])
         else:
             month = datetime.datetime.now().month
-        room_bookings = Booking.objects.all().filter(room_id=kwargs['pk'])
+        room_bookings = Booking.objects.all().filter(room_id=kwargs['pk']).filter(approved=True)
         context = RequestContext(request, {
             'year': year,
             'month': month,
