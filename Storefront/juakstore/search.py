@@ -44,10 +44,14 @@ def search_category(request):
             sd = form.cleaned_data['start_date']
             ed = form.cleaned_data['end_date']
 
+            if sd > ed:
+                errors.append("Please make sure your start date is before your end date.")
+                return render(request, 'juakstore/search_category.html', {'form': form, 'errors': errors})
+            else:
             #filter days
-            low_bound = Booking.objects.filter(date__gte=sd)
-            upper_bound = Booking.objects.filter(date__lte=ed)
-            TOTAL = (low_bound & upper_bound)
+                low_bound = Booking.objects.filter(date__gte=sd)
+                upper_bound = Booking.objects.filter(date__lte=ed)
+                TOTAL = (low_bound & upper_bound)
 
             #filter rooms
             tmp = Room.objects.none()
