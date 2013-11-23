@@ -251,6 +251,7 @@ class ViewTest(unittest.TestCase):
    		#foundBookings = Booking.objects.order_by(date__year=2013, date__month=12)
     	#cal  = BookingCalendar(Booking.objects.order_by(date__year='2013', date__month='12')).formatmonth(2013, 12)
     	#self.assertEquals(render_to_response('index.html', {'calendar':mark_safe(cal),}),2)
+        return
     
 
 
