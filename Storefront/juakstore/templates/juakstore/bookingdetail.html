@@ -3,7 +3,7 @@
 
 {% block content %}
 
-{% if currentUser == booking.booker or currentUser.is_staff%}
+{% if currentUser.is_staff %}
 	<h1 class="headings_index">Booking Information: {{ booking.name }} </h1>
 	<p>{{ booking.notes }}</p>
 	<p>Booker: <a href="{% url 'juakstore:userDetail' booking.booker.id %}">{{ booking.booker }}</a></p>
@@ -14,13 +14,26 @@
 	<form method="get" action="{% url 'juakstore:editBooking' booking.id %}">
 		<button type="submit">Edit</button>
 	</form>
+	{% if booking.approved == False %}
+		<form name="form" method="post" action="{% url 'juakstore:adminAcceptBooking' booking.id %}">{% csrf_token %}
+			<input type="submit" value="Approve" />
+		</form>
+		<form name="form" method="post" action="{% url 'juakstore:adminDeclineBooking' booking.id %}">{% csrf_token %}
+			<input type="submit" value="Decline" />
+		</form>
+	{% endif %}
 {% else %}
 	<h1 class="headings_index">Booking Information: {{ booking.name }} </h1>
+	{% if currentUser == booking.booker %}
+		<p>{{ booking.notes }}</p>
+	{% endif %}
 	<p>Booker: <a href="{% url 'juakstore:userDetail' booking.booker.id %}">{{ booking.booker }}</a></p>
 	<p>Room: <a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room }}</a></p>
 	<p>Date: {{ booking.date }}</p>
 	<p>Start: {{ booking.start }}</p>
 	<p>End: {{ booking.end }}</p>
+	<br>
+	Please call Storefront if you would like to make any changes.
 {% endif %}
 
 {% endblock %}

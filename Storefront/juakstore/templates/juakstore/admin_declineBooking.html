@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load juakstore_extras %}
+
+
+{% block title %}East Scarborough Storefront | Admin{% endblock %}
+
+{% block content %}
+<h1 class="headings_index">Declined</h1>
+This booking has been declined.<br>
+<form action="{% url 'juakstore:adminView' %}"><input type="submit" value="Back" /></form>
+{% endblock %}
