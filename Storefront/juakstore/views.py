@@ -174,6 +174,7 @@ def addBooking(request):
                               start=f.cleaned_data['start'],
                               end=f.cleaned_data['end'],
                               booker=get_object_or_404(User, pk=request.user.id),
+                              approved=False,
                               category=get_object_or_404(BookingCategory, pk=request.POST['category']),
                               room=get_object_or_404(Room, pk=room.pk))
                 #auto-approve if admin
@@ -207,8 +208,11 @@ def addBooking(request):
                               start=f.cleaned_data['start'],
                               end=f.cleaned_data['end'],
                               booker=get_object_or_404(User, pk=request.user.id),
+                              approved=False,
                               category=get_object_or_404(BookingCategory, pk=request.POST['category']),
                               room=get_object_or_404(Room, pk=room.pk))
+                        if request.user.is_staff:
+                            repeatBooking.approved = True
                         repeatBooking.save()
                         relatedBookings[-1].append(repeatBooking)
 

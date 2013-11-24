@@ -41,6 +41,7 @@ class BookingForm(forms.ModelForm):
     def clean(self):
         error = []
         cleaned_data = super(BookingForm, self).clean()
+        print cleaned_data
         if (cleaned_data.get('start') >= cleaned_data.get('end')):
             error.append('Event end must be after the start')
         # now check if there are any bookings that overlap with the submitted one
