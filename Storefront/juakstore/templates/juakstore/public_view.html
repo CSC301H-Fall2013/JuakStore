@@ -11,10 +11,22 @@
 
 <div id="tabs">
 
-
+    <center>
+    <font size="2">
+        <strong> Rooms: </strong>
+    <span style="background-color:#fbf200;">Back Space</span>  |  
+    <span style="background-color:#cb98e9;">Meeting Room</span>  |  
+    <span style="background-color:#edab7e;">Kitchen</span>  |  
+    <span style="background-color:#f07f7f;">Staff Kitchen</span>  |  
+    <span style="background-color:#e86cc3;">Office 1</span>  |  
+    <span style="background-color:#8cd56b;">Office 2</span>  |  
+    <span style="background-color:#7f9ef5;">Office 3</span> 
+    </font></center></p>
 <div id="calendar">
 
     {% calendar all_bookings year month %}
+
+
 
     <div>
     <form action={% url 'juakstore:bookingCreate' %} method="get">
@@ -40,9 +52,11 @@
         <input id="year" name="year" type="hidden" value={{ year }}>
         <input id="month" name="month" type="hidden" value={{ month|add:'1' }}>
     {% endif %}
-    <input type="submit" value="Next">
+   <input type="submit" value="Next">
     </form>
+
     </div>
+
 </div>
 
 </div>

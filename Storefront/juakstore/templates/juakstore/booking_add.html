@@ -25,14 +25,9 @@
     </ul>
     <div id="calendar">
     <br>
-    {% calendar all_bookings year month %}
-
-    <div style="margin:0px; margin-left:auto; margin-right: auto;text-align:center;">
-
-    <p></p>
-
-    <p>Key: 
-
+    <center>
+    <font size="2">
+        <strong> Rooms: </strong>
     <span style="background-color:#fbf200;">Back Space</span>  |  
     <span style="background-color:#cb98e9;">Meeting Room</span>  |  
     <span style="background-color:#edab7e;">Kitchen</span>  |  
@@ -40,10 +35,14 @@
     <span style="background-color:#e86cc3;">Office 1</span>  |  
     <span style="background-color:#8cd56b;">Office 2</span>  |  
     <span style="background-color:#7f9ef5;">Office 3</span> 
+    </font></center></p>
 
+    {% calendar all_bookings year month %}
 
+    <div style="margin:0px; margin-left:auto; margin-right: auto;text-align:center;">
 
-    </p>
+    <p></p>
+
 
     <div style="float: left; text-align:center; padding-left:100px;">
     <form action={% url 'juakstore:bookingCreate' %} method="get">
@@ -78,7 +77,18 @@
 </div>
     <div id="agenda">
         <br>
-        {% agenda all_bookings year month day %}
+            <center>
+    <font size="2">
+        <strong> Rooms: </strong>
+    <span style="background-color:#fbf200;">Back Space</span>  |  
+    <span style="background-color:#cb98e9;">Meeting Room</span>  |  
+    <span style="background-color:#edab7e;">Kitchen</span>  |  
+    <span style="background-color:#f07f7f;">Staff Kitchen</span>  |  
+    <span style="background-color:#e86cc3;">Office 1</span>  |  
+    <span style="background-color:#8cd56b;">Office 2</span>  |  
+    <span style="background-color:#7f9ef5;">Office 3</span> 
+    </font></center></p>
+        <center>{% agenda all_bookings year month day %}</center>
         <p></p>
         <div style="margin:0px; margin-left:auto; margin-right: auto;text-align:center;">
         <div style="float: left; text-align:center; padding-left:100px;">
