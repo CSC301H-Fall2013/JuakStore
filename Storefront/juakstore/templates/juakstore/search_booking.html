@@ -49,7 +49,7 @@ Rooms:
 <strong>Search Results:</strong> {{ count }}</br>
 
 {% for b in bookings %}
-{{ p }}</br>
+<li><a href="{% url 'juakstore:bookingDetail' b.id %}">{{ b.name }}</a></li>
 {% endfor %}
 
 Number of hours booked during this period: {{ time }}</br>

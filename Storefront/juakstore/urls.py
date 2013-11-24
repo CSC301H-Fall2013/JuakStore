@@ -31,5 +31,6 @@ urlpatterns = patterns('',
                     url(r'^rooms/create/$', login_required(views.RoomCreate.as_view()), name='roomCreate'),
                     url(r'^rooms/(?P<pk>\d+)/$', login_required(views.RoomView.as_view()), name='roomDetail'),
                     url(r'^rooms/(?P<pk>\d+)/date/(?P<year>\d+)/(?P<month>\d+)/$', login_required(views.BookingView.as_view()), name='roomDetailyymm'),
-                    url(r'^search_booking/$', search.search_booking, name='search_booking')
+                    url(r'^search_booking/$', search.search_booking, name='search_booking'),
+                    url(r'^search_room/$', search.search_available_room, name='search_room')
 )
