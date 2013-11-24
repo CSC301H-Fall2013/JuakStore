@@ -2,9 +2,29 @@
 
 {% block content %}
 
-<h1 class="headings_index">{{ user.username }}</h1>
-<h2>{{ user.email }}</h2>
-
+<h1 class="headings_index">{{ cuser.username }}</h1>
+<h2>{{ cuser.email }}</h2>
+<head>
+<style>
+table, td, th
+{
+padding:2px 4px;
+}
+</style>
+</head>
+<table id="partner_table" border="0">
+<tr><th>Manager Name</th><td>{{cpartner.name}}</td></tr>
+<tr><th>Agency Name</th><td>{{cpartner.company}}</td></tr>
+<tr><th>Additional Info</th><td>{{cpartner.info}}</td></tr>
+<tr><th>Program Name</th><td>{{cpartner.program}}</td></tr>
+<tr><th>Program Facilitator</th><td>{{cpartner.facilitator}}</td></tr>
+<tr><th>Position</th><td>{{cpartner.position}}</td></tr>
+<tr><th>Address</th><td>{{cpartner.address}}</td></tr>
+<tr><th>Phone</th><td>{{cpartner.phones}}</td></tr>
+<tr><th>Fax</th><td>{{cpartner.faxes}}</td></tr>
+<tr><th>Agreement Status</th><td>{{cpartner.astatus}}</td></tr>
+<tr><th>Insurance Status</th><td>{{cpartner.istatus}}</td></tr>
+</table>
 {% if user_bookings %}
     <h1>Upcoming Bookings:</h1>
     {% for booking in user_bookings %}

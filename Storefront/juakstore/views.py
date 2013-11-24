@@ -418,7 +418,15 @@ class UserDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
         user_bookings = Booking.objects.all().filter(booker_id=kwargs['object'].id).order_by('date', 'start')
+        user = User.objects.all().filter(id=kwargs['object'].id)
+        partner = Partner.objects.all().filter(uID=kwargs['object'].id)
+        for u in user:
+            cUser = u
+        for t in partner:
+            cPartner = t 
         context['user_bookings'] = user_bookings
+        context['cuser'] = cUser
+        context['cpartner'] = cPartner
         return context
 
 class RoomList(generic.ListView):

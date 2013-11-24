@@ -47,6 +47,14 @@ class RegistrationForm(forms.Form):
     info = forms.CharField(     max_length=200,
                                 label=_("Additional Info"),
                                 )      
+    program = forms.CharField(max_length=30, label=_("Program Name"),) 
+    facilitator = forms.CharField(max_length=30, label=_("Program Facilitator"),) 
+    position = forms.CharField(max_length=30, label=_("Position"),) 
+    address = forms.CharField(max_length=100, label=_("Address"),)
+    phones = forms.CharField(max_length=80, label=_("Phone Numbers"),)
+    faxes = forms.CharField(max_length=80, label=_("Fax Numbers"),)
+    astatus = forms.CharField(max_length=30, label=_("Agreement Status"),)
+    istatus = forms.CharField(max_length=30, label=_("Insurance Status"),)  
     
     def clean_username(self):
         """
