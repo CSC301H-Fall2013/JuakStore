@@ -12,8 +12,8 @@ from mycalendar import BookingCalendar
 from django.utils.safestring import mark_safe
 from django.contrib.admin.views.decorators import staff_member_required
 from django.conf import settings
-from django.core.mail import send_mail
-
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.contrib.sites.models import Site
 import datetime
 
 from django.forms.models import model_to_dict
@@ -122,8 +122,12 @@ def accept(request, pk):
         b.save()
         #send email notification
         subject = "East Scarborough Storefront - Account Approved"
-        message = "Dear " + b.username + ",\n\nYour account request at East Scarborough Storefront has been approved.\nYou can login at <URL>.\n\nThank you"
-        b.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        current_site = Site.objects.get_current()        
+        text_content = "Dear " + b.username + ",\n\nYour account request at East Scarborough Storefront has been approved.\nYou can login at " + current_site.name + ".\n\nThank you"
+        html_content = 'Dear ' + b.username + ',<br><br>Your account request at East Scarborough Storefront has been approved.<br>You can login at <a href="http://' + current_site.domain + '">' + current_site.name + '</a>.<br><br>Thank you'
+        msg = EmailMultiAlternatives(subject, text_content, settings.DEFAULT_FROM_EMAIL, [b.email])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()          
         return render(request, 'juakstore/admin_accept.html', {'user': b})
     else:
         form = BookingForm()
@@ -156,8 +160,12 @@ def acceptBooking(request, pk):
         b.save()
         #send email notification
         subject = "East Scarborough Storefront - Booking Approved"
-        message = "Dear " + b.booker.username + ",\n\nYour booking request '" + b.name + "' at East Scarborough Storefront has been approved.\nYou can login at <URL>.\n\nThank you"
-        b.booker.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        current_site = Site.objects.get_current()        
+        text_content = "Dear " + b.booker.username + ",\n\nYour booking request '" + b.name + "' at East Scarborough Storefront has been approved.\nYou can login at " + current_site.name + ".\n\nThank you"
+        html_content = 'Dear ' + b.booker.username + ',<br><br>Your booking request ' + b.name + ' at East Scarborough Storefront has been approved.<br>You can login at <a href="http://' + current_site.domain + '">' + current_site.name + '</a>.<br><br>Thank you'
+        msg = EmailMultiAlternatives(subject, text_content, settings.DEFAULT_FROM_EMAIL, [b.booker.email])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()          
         return render(request, 'juakstore/admin_acceptBooking.html', {'booking': b})
     else:
         form = BookingForm()
