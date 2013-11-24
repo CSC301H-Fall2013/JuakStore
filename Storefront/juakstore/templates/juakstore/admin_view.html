@@ -74,7 +74,7 @@
                 <td>{{ booking.date }}</td>
                 <td>{{ booking.start }}</td>
                 <td>{{ booking.end }}</td>
-                <td>{% if booking.has_conflict %}<a href="{% url 'juakstore:conflictDetail' booking.id %}">Yes</a>{% else %}No{% endif %}</td>
+                <td>{% if booking.has_conflict %}<a href="{% url 'juakstore:bookingDetail' booking.id %}">Yes</a>{% else %}No{% endif %}</td>
                 <td>
                     <form name="form" method="post" action="{% url 'juakstore:adminAcceptBooking' booking.id %}">{% csrf_token %}
 					<input type="submit" value="Approve" /></form>

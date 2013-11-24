@@ -6,6 +6,14 @@
 {% if currentUser.is_staff %}
 	<h1 class="headings_index">Booking Information: {{ booking.name }} </h1>
 	<p>{{ booking.notes }}</p>
+    {% if booking.has_conflict %}
+        <p class="conflict">The booking has conflicts with the following bookings in this room:</p>
+        <ul>
+        {% for c in booking.get_conflicts %}
+        <li><a href="{% url 'juakstore:bookingDetail' c.id %}">{{ c.name }}</a>: {{ c.date }} {{ c.start }} - {{ c.end }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 	<p>Booker: <a href="{% url 'juakstore:userDetail' booking.booker.id %}">{{ booking.booker }}</a></p>
 	<p>Room: <a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room }}</a></p>
 	<p>Date: {{ booking.date }}</p>
@@ -14,6 +22,9 @@
 	<form method="get" action="{% url 'juakstore:editBooking' booking.id %}">
 		<button type="submit">Edit</button>
 	</form>
+    <form method="get" action="{% url 'juakstore:deleteBooking' booking.id %}">
+        <button type="delete">Delete</button>
+    </form>
 	{% if booking.approved == False %}
 		<form name="form" method="post" action="{% url 'juakstore:adminAcceptBooking' booking.id %}">{% csrf_token %}
 			<input type="submit" value="Approve" />
@@ -26,6 +37,14 @@
 	<h1 class="headings_index">Booking Information: {{ booking.name }} </h1>
 	{% if currentUser == booking.booker %}
 		<p>{{ booking.notes }}</p>
+        {% if booking.has_conflict %}
+        <p class="conflict">The booking has conflicts with the following:</p>
+        <ul>
+        {% for c in booking.get_conflicts %}
+        <li><a href="{% url 'juakstore:bookingDetail' c.id %}">{{ c.name }}</a>: {{ c.date }} {{ c.start }} - {{ c.end }} in {{ c.room }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
 	{% endif %}
 	<p>Booker: <a href="{% url 'juakstore:userDetail' booking.booker.id %}">{{ booking.booker }}</a></p>
 	<p>Room: <a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room }}</a></p>

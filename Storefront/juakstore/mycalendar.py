@@ -1,4 +1,4 @@
-from calendar import HTMLCalendar
+from calendar import HTMLCalendar, month_name
 from datetime import date, timedelta
 from itertools import groupby
 
@@ -116,7 +116,11 @@ class WeeklyCalendar():
         # first find out which day of the week it is, 0 is Monday, 6 is Sunday
         day_of_week = basedate.weekday()
 
+
+
         start_of_week = basedate - timedelta(days=day_of_week)
+
+        weekHTML += '<tr><th colspan=7>'+ start_of_week.strftime('%m/%d/%Y') +' to '+ (start_of_week + timedelta(days=6)).strftime('%m/%d/%Y') +'</th></tr>'
 
         for i in range(0, 7):
             weekHTML += self.formatday(start_of_week, i)

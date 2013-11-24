@@ -354,6 +354,15 @@ def logoutStorefront(request):
     logout(request)
     return HttpResponseRedirect(reverse('juakstore:index'))
 
+
+@login_required
+def deleteBooking(request,pk):
+    print "HELLO"
+    b = get_object_or_404(Booking, pk=pk)
+    b.delete()
+    return render(request, 'juakstore/bookingDelete.html')
+
+
 class BookingView(generic.DetailView):
     model = Booking
     template_name = 'juakstore/bookingdetail.html'
@@ -367,20 +376,25 @@ class BookingCreate(generic.edit.CreateView):
 
     def get(self, request):
         if 'year' in request.GET:
-            self.year = int(request.GET['year'])
-        #else:
-        #    year = datetime.datetime.now().year
+            year = int(request.GET['year'])
+        else:
+            year = datetime.datetime.now().year
         if 'month' in request.GET:
-            self.month = int(request.GET['month'])
-        #else:
-        #    month = datetime.datetime.now().month
+            month = int(request.GET['month'])
+        else:
+            month = datetime.datetime.now().month
+        if 'day' in request.GET:
+            day = int(request.GET['day'])
+        else:
+            day = datetime.datetime.now().day
         all_bookings = Booking.objects.all()
         form = self.form_class(initial=self.initial)
         template = loader.get_template(self.template_name)
         context = RequestContext(request, {
-            'year': self.year,
-            'month': self.month,
+            'year': year,
+            'month': month,
             'form': form,
+            'day': day,
             'all_bookings': all_bookings,
         })
         return HttpResponse(template.render(context))
@@ -401,6 +415,12 @@ class UserDetailView(generic.DetailView):
     model = User
     template_name = 'juakstore/user.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        user_bookings = Booking.objects.all().filter(booker_id=kwargs['object'].id).order_by('date', 'start')
+        context['user_bookings'] = user_bookings
+        return context
+
 class RoomList(generic.ListView):
     model = Room
     template_name = "juakstore/room_list.html"
@@ -418,7 +438,7 @@ class RoomView(generic.DetailView):
             month = int(request.GET['month'])
         else:
             month = datetime.datetime.now().month
-        room_bookings = Booking.objects.all().filter(room_id=kwargs['pk']).filter(approved=True)
+        room_bookings = Booking.objects.all().filter(room_id=kwargs['pk']).filter(approved=True).order_by('date','start')
         context = RequestContext(request, {
             'year': year,
             'month': month,
