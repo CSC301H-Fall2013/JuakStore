@@ -13,7 +13,7 @@
     The following bookings have been submitted:
     <ul>
     {% for booking in submittedBookings %}
-        <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a> on {{ booking.date }} from {{ booking.start }} to {{ booking.end }} in <a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room.name }}</a>{% if booking.has_conflict %}<br>Warning: this booking has a conflict{% endif %}</li>
+        <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a> on {{ booking.date }} from {{ booking.start }} to {{ booking.end }} in <a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room.name }}</a>{% if booking.has_conflict %}<br><p class="conflict">Warning: this booking has a conflict{% endif %}</p></li>
     {% endfor %}
     </ul>
 {% endif %}
