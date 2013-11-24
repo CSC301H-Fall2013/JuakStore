@@ -23,21 +23,21 @@
 
        {{ calendar }}
 
-       <input type="submit" value="login" />
+       <input type="submit" value="Login" />
        <input type="hidden" name="next" value="{{ next }}" />
     </form>
 	<br>
     Don't have an account? Click below to register
 
     <form>
-	<input type="button" onclick="window.location.href='/accounts/register'" value="register" />
+	<input type="button" onclick="window.location.href='/accounts/register'" value="Register" />
        <input type="hidden" name="next" value="{{ next }}" />
     </form>
 	<br>
 	Public view
 
     <form>
-	<input type="button" onclick="window.location.href='/public'" value="public view" />
+	<input type="button" onclick="window.location.href='/public'" value="Public Calendar" />
        <input type="hidden" name="next" value="{{ next }}" />
     </form>
 
