@@ -9,6 +9,15 @@
 
 <div id="tribe-events-content" class="tribe-events-month">
 
+{% if submittedBookings %}
+    The following bookings have been submitted:
+    <ul>
+    {% for booking in submittedBookings %}
+        <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a> on {{ booking.date }} from {{ booking.start }} to {{ booking.end }} in <a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room.name }}</a>{% if booking.has_conflict %}<br>Warning: this booking has a conflict{% endif %}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
 <div id="tabs">
 
 
@@ -63,13 +72,13 @@
     <p><label for="id_name">Event Name:</label> {{ form.name }}</p>
     <p><label for="id_notes">Notes:</label> {{ form.notes }}</p>
     <p><label for="id_category">Category:</label> {{ form.category }}</p>
-    <p><label for="id_date_month">Date:</label>{{ form.date }}</p>
+    <p><label for="id_date">Date:</label>{{ form.date }}</p>
     <p><label for="id_start_hour">Start:</label> {{ form.start }}</p>
     <p><label for="id_end_hour">Start:</label> {{ form.end }}</p>
     <p><label for="id_room">Room:</label> {{ form.room }}</p>
     <p><label for="id_repeat">Repeat:</label> {{ form.repeat }}</p>
     <p id="repeat_fields">Repeat every {{ form.repeat_frequency }} {{ form.repeat_frequency_unit }} until {{ form.repeat_end }}</p>
-<input type="submit" value="Submit" />
+    <input type="submit" value="Submit" />
 </form>
 
 {% endblock %}

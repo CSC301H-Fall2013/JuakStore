@@ -39,7 +39,8 @@ class BookingCalendar(HTMLCalendar):
                 body = ['<div id="tribe-events-content" class="tribe-events-month"><div id="tribe-events-header" data-title="Events this November">']
                 for booking in self.bookings[day]:
                     body.append('<li class="cal-list">')
-                    body.append(' <h3 class="tribe-events-month-event-title summary"><a href="%s" class="url calendar-list">' % reverse('juakstore:bookingDetail', None, [booking.id]))
+                    body.append(' <h3 class="tribe-events-month-event-title summary ' + booking.room.name + '">')
+                    body.append('<a href="%s" class="url calendar-list">' % reverse('juakstore:bookingDetail', None, [booking.id]))
                     body.append(esc(booking.name))
                     if booking.approved == False:
                         body.append(' (request)')

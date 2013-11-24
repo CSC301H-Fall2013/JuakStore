@@ -157,17 +157,9 @@ def addBooking(request):
         f = BookingForm(request.POST, initial={'booker':request.user, 'room':0})
         if f.is_valid():
             first_booking = 0
-            '''
-                In order to keep track of related bookings, a two dimensional array will be used
-                Each row indicates a collection of repeated bookings in a room
-                Each column indicates a collection of multiroom bookings in a given repeat
-                An entry will be None if there is no booking for that repeat iteration
-            '''
-            relatedBookings = []
+            #relatedBookings = []
+            submittedBookings = []
             for room in f.cleaned_data['room']:
-                '''
-                    TODO: check if this booking will conflict with any others
-                '''
                 newBooking = Booking(name=f.cleaned_data['name'],
                               notes=f.cleaned_data['notes'],
                               date=f.cleaned_data['date'],
@@ -183,7 +175,8 @@ def addBooking(request):
                 newBooking.save()
                 if first_booking == 0:
                     first_booking = newBooking
-                relatedBookings.append([newBooking])
+                submittedBookings.append(newBooking)
+                #relatedBookings.append([newBooking])
 
 
                 if (f.cleaned_data['repeat']): # repeat is specified
@@ -214,13 +207,15 @@ def addBooking(request):
                         if request.user.is_staff:
                             repeatBooking.approved = True
                         repeatBooking.save()
-                        relatedBookings[-1].append(repeatBooking)
-
-            if len(relatedBookings[0]) > 1:
-                for i in range(0, len(relatedBookings)):
-                    for j in range(1, len(relatedBookings[i])):
-                        if not relatedBookings[i][j] is None:
-                            RepeatBooking(source=relatedBookings[i][0], target=relatedBookings[i][j]).save()
+                        submittedBookings.append(repeatBooking)
+                        RepeatBooking(source=newBooking, target=repeatBooking).save()
+            #            relatedBookings[-1].append(repeatBooking)
+            #
+            #if len(relatedBookings[0]) > 1:
+            #    for i in range(0, len(relatedBookings)):
+            #        for j in range(1, len(relatedBookings[i])):
+            #            if not relatedBookings[i][j] is None:
+            #                RepeatBooking(source=relatedBookings[i][0], target=relatedBookings[i][j]).save()
 
             #if len(relatedBookings) > 1:
             #    for j in range(0, len(relatedBookings[0])):
@@ -234,11 +229,15 @@ def addBooking(request):
             message = request.user.username + " has requested a booking.\n\nBooking info:\n <INFO>"
             for a in admins:
                 a.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)                        
-            return HttpResponseRedirect(reverse('juakstore:bookingDetail',
-                                                args=(first_booking.id,)))
+            return render(request, 'juakstore/booking_add.html', {'form':BookingForm(),
+                                                                  'all_bookings':Booking.objects.all().filter(approved=True),
+                                                                  'year': datetime.datetime.now().year,
+                                                                  'month': datetime.datetime.now().month,
+                                                                  'submittedBookings': submittedBookings,
+                                                                  })
         else:
             return render(request, 'juakstore/booking_add.html', {'form': f,
-                                                                  'all_bookings':Booking.objects.all(),
+                                                                  'all_bookings':Booking.objects.all().filter(approved=True),
                                                                   'year': datetime.datetime.now().year,
                                                                   'month': datetime.datetime.now().month,
                                                                   })
