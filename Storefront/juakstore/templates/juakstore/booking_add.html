@@ -7,138 +7,140 @@
 
 <div id="tribe-events-content-wrapper" class="tribe-clearfix">
 
-<div id="tribe-events-content" class="tribe-events-month">
+    <div id="tribe-events-content" class="tribe-events-month">
 
-{% if submittedBookings %}
-    The following bookings have been submitted:
-    <ul>
-    {% for booking in submittedBookings %}
-        <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a> on {{ booking.date }} from {{ booking.start }} to {{ booking.end }} in <a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room.name }}</a>{% if booking.has_conflict %}<br><p class="conflict">Warning: this booking has a conflict{% endif %}</p></li>
-    {% endfor %}
-    </ul>
-{% endif %}
+        {% if submittedBookings %}
+            The following bookings have been submitted:
+            <ul>
+            {% for booking in submittedBookings %}
+                <li><a href="{% url 'juakstore:bookingDetail' booking.id %}">{{ booking.name }}</a> on {{ booking.date }} from {{ booking.start }} to {{ booking.end }} in <a href="{% url 'juakstore:roomDetail' booking.room.id %}">{{ booking.room.name }}</a>{% if booking.has_conflict %}<br><p class="conflict">Warning: this booking has a conflict{% endif %}</p></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
 
-<div id="tabs">
-    <ul>
-        <li><a href="#calendar">Monthly View</a></li>
-        <li><a href="#agenda">Weekly View</a></li>
-    </ul>
-    <div id="calendar">
-    <br>
-    <center>
-    <font size="2">
-        <strong> Rooms: </strong>
-    <span style="background-color:#fbf200;">Back Space</span>  |  
-    <span style="background-color:#cb98e9;">Meeting Room</span>  |  
-    <span style="background-color:#edab7e;">Kitchen</span>  |  
-    <span style="background-color:#f07f7f;">Staff Kitchen</span>  |  
-    <span style="background-color:#e86cc3;">Office 1</span>  |  
-    <span style="background-color:#8cd56b;">Office 2</span>  |  
-    <span style="background-color:#7f9ef5;">Office 3</span> 
-    </font></center></p>
-
-    {% calendar all_bookings year month %}
-
-    <div style="margin:0px; margin-left:auto; margin-right: auto;text-align:center;">
-
-    <p></p>
-
-
-    <div style="float: left; text-align:center; padding-left:100px;">
-    <form action={% url 'juakstore:bookingCreate' %} method="get">
-    {% if month == 1 %}
-        <input id="year" name="year" type="hidden" value={{ year|add:-1 }}>
-        <input id="month" name="month" type="hidden" value="12">
-    {% else %}
-        <input id="year" name="year" type="hidden" value={{ year }}>
-        <input id="month" name="month" type="hidden" value={{ month|add:'-1' }}>
-    {% endif %}
-        <input type="submit" value="Prev">
-    </form>
-    </div>
-
-    <div style="float: left;">
-    <form action={% url 'juakstore:bookingCreate' %} method="get">
-    {% if month == 12 %}
-        <input id="year" name="year" type="hidden" value={{ year|add:1 }}>
-        <input id="month" name="month" type="hidden" value="1">
-    {% else %}
-        <input id="year" name="year" type="hidden" value={{ year }}>
-        <input id="month" name="month" type="hidden" value={{ month|add:'1' }}>
-    {% endif %}
-    <input type="submit" value="Next">
-    </form>
-    </div>
-
-    <div style="clear:both;"></div>
-
-    </div>
-
-</div>
-    <div id="agenda">
-        <br>
+        <div id="tabs">
+            <ul>
+                <li><a href="#calendar">Monthly View</a></li>
+                <li><a href="#agenda">Weekly View</a></li>
+            </ul>
+            <div id="calendar">
+            <br>
             <center>
-    <font size="2">
-        <strong> Rooms: </strong>
-    <span style="background-color:#fbf200;">Back Space</span>  |  
-    <span style="background-color:#cb98e9;">Meeting Room</span>  |  
-    <span style="background-color:#edab7e;">Kitchen</span>  |  
-    <span style="background-color:#f07f7f;">Staff Kitchen</span>  |  
-    <span style="background-color:#e86cc3;">Office 1</span>  |  
-    <span style="background-color:#8cd56b;">Office 2</span>  |  
-    <span style="background-color:#7f9ef5;">Office 3</span> 
-    </font></center></p>
-        <center>{% agenda all_bookings year month day %}</center>
-        <p></p>
-        <div style="margin:0px; margin-left:auto; margin-right: auto;text-align:center;">
-        <div style="float: left; text-align:center; padding-left:100px;">
-        <form action={% url 'juakstore:bookingCreate' %} method="get">
-            <input id="year" name="year" type="hidden" value={% oneWeekDiff year month day 'year' 'last' %}>
-            <input id="month" name="month" type="hidden" value={% oneWeekDiff year month day 'month' 'last' %}>
-            <input id="day" name="day" type="hidden" value={% oneWeekDiff year month day 'day' 'last' %}>
-            <input type="submit" value="Prev">
-        </form>
+            <font size="2">
+                <strong> Rooms: </strong>
+            <span style="background-color:#fbf200;">Back Space</span>  |  
+            <span style="background-color:#cb98e9;">Meeting Room</span>  |  
+            <span style="background-color:#edab7e;">Kitchen</span>  |  
+            <span style="background-color:#f07f7f;">Staff Kitchen</span>  |  
+            <span style="background-color:#e86cc3;">Office 1</span>  |  
+            <span style="background-color:#8cd56b;">Office 2</span>  |  
+            <span style="background-color:#7f9ef5;">Office 3</span> 
+            </font></center></p>
+
+            {% calendar all_bookings year month %}
+
+            <div style="margin:0px; margin-left:auto; margin-right: auto;text-align:center;">
+
+                <p></p>
+
+
+                <div style="float: left; text-align:center; padding-left:100px;">
+                <form action={% url 'juakstore:bookingCreate' %} #calendar method="get">
+                {% if month == 1 %}
+                    <input id="year" name="year" type="hidden" value={{ year|add:-1 }}>
+                    <input id="month" name="month" type="hidden" value="12">
+                {% else %}
+                    <input id="year" name="year" type="hidden" value={{ year }}>
+                    <input id="month" name="month" type="hidden" value={{ month|add:'-1' }}>
+                {% endif %}
+                    <input type="submit" value="Prev">
+                </form>
+                </div>
+
+                <div style="float: left;">
+                <form action={% url 'juakstore:bookingCreate' %} #calendar method="get">
+                {% if month == 12 %}
+                    <input id="year" name="year" type="hidden" value={{ year|add:1 }}>
+                    <input id="month" name="month" type="hidden" value="1">
+                {% else %}
+                    <input id="year" name="year" type="hidden" value={{ year }}>
+                    <input id="month" name="month" type="hidden" value={{ month|add:'1' }}>
+                {% endif %}
+                <input type="submit" value="Next">
+                </form>
+                </div>
+
+                <div style="clear:both;"></div>
+
+            </div>
+
         </div>
 
-        <div style="float: left;">
-        <form action={% url 'juakstore:bookingCreate' %} method="get">
-            <input id="year" name="year" type="hidden" value={% oneWeekDiff year month day 'year' 'next' %}>
-            <input id="month" name="month" type="hidden" value={% oneWeekDiff year month day 'month' 'next' %}>
-            <input id="day" name="day" type="hidden" value={% oneWeekDiff year month day 'day' 'next' %}>
-            <input type="submit" value="Next">
-        </form>
+         <div id="agenda">
+                <br>
+                    <center>
+            <font size="2">
+                <strong> Rooms: </strong>
+            <span style="background-color:#fbf200;">Back Space</span>  |  
+            <span style="background-color:#cb98e9;">Meeting Room</span>  |  
+            <span style="background-color:#edab7e;">Kitchen</span>  |  
+            <span style="background-color:#f07f7f;">Staff Kitchen</span>  |  
+            <span style="background-color:#e86cc3;">Office 1</span>  |  
+            <span style="background-color:#8cd56b;">Office 2</span>  |  
+            <span style="background-color:#7f9ef5;">Office 3</span> 
+            </font></center></p>
+                <center>{% agenda all_bookings year month day %}</center>
+                <p></p>
+                <div style="margin:0px; margin-left:auto; margin-right: auto;text-align:center;">
+                <div style="float: left; text-align:center; padding-left:100px;">
+                <form action={% url 'juakstore:bookingCreate' %} #agenda method="get">
+                    <input id="year" name="year" type="hidden" value={% oneWeekDiff year month day 'year' 'last' %}>
+                    <input id="month" name="month" type="hidden" value={% oneWeekDiff year month day 'month' 'last' %}>
+                    <input id="day" name="day" type="hidden" value={% oneWeekDiff year month day 'day' 'last' %}>
+                    <input type="submit" value="Prev">
+                </form>
+                </div>
+
+                <div style="float: left;">
+                <form action={% url 'juakstore:bookingCreate' %} #agenda method="get">
+                    <input id="year" name="year" type="hidden" value={% oneWeekDiff year month day 'year' 'next' %}>
+                    <input id="month" name="month" type="hidden" value={% oneWeekDiff year month day 'month' 'next' %}>
+                    <input id="day" name="day" type="hidden" value={% oneWeekDiff year month day 'day' 'next' %}>
+                    <input type="submit" value="Next">
+                </form>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+
         </div>
     </div>
-    <div style="clear:both;"></div>
+    </p>
+    Please click the following button you would like to search for available rooms within your time range.<br>
 
-</div>
-</div>
-</p>
-Please click the following button you would like to search for available rooms within your time range.<br>
+    <form action="{% url 'juakstore:search' %}"> <input type="submit" value="Search Available Rooms" /></form></p>
 
-<form action="{% url 'juakstore:search' %}"> <input type="submit" value="Search Available Rooms" /></form></p>
+    <p>Fill out the following form to fill a booking request. We shall contact you once the booking request has been confirmed. Please take a look at the description of different rooms available to help you make your choices.</p>
 
-<p>Fill out the following form to fill a booking request. We shall contact you once the booking request has been confirmed. Please take a look at the description of different rooms available to help you make your choices.</p>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/booking_add.js"></script>
 
-<script type="text/javascript" src="{{ STATIC_URL }}js/booking_add.js"></script>
+    <form action={% url 'juakstore:bookingSubmit' %} method="post">{% csrf_token %}
 
-<form action={% url 'juakstore:bookingSubmit' %} method="post">{% csrf_token %}
+        {# Include the hidden fields #}
+        {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
 
-    {# Include the hidden fields #}
-    {% for hidden in form.hidden_fields %}
-    {{ hidden }}
-    {% endfor %}
-
-    <p><label for="id_name">Event Name:</label> {{ form.name }}</p>
-    <p><label for="id_notes">Notes:</label> {{ form.notes }}</p>
-    <p><label for="id_category">Category:</label> {{ form.category }}</p>
-    <p><label for="id_date">Date:</label>{{ form.date }}</p>
-    <p><label for="id_start_hour">Start:</label> {{ form.start }}</p>
-    <p><label for="id_end_hour">Start:</label> {{ form.end }}</p>
-    <p><label for="id_room">Room:</label> {{ form.room }}</p>
-    <p><label for="id_repeat">Repeat:</label> {{ form.repeat }}</p>
-    <p id="repeat_fields">Repeat every {{ form.repeat_frequency }} {{ form.repeat_frequency_unit }} until {{ form.repeat_end }}</p>
-    <input type="submit" value="Submit" />
-</form>
+        <p><label for="id_name">Event Name:</label> {{ form.name }}</p>
+        <p><label for="id_notes">Notes:</label> {{ form.notes }}</p>
+        <p><label for="id_category">Category:</label> {{ form.category }}</p>
+        <p><label for="id_date">Date:</label>{{ form.date }}</p>
+        <p><label for="id_start_hour">Start:</label> {{ form.start }}</p>
+        <p><label for="id_end_hour">Start:</label> {{ form.end }}</p>
+        <p><label for="id_room">Room:</label> {{ form.room }}</p>
+        <p><label for="id_repeat">Repeat:</label> {{ form.repeat }}</p>
+        <p id="repeat_fields">Repeat every {{ form.repeat_frequency }} {{ form.repeat_frequency_unit }} until {{ form.repeat_end }}</p>
+        <input type="submit" value="Submit" />
+    </form>
+</script></div></div>
 
 {% endblock %}
