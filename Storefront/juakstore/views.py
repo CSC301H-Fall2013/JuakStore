@@ -223,12 +223,13 @@ def addBooking(request):
             #            if not relatedBookings[i][j] is None:
             #                MultiRoomBooking(source=relatedBookings[0][j], target=relatedBookings[i][j]).save()
 
-            # notify all admins of booking request
+            # notify all admins of booking request, dont send if admin makes a booking
             admins = User.objects.filter(is_staff=True) 
             subject = "East Scarborough Storefront - Booking Request"
-            message = request.user.username + " has requested a booking.\n\nBooking info:\n <INFO>"
-            for a in admins:
-                a.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)                        
+            message = request.user.username + " has requested a booking.\n\nBooking info:\nName: " + newBooking.name + "\nNotes: " + newBooking.notes + "\nDate: " + str(newBooking.date) +"\nTime: " + str(newBooking.start) + " - " + str(newBooking.end) + "\nCategory: " + newBooking.category.name + "\nRoom: " + newBooking.room.name
+            if newBooking.booker.is_staff == False:
+                for a in admins:
+                    a.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)                        
             return render(request, 'juakstore/booking_add.html', {'form':BookingForm(),
                                                                   'all_bookings':Booking.objects.all().filter(approved=True),
                                                                   'year': datetime.datetime.now().year,
