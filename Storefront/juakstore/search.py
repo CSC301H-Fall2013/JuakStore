@@ -8,23 +8,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.forms.extras.widgets import SelectDateWidget
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.exceptions import ValidationError
 from datetime import *
 from dateutil.relativedelta import *
 
 
-class CategoryForm(forms.ModelForm):
-    class Meta:
-        model = BookingCategory
-
-class PartnerForm(forms.ModelForm):
-    class Meta:
-        model = Partner
-
-class RoomForm(forms.ModelForm):
-    class Meta:
-        model = Room
-
-class SEARCHFORM(forms.Form):
+class SummaryForm(forms.Form):
     category = forms.ModelMultipleChoiceField(required=False, queryset=BookingCategory.objects.all())
     partner = forms.ModelMultipleChoiceField(required=False, queryset=Partner.objects.all())
     room = forms.ModelMultipleChoiceField(required=False, queryset=Room.objects.all())
@@ -35,7 +24,7 @@ def search_category(request):
     errors = []
     notfirst = False
     if request.method == 'POST':
-        form = SEARCHFORM(request.POST)
+        form = SummaryForm(request.POST)
         if form.is_valid():
             notfirst = True
             room = form.cleaned_data['room']
@@ -46,7 +35,7 @@ def search_category(request):
 
             if sd > ed:
                 errors.append("Please make sure your start date is before your end date.")
-                return render(request, 'juakstore/search_category.html', {'form': form, 'errors': errors})
+                return render(request, 'juakstore/summary.html', {'form': form, 'errors': errors})
             else:
             #filter days
                 low_bound = Booking.objects.filter(date__gte=sd)
@@ -77,15 +66,15 @@ def search_category(request):
             BOOKINGS = tmp.count()
             TIME = get_hrs(TOTAL)
 
-            return render(request, 'juakstore/search_category.html', {'form': form,
+            return render(request, 'juakstore/summary.html', {'form': form,
                 'category': category, 'room': room, 'notfirst': notfirst, 'partner':partner,
                 'sd':sd, 'ed': ed, 'TOTAL': TOTAL, 'TIME':TIME, 'BOOKINGS':BOOKINGS,
                 'errors':errors  })
         else:
-            return render(request, 'juakstore/search_category.html', {'form': form})
+            return render(request, 'juakstore/summary.html', {'form': form})
     else:
-        form = SEARCHFORM()
-        return render(request, 'juakstore/search_category.html', {'form': form})
+        form = SummaryForm()
+        return render(request, 'juakstore/summary.html', {'form': form})
 
 #Returns total hours in bookings_list
 def get_hrs(bookings_list):
@@ -97,88 +86,46 @@ def get_hrs(bookings_list):
 
 
 class SearchForm(forms.Form):
-    DAYS = ((2,'Mon'), (3, 'Tues'), (4, 'Wed'), (5, 'Thur'), 
-    (6, 'Fri'), (7, 'Sat'), (1, 'Sun'))
-    room = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
-    start_date = forms.DateField(label="Start Date", widget=SelectDateWidget)
-    end_date = forms.DateField(label="End Date", widget=SelectDateWidget)
-    days = forms.MultipleChoiceField(label="Days", widget=forms.CheckboxSelectMultiple, choices=DAYS)
-    start_time = forms.TimeField(label="Start Time", widget=SelectTimeWidget(minute_step=10))
-    end_time = forms.TimeField(label="End Time", widget=SelectTimeWidget(minute_step=10))
+    date = forms.DateField(label="Date", widget=SelectDateWidget)
+    start = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
+    end = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
+
+    def clean(self):
+        cleaned_data = super(SearchForm, self).clean()
+        if cleaned_data.get('start') >= cleaned_data.get('end'):
+            raise ValidationError('Start time must be after end time')
+        return cleaned_data
 
 def search_form(request):
-    errors = []
-    notfirst = False
     if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            notfirst = True
-            room = form.cleaned_data['room']
-            sd = form.cleaned_data['start_date']
-            ed = form.cleaned_data['end_date']
-            st = form.cleaned_data['start_time']
-            et = form.cleaned_data['end_time']
-            days = form.cleaned_data['days']
-             
-
-
-            if st > et:
-                errors.append("Please make sure your start time is before your end time.")
-                return render(request, 'juakstore/SEARCH_LIA.html', {'form': form, 'errors': errors})
-
-            if sd >= ed:
-                errors.append("Please make sure your start date is before your end date.")
-                return render(request, 'juakstore/SEARCH_LIA.html', {'form': form, 'errors': errors})
-            
-            COMMON_MONTHS = [(1, 'Jan'), (2, 'Feb'), (3, 'Mar'), (4, 'Apr'), (5, 'May'),
-            (6, 'Jun'), (7, 'Jul'), (8, 'Aug'), (9, 'Sept'), (10, 'Oct'), (11, 'Nov'), (12, 'Dec')]
-
-            DATE = relativedelta(ed, sd)
-            TIME = relativedelta(datetime.combine(date.today(), et), datetime.combine(date.today(), st))
-            DATE_list=list()
-            TIME_list=list()
-            for i in range(0, DATE.months):
-                if i + 1 <= ed.month:
-                    DATE_list.append(COMMON_MONTHS[sd.month + i - 1])
-            for i in range(0, TIME.hours):
-                if i + 1 > datetime.combine(date.today(), et).hour:
-                    TIME_list.append(i + 1)
-
-
-            #need new vars for actual results
-            #filter days
-            low_bound = Booking.objects.filter(date__gte=sd)
-            upper_bound = Booking.objects.filter(date__lte=ed)
-            RDates = (low_bound & upper_bound)
-
-            RTimes = Room.objects.none()
-            for d in RDates:
-                RTimes = (low_bound.filter(start__gte=st) & upper_bound.filter(end__lte=et))
-
-            RT_tmp = Room.objects.none()
-            for d in days:
-                RT_tmp = (RT_tmp | RTimes.filter(date__week_day=d))
-
-            RTimes = RT_tmp 
-
-            RT_tmp2 = Room.objects.none()
-            for r in room:
-                RT_tmp2 = (RT_tmp2 | RTimes.filter(room__exact=r)) 
-
-            RTimes = RT_tmp2 #all the booked times
-
-
-            return render(request, 'juakstore/SEARCH_LIA.html',
-                          {'room': room,
-                           'start_date': sd, 'booked': RTimes,
-                           'end_date': ed, 'DATE': DATE_list, 'TIME': TIME_list,
-                           'start_time': st, 'end_time': et, 
-                           'form': form, 'notfirst': notfirst, 'days': days})
+        f = SearchForm(request.POST)
+        if f.is_valid():
+            available_rooms = Room.objects.all()
+            date = f.cleaned_data['date']
+            start = f.cleaned_data['start']
+            end = f.cleaned_data['end']
+            conflicts = Booking.objects.all().filter(Q(date=date) &
+                ((Q(start__gte=start) & Q(start__lt=end))
+                | (Q(end__gt=start) & Q(end__lte=end))
+                | (Q(start__lt=start) & Q(end__gt=end))
+                | (Q(start__gt=start) & Q(end__lt=end))))
+            if conflicts.count > 0:
+                conflictRoomIDs = []
+                for c in conflicts.values('room'):
+                    conflictRoomIDs.append(c['room'])
+                available_rooms = available_rooms.exclude(id__in=conflictRoomIDs)
+            print available_rooms
+            return render(request, 'juakstore/search.html', {'form':SearchForm(),
+                                                             'availableRooms': available_rooms,
+                                                             'date': f.cleaned_data['date'],
+                                                             'start': f.cleaned_data['start'],
+                                                             'end': f.cleaned_data['end'],
+                                                             'submitted': True})
         else:
-            return render(request, 'juakstore/SEARCH_LIA.html', {'form': form})
+            return render(request, 'juakstore/search.html', {'form': f})
     else:
         form = SearchForm()
-        return render(request, 'juakstore/SEARCH_LIA.html', {'form': form})
+        return render(request, 'juakstore/search.html', {'form': form})
 
 # Search available rooms with given date and time period.
 # Return list of Room objects.

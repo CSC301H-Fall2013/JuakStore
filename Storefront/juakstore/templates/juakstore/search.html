@@ -4,7 +4,22 @@
 
 <h1 class="headings_index">Search</h1>
 
-<form action={% url 'juakstore:search' %} method="get">{% csrf_token %}
+{% if submitted %}
+    {% if availableRooms %}
+        The following rooms are available on {{ date }} from {{ start }} to {{ end }}:<ul>
+        {% for room in availableRooms %}
+            <li><a href="{% url 'juakstore:roomDetail' room.id %}">{{ room.name }}</a></li>
+        {% empty %}
+            <li>Unfortunately no rooms are available at this time</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        Unfortunately no rooms are available on {{ date }} from {{ start }} to {{ end }}
+    {% endif %}
+
+{% endif %}
+
+<form action={% url 'juakstore:search' %} method="POST">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>
