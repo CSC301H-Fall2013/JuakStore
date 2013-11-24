@@ -263,6 +263,7 @@ def addBooking(request):
                                                                   'all_bookings':Booking.objects.all().filter(approved=True),
                                                                   'year': datetime.datetime.now().year,
                                                                   'month': datetime.datetime.now().month,
+                                                                  'day': datetime.datetime.now().day,
                                                                   'submittedBookings': submittedBookings,
                                                                   })
         else:
@@ -270,6 +271,7 @@ def addBooking(request):
                                                                   'all_bookings':Booking.objects.all().filter(approved=True),
                                                                   'year': datetime.datetime.now().year,
                                                                   'month': datetime.datetime.now().month,
+                                                                  'day': datetime.datetime.now().day,
                                                                   })
     else:
         return HttpResponseRedirect(reverse('juakstore:bookingCreate'))
