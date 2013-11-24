@@ -51,7 +51,7 @@ def search_booking(request):
                 keys = []
                 for p in partner:
                     keys.append(p.pk)
-                bookings.filter(partner__pk__in=keys)
+                bookings.filter(booker__pk__in=keys)
 
             #filter by category
             if category:
