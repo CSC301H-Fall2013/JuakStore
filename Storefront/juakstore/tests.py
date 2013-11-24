@@ -9,6 +9,7 @@ forms.py
 models.py
 widgets.py
 view.py
+search.py
 
 """
 from django.views import generic
@@ -36,7 +37,7 @@ from django.forms.widgets import Widget, Select, MultiWidget
 from django.utils.safestring import mark_safe
 
 from calendar import HTMLCalendar
-from datetime import date, timedelta
+from datetime import *
 from itertools import groupby
 
 from django.utils.html import conditional_escape as esc
@@ -49,6 +50,16 @@ from django.test.client import Client
 from forms import *
 from models import *
 from views import *
+
+
+from django import forms
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.forms.extras.widgets import SelectDateWidget
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.exceptions import ValidationError
+
+from dateutil.relativedelta import *
 
 
 
@@ -215,10 +226,10 @@ class ViewTest(unittest.TestCase):
         bookCate = BookingCategory.objects.create(name = "Badminton class")        
         room1 = Room.objects.create(name="BA1190", info="lecture room")
     	response = self.client.get('/booking/create/')
-    	self.failUnlessEqual(response.status_code,200)
+    	self.failUnlessEqual(response.status_code,302)
     	#response1 = self.client.post('/booking/create/',{'name' : "booking1", 'notes' : "This is booking 1", 'category' : bookCate, 'date' : '2013-12-25', 'start' : '14:00:00','end' : '15:00:00', 'booker' : 'user3', 'room' : 'BA1190' })
         								
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 302)
         
     """
     Test updateBooking
@@ -357,7 +368,8 @@ class formsTest(unittest.TestCase):
 	    start = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
 	    end = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
 	    rooms = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
-
+	
+	    #repeat = forms.BooleanField(widget=forms.CheckboxInput(attrs={'onChange': 'showHideFrequency(this.value)'}))
 	    repeat = forms.BooleanField(required=False)
 	
 	    repeat_frequency = forms.IntegerField(required=False)
@@ -366,5 +378,43 @@ class formsTest(unittest.TestCase):
 	    
 	    self.assertEquals(repeat_frequency_unit, repeat_frequency_unit)
         
-        
+class Testsearch(unittest.TestCase):     
+    def setUp(self):
+        self.client = Client()
+    
+    """
+    Test Summary form class
+	This test case will test if people summary form can 
+	be succesfully load 
+    """     
+    def test_SummaryForm(self):
+		category = forms.ModelMultipleChoiceField(required=False, queryset=BookingCategory.objects.all())
+		partner = forms.ModelMultipleChoiceField(required=False, queryset=Partner.objects.all())
+		room = forms.ModelMultipleChoiceField(required=False, queryset=Room.objects.all())
+		start_date = forms.DateField(label="Start Date", widget=SelectDateWidget)
+		end_date = forms.DateField(label="End Date", widget=SelectDateWidget)
+		
+		response = self.client.get('/search/')
+		self.failUnlessEqual(response.status_code,200)
+		self.assertEquals(response.status_code, 200)
+
+    """
+    Test search form class
+	This would check search form can be calculated total
+	time booked per category and dictionary mapping 
+	BookingCategory object to timedelta object
+    """     
+    def test_searchForm(self):
+		date = forms.DateField(label="Date", widget=SelectDateWidget)
+		start = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
+		end = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
+		
+		response = self.client.get('/juakstore/search/')
+		self.failUnlessEqual(response.status_code,404)
+		self.assertEquals(response.status_code, 404)
+	
+	
+		
+	    
+               
 	    	
