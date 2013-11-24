@@ -149,7 +149,7 @@ class WeeklyCalendar():
             cssclass += ' filled'
             body.append('<div class="hentry vevent tribe-events-vategory-jobs post-1395 tribe_events type-tribe-events status-publish">')
             for booking in self.bookings[current_day]:
-                body.append('<h3 class="tribe-events-month-event-title summary">')
+                body.append('<h3 class="tribe-events-month-event-title summary ' + slugify(booking.room.name) + '">')
                 body.append('<a href="%s" class="url">' % reverse('juakstore:bookingDetail', None, [booking.id]))
                 body.append(esc(booking.name))
                 if booking.approved == False:
