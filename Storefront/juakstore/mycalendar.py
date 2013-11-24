@@ -4,7 +4,7 @@ from itertools import groupby
 
 from django.utils.html import conditional_escape as esc
 from django.core.urlresolvers import reverse
-
+from django.template.defaultfilters import slugify
 
 '''
     Credit to: http://uggedal.com/journal/creating-a-flexible-monthly-calendar-in-django/
@@ -39,7 +39,7 @@ class BookingCalendar(HTMLCalendar):
                 body = ['<div id="tribe-events-content" class="tribe-events-month"><div id="tribe-events-header" data-title="Events this November">']
                 for booking in self.bookings[day]:
                     body.append('<li class="cal-list">')
-                    body.append(' <h3 class="tribe-events-month-event-title summary ' + booking.room.name + '">')
+                    body.append(' <h3 class="tribe-events-month-event-title summary ' + slugify(booking.room.name) + '">')
                     body.append('<a href="%s" class="url calendar-list">' % reverse('juakstore:bookingDetail', None, [booking.id]))
                     body.append(esc(booking.name))
                     if booking.approved == False:
@@ -163,5 +163,3 @@ class WeeklyCalendar():
 
     def day_cell(self, cssclass, body):
         return '<td class="%s">%s</td>' % (cssclass, body)
-
-

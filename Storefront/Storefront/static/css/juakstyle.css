@@ -76,6 +76,10 @@ b{
     color: #ffffff;
 }
 
+.conflict{
+	color: #d64747;
+}
+
 h1, p a, p a:link, p a:active, p a:visited, #content a, #content a:link, #content a:active, #content a:visited{
     color: #1980d7;
     text-decoration:none;
@@ -103,6 +107,12 @@ a:hover, #content a:hover{
     width: 80%;
 }
 
+table, table .week, table .tribe-events-calendar{
+    border: #666666 1px solid;
+    padding: 0px;
+    margin:0px;
+}
+
 .tribe-events-calendar th, .month th{
     background-color: #666666;
     color: #ffffff;
@@ -126,6 +136,76 @@ a:hover, #content a:hover{
 
 .cal-list, .cal-list ul li{
     list-style-type:none;
+}
+
+/* back space - yellow */
+.back-space, .backspace .back-space a, .back-space a:link, .back-space a:active, .back-space a:visited{
+	background-color: #fbf200;
+	color: #ffffff;
+}
+
+.back-space a:hover{
+	color: #666666;
+}
+
+/* meeting room - purple */
+.meeting-room , .meeting-room a, .meeting-room a:link, .meeting-room a:active, .meeting-room a:visited{
+	background-color: #cb98e9;
+	color: #ffffff;
+}
+
+.meeting-room a:hover{
+	color: #666666;
+}
+
+/* kitchen - orange */
+.kitchen , .kitchen a, .kitchen a:link, .kitchen a:active, .kitchen a:visited{
+	background-color: #edab7e;
+	color: #ffffff;
+}
+
+.kitchen a:hover{
+	color: #666666;
+}
+
+/* staff kitchen - red */
+.staff-kitchen, .staff-kitchen a, .staff-kitchen a:link, .staff-kitchen a:active, .staff-kitchen a:visited{
+	background-color: #f07f7f;
+	color: #ffffff;
+}
+
+.staff-kitchen a:hover{
+	color: #666666;
+}
+
+/* office 1 - pink */
+.office-1, .office-1 a, .office-1 a:link, .office-1 a:active, .office-1 a:visited{
+	background-color: #e86cc3;
+	color: #ffffff;
+}
+
+.office-1 a:hover{
+	color: #666666;
+}
+
+/* office 2 - green */
+.office-2, .office-2 a, .office-2 a:link, .office-2 a:active, .office-2 a:visited{
+	background-color: #8cd56b;
+	color: #ffffff;
+}
+
+.office-2 a:hover{
+	color: #666666;
+}
+
+/* office 3 - blue */
+.office-3, .office-3 a, .office-3 a:link, .office-3 a:active, .office-3 a:visited{
+	background-color: #7f9ef5;
+	color: #ffffff;
+}
+
+.office-3 a:hover{
+	color: #666666;
 }
 
 /* Blue Print */
