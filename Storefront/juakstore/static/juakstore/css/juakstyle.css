@@ -1,0 +1,243 @@
+body{
+    padding:0px;
+    text-align:center;
+    background-color:#cbddee;
+    font-family:sans-serif;
+}
+
+#maincontainer{
+    padding:0px;
+    margin-left:auto;
+    margin-right:auto;
+    width: 90%;
+}
+
+#container{
+}
+
+#header{
+    padding: 0px;
+    margin: 0px;
+    text-align:center;
+    width:100%;
+}
+
+#header img{
+    width:99%;
+    text-align:center;
+    border: #648fcf 4px solid;
+}
+
+b{
+    color: #648fcf;
+}
+
+#content{
+    padding-top:0.2em;
+    padding-bottom: 2em;
+    padding-left:2em;
+    padding-right:2em;
+    text-align:left;
+    margin:0.4em;
+    background-color: #ffffff;
+}
+
+#footer{
+    width:100%;
+    background-color:#648fcf;
+    padding:0.2em;
+    color:#ffffff;
+}
+
+#nav{
+    background-color: #648fcf;
+    padding: 0.6em;
+    width: 99%;
+}
+
+#nav ul, #nav ul li{
+    list-style-type:none;
+    display:inline;
+    background-color:#648fcf;
+    color: #ffffff;
+    padding: 0.6em;
+    width: 100%;
+}
+
+#nav ul li a{
+    color:white;
+    text-decoration:none;
+    padding: 0.6em 0.6em;
+    width: 100%;
+}
+
+#nav ul li a:hover{
+    background-color:#005bae;
+    color: #ffffff;
+}
+
+.conflict{
+	color: #d64747;
+}
+
+h1, p a, p a:link, p a:active, p a:visited, #content a, #content a:link, #content a:active, #content a:visited{
+    color: #1980d7;
+    text-decoration:none;
+}
+
+a:hover, #content a:hover{
+    color: #005bae;
+}
+
+#footer a, #footer a:link, #footer a:active, #footer a:visited{
+    color: #ffffff;
+    text-decoration:none;
+}
+
+#footer a:hover{
+    color: #005bae;
+}
+
+
+/* Calendar Stuff */
+#calendar, #calendar table{
+    padding:0px;
+    margin-left:auto;
+    margin-right:auto;
+    width: 80%;
+}
+
+table, table .week, table .tribe-events-calendar{
+    border: #666666 1px solid;
+    padding: 0px;
+    margin:0px;
+}
+
+.tribe-events-calendar th, .month th{
+    background-color: #666666;
+    color: #ffffff;
+    font-size: 0.9em;
+    text-align:center;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    padding-top:0.4em;
+    padding-bottom: 0.4em;
+}
+
+.tribe-events-calendar td{
+    border: #666666 1px solid;
+    color: #000000;
+    background-color: #ffffff;
+    font-size: 0.7em;
+    text-align:left;
+    vertical-align:text-top;
+    padding: 0.4em;
+}
+
+.cal-list, .cal-list ul li{
+    list-style-type:none;
+}
+
+/* back space - yellow */
+.back-space, .backspace .back-space a, .back-space a:link, .back-space a:active, .back-space a:visited{
+	background-color: #fbf200;
+	color: #ffffff;
+}
+
+.back-space a:hover{
+	color: #666666;
+}
+
+/* meeting room - purple */
+.meeting-room , .meeting-room a, .meeting-room a:link, .meeting-room a:active, .meeting-room a:visited{
+	background-color: #cb98e9;
+	color: #ffffff;
+}
+
+.meeting-room a:hover{
+	color: #666666;
+}
+
+/* kitchen - orange */
+.kitchen , .kitchen a, .kitchen a:link, .kitchen a:active, .kitchen a:visited{
+	background-color: #edab7e;
+	color: #ffffff;
+}
+
+.kitchen a:hover{
+	color: #666666;
+}
+
+/* staff kitchen - red */
+.staff-kitchen, .staff-kitchen a, .staff-kitchen a:link, .staff-kitchen a:active, .staff-kitchen a:visited{
+	background-color: #f07f7f;
+	color: #ffffff;
+}
+
+.staff-kitchen a:hover{
+	color: #666666;
+}
+
+/* office 1 - pink */
+.office-1, .office-1 a, .office-1 a:link, .office-1 a:active, .office-1 a:visited{
+	background-color: #e86cc3;
+	color: #ffffff;
+}
+
+.office-1 a:hover{
+	color: #666666;
+}
+
+/* office 2 - green */
+.office-2, .office-2 a, .office-2 a:link, .office-2 a:active, .office-2 a:visited{
+	background-color: #8cd56b;
+	color: #ffffff;
+}
+
+.office-2 a:hover{
+	color: #666666;
+}
+
+/* office 3 - blue */
+.office-3, .office-3 a, .office-3 a:link, .office-3 a:active, .office-3 a:visited{
+	background-color: #7f9ef5;
+	color: #ffffff;
+}
+
+.office-3 a:hover{
+	color: #666666;
+}
+
+/* Blue Print */
+
+#menu-item-1278, #menu-item-1279, #menu-item-1525{
+    width: 18em;
+}
+
+
+/* help for this image map from http://www.image-maps.com */
+dl.image_map {display:block; width:600px; height:652px; background:url('../img/storefrontblueprint.png'); position:relative; margin:2px auto 2px auto;}
+	a.staffkitchen {left:282px; top:0px; background:transparent;}
+	a.staffkitchen {display:block; width:91px; height:0; padding-top:104px; overflow:hidden; position:absolute;}
+	a.staffkitchen:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.backspace {left:421px; top:0px; background:transparent;}
+	a.backspace {display:block; width:131px; height:0; padding-top:198px; overflow:hidden; position:absolute;}
+	a.backspace:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.office3 {left:0px; top:235px; background:transparent;}
+	a.office3 {display:block; width:85px; height:0; padding-top:91px; overflow:hidden; position:absolute;}
+	a.office3:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.office2 {left:81px; top:235px; background:transparent;}
+	a.office2 {display:block; width:63px; height:0; padding-top:66px; overflow:hidden; position:absolute;}
+	a.office2:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.office1 {left:540px; top:236px; background:transparent;}
+	a.office1 {display:block; width:57px; height:0; padding-top:78px; overflow:hidden; position:absolute;}
+	a.office1:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.meetingroom {left:144px; top:537px; background:transparent;}
+	a.meetingroom {display:block; width:87px; height:0; padding-top:112px; overflow:hidden; position:absolute;}
+	a.meetingroom:hover  {background:transparent; border:1px dashed black; color:black;}
+	a.kitchen {left:0px; top:323px; background:transparent;}
+	a.kitchen {display:block; width:143px; height:0; padding-top:326px; overflow:hidden; position:absolute;}
+	a.kitchen:hover  {background:transparent; border:1px dashed black; color:black;}
+
+
+
