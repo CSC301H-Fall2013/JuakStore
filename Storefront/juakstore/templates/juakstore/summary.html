@@ -53,7 +53,7 @@ Number of bookings during this period: {{ BOOKINGS }}</p>
 {% endif%}
 {% endif %}
 </p>
-<form action={% url 'juakstore:category' %} method="POST">
+<form action={% url 'juakstore:summary' %} method="POST">
     {% csrf_token %}  
     {{ form.as_p }}
 <input type="submit" value="Submit" />
