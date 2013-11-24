@@ -12,25 +12,25 @@
 
 <h1 class="headings_index">Partner Account Requests</h1>
 <div id="partners_index">
-<head>
-<style>
-table
-{
-border-collapse:collapse;
-}
-table, td, th
-{
-padding:4px 8px;
-border:2px solid #638FD0;
-}
-th
-{
-background-color:#638FD0;
-color:white;
-}
-</style>
-</head>
 {% if partners %}
+	<head>
+	<style>
+	table
+	{
+	border-collapse:collapse;
+	}
+	table, td, th
+	{
+	padding:4px 8px;
+	border:2px solid #638FD0;
+	}
+	th
+	{
+	background-color:#638FD0;
+	color:white;
+	}
+	</style>
+	</head>
     <table id="approval_table" border="0">
         <thead><tr><th>User</th><th>Name</th><th>Company</th><th>Information</th><th></th><th></th></tr></thead>
 		{% for user in partners %}
