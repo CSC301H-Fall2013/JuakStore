@@ -42,56 +42,5 @@
 {% endif %}
 </div>
 
-<div id="calendar">
-    
-        {% calendar all_bookings year month %}
-
-        <div>
-        <form action={% url 'juakstore:index' %} method="get">
-        {% if month == 1 %}
-            <input id="year" name="year" type="hidden" value={{ year|add:-1 }}>
-            <input id="month" name="month" type="hidden" value="12">
-{#        <a href="{% url 'juakstore:indexyymm' year|add:'-1' 12 %}">Prev</a>#}
-        {% else %}
-            <input id="year" name="year" type="hidden" value={{ year }}>
-            <input id="month" name="month" type="hidden" value={{ month|add:'-1' }}>
-{#        <a href="{% url 'juakstore:indexyymm' year month|add:'-1' %}">Prev</a>#}
-        {% endif %}
-            <input type="submit" value="Prev">
-        </form>
-        </div>
-
-        <div>
-        <form action={% url 'juakstore:index' %} method="get">
-        {% if month == 12 %}
-            <input id="year" name="year" type="hidden" value={{ year|add:1 }}>
-            <input id="month" name="month" type="hidden" value="1">
-        {% else %}
-            <input id="year" name="year" type="hidden" value={{ year }}>
-            <input id="month" name="month" type="hidden" value={{ month|add:'1' }}>
-        {% endif %}
-        <input type="submit" value="Next">
-        </form>
-        </div>
-    </div>
-
-    <div id="agenda" class="tribe-events-content tribe-events-month">
-        {% agenda all_bookings year month day %}
-        <form action={% url 'juakstore:index' %} method="get">
-            <input id="year" name="year" type="hidden" value={% oneWeekDiff year month day 'year' 'last' %}>
-            <input id="month" name="month" type="hidden" value={% oneWeekDiff year month day 'month' 'last' %}>
-            <input id="day" name="day" type="hidden" value={% oneWeekDiff year month day 'day' 'last' %}>
-            <input type="submit" value="Prev">
-        </form>
-        <form action={% url 'juakstore:index' %} method="get">
-            <input id="year" name="year" type="hidden" value={% oneWeekDiff year month day 'year' 'next' %}>
-            <input id="month" name="month" type="hidden" value={% oneWeekDiff year month day 'month' 'next' %}>
-            <input id="day" name="day" type="hidden" value={% oneWeekDiff year month day 'day' 'next' %}>
-            <input type="submit" value="Next">
-        </form>
-    </div>
-
-
-
 
 {% endblock %}
