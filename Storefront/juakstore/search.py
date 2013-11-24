@@ -82,45 +82,16 @@ def get_bookings_time(bookings):
     return time
 
 
-class search_available_room_form(forms.Form):
-    date = forms.DateField(label="Date", widget=SelectDateWidget)
-    start_time = forms.TimeField(label="Start Time", widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
-    end_time = forms.TimeField(label="End Time", widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
-
-
 # Search available rooms with given date and time period.
 # Return list of Room objects.
-def search_available_room(request):
-    errors = []
-    notfirst = False
-    if request.method == 'POST':
-        notfirst = True
-        form = search_available_room_form(request.POST)
-        if form.is_valid():
-            date = form.cleaned_data['date']
-            start_time = form.cleaned_data['start_time']
-            end_time = form.cleaned_data['end_time']
+def search_available_rooms(date, start_time, end_time):
+    all_rooms = list(Room.objects.all())
+    booked_rooms = Room.objects.filter(booking__date=date)
+    unavailable_rooms_one = list(
+        booked_rooms.filter(booking__start__gte=start_time).filter(booking__start__lt=end_time))
+    unavailable_rooms_two = list(booked_rooms.filter(booking__end__lte=end_time).filter(booking__start__gt=start_time))
 
-            if start_time >= end_time:
-                errors.append("Please make sure your start time is before your end time.")
-                return render(request, 'juakstore/search_room.html', {'form': form, 'errors': errors})
-            else:
-                all_rooms = list(Room.objects.all())
-                booked_rooms = Room.objects.filter(booking__date=date)
-                unavailable_rooms_one = list(booked_rooms.filter(booking__start__gte=start_time).filter(booking__start__lt=end_time))
-                unavailable_rooms_two = list(booked_rooms.filter(booking__end__lte=end_time).filter(booking__start__gt=start_time))
-                available_rooms = all_rooms - unavailable_rooms_one - unavailable_rooms_two
-                count = available_rooms.count()
-
-            return render(request, 'juakstore/search_room.html', {'form': form,
-                'rooms': available_rooms, 'date':date , 'start_time':start_time, 'end_time': end_time, 'count': count,
-                'errors':errors, 'notfirst':notfirst })
-        else:
-            return render(request, 'juakstore/search_room.html', {'form': form})
-    else:
-        form = search_available_room_form()
-        return render(request, 'juakstore/search_room.html', {'form': form})
-
+    return all_rooms - unavailable_rooms_one - unavailable_rooms_two
 
 # Calculate total time booked per partner.
 # Return dictionary mapping Partner object to timedelta object.
