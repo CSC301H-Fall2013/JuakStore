@@ -10,122 +10,77 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from datetime import *
-from dateutil.relativedelta import *
 
 
-class SummaryForm(forms.Form):
+class search_booking_form(forms.Form):
     category = forms.ModelMultipleChoiceField(required=False, queryset=BookingCategory.objects.all())
     partner = forms.ModelMultipleChoiceField(required=False, queryset=Partner.objects.all())
     room = forms.ModelMultipleChoiceField(required=False, queryset=Room.objects.all())
     start_date = forms.DateField(label="Start Date", widget=SelectDateWidget)
     end_date = forms.DateField(label="End Date", widget=SelectDateWidget)
 
-def search_category(request):
+def search_booking(request):
     errors = []
     notfirst = False
     if request.method == 'POST':
-        form = SummaryForm(request.POST)
+        notfirst = True
+        form = search_booking_form(request.POST)
         if form.is_valid():
-            notfirst = True
             room = form.cleaned_data['room']
             partner = form.cleaned_data['partner']
             category = form.cleaned_data['category']
-            sd = form.cleaned_data['start_date']
-            ed = form.cleaned_data['end_date']
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
 
-            if sd > ed:
+            if start_date > end_date:
                 errors.append("Please make sure your start date is before your end date.")
-                return render(request, 'juakstore/summary.html', {'form': form, 'errors': errors})
+                return render(request, 'juakstore/search_booking.html', {'form': form, 'errors': errors})
             else:
-            #filter days
-                low_bound = Booking.objects.filter(date__gte=sd)
-                upper_bound = Booking.objects.filter(date__lte=ed)
-                TOTAL = (low_bound & upper_bound)
+            # filter by date
+                bookings = Booking.objects.filter(date__gte=start_date).filter(date__lte=end_date)
 
-            #filter rooms
-            tmp = Room.objects.none()
+            # filter by room
             if room:
+                keys = []
                 for r in room:
-                    tmp = (tmp | TOTAL.filter(room__exact=r))
-                TOTAL_rooms = tmp
+                    keys.append(r.pk)
+                bookings.filter(room__pk__in=keys)
 
-            #filter partner
-            tmp = Room.objects.none()
+            # filter by partner
             if partner:
+                keys = []
                 for p in partner:
-                    tmp = (tmp | TOTAL.filter(booker__exact=p))
-                TOTAL = tmp
+                    keys.append(p.pk)
+                bookings.filter(partner__pk__in=keys)
 
-            #filter category
-            tmp = Room.objects.none()
+            #filter by category
             if category:
                 for c in category:
-                    tmp = (tmp | TOTAL.filter(category__exact=c))
-                TOTAL = tmp
+                    keys.append(c.pk)
+                bookings.filter(category__pk__in=keys)
 
-            BOOKINGS = tmp.count()
-            TIME = get_hrs(TOTAL)
+            td = get_bookings_time(bookings)
+            time = ' hours '.join(str(td).split(':')[:2]) + ' minutes'
+            count = bookings.count()
 
-            return render(request, 'juakstore/summary.html', {'form': form,
-                'category': category, 'room': room, 'notfirst': notfirst, 'partner':partner,
-                'sd':sd, 'ed': ed, 'TOTAL': TOTAL, 'TIME':TIME, 'BOOKINGS':BOOKINGS,
-                'errors':errors  })
+            return render(request, 'juakstore/search_booking.html', {'form': form,
+                'category': category, 'room': room, 'partner':partner,
+                'start_date':start_date, 'end_date': end_date, 'count': count, 'time':time, 'bookings':bookings,
+                'errors':errors, 'notfirst':notfirst })
         else:
-            return render(request, 'juakstore/summary.html', {'form': form})
+            return render(request, 'juakstore/search_booking.html', {'form': form})
     else:
-        form = SummaryForm()
-        return render(request, 'juakstore/summary.html', {'form': form})
+        form = search_booking_form()
+        return render(request, 'juakstore/search_booking.html', {'form': form})
 
-#Returns total hours in bookings_list
-def get_hrs(bookings_list):
-    time = relativedelta(datetime.now(), datetime.now()).hours
-    for b in bookings_list:
-        time = time + relativedelta(datetime.combine(date.today(), b.end),
-         datetime.combine(date.today(), b.start)).hours
+#Return total hours in list bookings.
+def get_bookings_time(bookings):
+    time = timedelta()
+    for booking in bookings:
+            length = booking.end - booking.start
+            time = time + length
     return time
 
-
-class SearchForm(forms.Form):
-    date = forms.DateField(label="Date", widget=SelectDateWidget)
-    start = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
-    end = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
-
-    def clean(self):
-        cleaned_data = super(SearchForm, self).clean()
-        if cleaned_data.get('start') >= cleaned_data.get('end'):
-            raise ValidationError('Start time must be after end time')
-        return cleaned_data
-
-def search_form(request):
-    if request.method == 'POST':
-        f = SearchForm(request.POST)
-        if f.is_valid():
-            available_rooms = Room.objects.all()
-            date = f.cleaned_data['date']
-            start = f.cleaned_data['start']
-            end = f.cleaned_data['end']
-            conflicts = Booking.objects.all().filter(Q(date=date) &
-                ((Q(start__gte=start) & Q(start__lt=end))
-                | (Q(end__gt=start) & Q(end__lte=end))
-                | (Q(start__lt=start) & Q(end__gt=end))
-                | (Q(start__gt=start) & Q(end__lt=end))))
-            if conflicts.count > 0:
-                conflictRoomIDs = []
-                for c in conflicts.values('room'):
-                    conflictRoomIDs.append(c['room'])
-                available_rooms = available_rooms.exclude(id__in=conflictRoomIDs)
-            print available_rooms
-            return render(request, 'juakstore/search.html', {'form':SearchForm(),
-                                                             'availableRooms': available_rooms,
-                                                             'date': f.cleaned_data['date'],
-                                                             'start': f.cleaned_data['start'],
-                                                             'end': f.cleaned_data['end'],
-                                                             'submitted': True})
-        else:
-            return render(request, 'juakstore/search.html', {'form': f})
-    else:
-        form = SearchForm()
-        return render(request, 'juakstore/search.html', {'form': form})
 
 # Search available rooms with given date and time period.
 # Return list of Room objects.
