@@ -13,21 +13,47 @@
 <h1 class="headings_index">Partner Account Requests</h1>
 <div id="partners_index">
 {% if partners %}
-	<ul>
+	<head>
+	<style>
+	table
+	{
+	border-collapse:collapse;
+	}
+	table, td, th
+	{
+	padding:4px 8px;
+	border:2px solid #638FD0;
+	}
+	th
+	{
+	background-color:#638FD0;
+	color:white;
+	}
+	</style>
+	</head>
+    <table id="approval_table" border="0">
+        <thead><tr><th>User</th><th>Name</th><th>Company</th><th>Information</th><th></th><th></th></tr></thead>
 		{% for user in partners %}
 			{% if not user.uID.is_active %}
-				<li>{{ user.company }} <br>
+				<tr>
+				<td>{{user.uID.username}}</td>
+				<td>{{user.name}}</td>
+				<td>{{ user.company }}</td>
+				<td> <a href="{% url 'juakstore:userDetail' user.uID.id  %}">more info</a><br></td>
+				<td>
 				<form name="form" method="post" action="{% url 'juakstore:adminAccept' user.uID.id %}">{% csrf_token %}
 					<!--{{ form.as_p }}-->
 					<input type="submit" value="Approve" />
-				</form>
+				</form> </td>
+				<td>
 				<form name="form" method="post" action="{% url 'juakstore:adminDecline' user.uID.id %}">{% csrf_token %}
 					<!--{{ form.as_p }}-->
 					<input type="submit" value="Decline" />
-				</form>	</li>
+				</form>	</td>
+				</tr>
 			{% endif %}
 		{% endfor %}
-	</ul>
+	</table>
 {% endif %}
 {% if noUsers %}
 	No new requests.
@@ -37,7 +63,7 @@
 <h1 class="headings_index">Booking Requests</h1>
 <div id="partners_index">
 {% if bookings %}
-    <table id="approval_table">
+    <table id="approval_table" border="0">
         <thead><tr><th>Booking</th><th>Booker</th><th>Room</th><th>Date</th><th>Start</th><th>End</th><th>Conflict</th><th></th><th></th></tr></thead>
         {% for booking in bookings %}
             {% if not booking.approved %}
