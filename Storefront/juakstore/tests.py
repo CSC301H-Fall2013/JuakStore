@@ -357,8 +357,7 @@ class formsTest(unittest.TestCase):
 	    start = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
 	    end = forms.TimeField(widget=SelectTimeWidget(twelve_hr=True, minute_step=10))
 	    rooms = forms.ModelMultipleChoiceField(queryset=Room.objects.all())
-	
-	    #repeat = forms.BooleanField(widget=forms.CheckboxInput(attrs={'onChange': 'showHideFrequency(this.value)'}))
+
 	    repeat = forms.BooleanField(required=False)
 	
 	    repeat_frequency = forms.IntegerField(required=False)
