@@ -8,6 +8,7 @@ from juakstore import search
 
 urlpatterns = patterns('',
                     url(r'^$', views.index, name='index'),
+                    url(r'^public/$', views.publicView, name='publicView'),
                     url(r'^adminview/$', views.adminView, name='adminView'),
                     url(r'^adminview/partner/(?P<pk>\w+)/$', views.accept, name='adminAccept'),
                     url(r'^adminview/partner/decline/(?P<pk>\w+)/$', views.decline, name='adminDecline'),

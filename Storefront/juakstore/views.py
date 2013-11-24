@@ -51,6 +51,35 @@ def index(request):
     })
     return HttpResponse(template.render(context))
 
+def publicView(request):
+    if request.method == "GET":
+        if 'year' in request.GET:
+            year = int(request.GET['year'])
+        else:
+            year = datetime.datetime.now().year
+        if 'month' in request.GET:
+            month = int(request.GET['month'])
+        else:
+            month = datetime.datetime.now().month
+        if 'day' in request.GET:
+            day = int(request.GET['day'])
+        else:
+            day = datetime.datetime.now().day
+       
+    template = loader.get_template('juakstore/public_view.html')
+    all_bookings = Booking.objects.all().filter(approved=True)
+    all_rooms = Room.objects.all()
+    if request.user.is_authenticated():
+        currentUser = request.user    
+    context = RequestContext(request, {
+        'all_bookings': all_bookings,
+        'all_rooms': all_rooms,
+        'year': year,
+        'month': month,
+        'day': day
+    })
+    return HttpResponse(template.render(context))
+
 @staff_member_required
 def adminView(request):
     template = loader.get_template('juakstore/admin_view.html')
