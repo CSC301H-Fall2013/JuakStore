@@ -20,6 +20,8 @@
 {% endif %}
 
 <form action={% url 'juakstore:search' %} method="POST">{% csrf_token %}
+
+Fill in the form below to search for available rooms on a certain date within your time range.</P>
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>
