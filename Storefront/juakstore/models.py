@@ -76,10 +76,7 @@ class Booking(models.Model):
             | (Q(start__lt=self.start) & Q(end__gt=self.end))
             | (Q(start__gt=self.start) & Q(end__lt=self.end))))
         return overlap
-#
-#class MultiRoomBooking(models.Model):
-#    source = models.ForeignKey(Booking, related_name="multi_source")
-#    target = models.ForeignKey(Booking, related_name="multi_target")
+
 
 class RepeatBooking(models.Model):
     source = models.ForeignKey(Booking, related_name="repeat_source", on_delete=models.CASCADE)

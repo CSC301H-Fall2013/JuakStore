@@ -43,30 +43,6 @@ class BookingForm(forms.ModelForm):
         cleaned_data = super(BookingForm, self).clean()
         if (cleaned_data.get('start') >= cleaned_data.get('end')):
             error.append('Event end must be after the start')
-        # now check if there are any bookings that overlap with the submitted one
-        #for room in self.cleaned_data.get('room'):
-        #    overlap = Booking.objects.all().filter(room_id=room).filter(date=cleaned_data.get('date')).filter(
-        #                                (Q(start__gte=cleaned_data.get('start')) &
-        #                                  Q(start__lt=cleaned_data.get('end')))
-        #                                  | (Q(end__gt=cleaned_data.get('start')) &
-        #                                          Q(end__lte=cleaned_data.get('end')))
-			#		  | (Q(start__lt=cleaned_data.get('start')) &
-			#			Q(end__gt=cleaned_data.get('end')))
-			#		  | (Q(start__gt=cleaned_data.get('start')) &
-			#			Q(end__lt=cleaned_data.get('end'))))
-        #
-        #    try:
-        #        if self.id:
-        #            # filter for the ones that are not itself, in the case of
-        #            # an edit, the booking will conflict with itself
-        #            overlap = overlap.filter(~Q(id=self.id))
-        #    except:
-        #        # must be a new booking since there is no id
-        #        pass
-        #
-        #    if overlap.count() > 0:
-        #        error.append('Conflicts with another booking in room %s' % room.name)
-
         if (cleaned_data.get('repeat')): # repeat is requested
             if not cleaned_data.get('repeat_frequency'): #repeat is requested, but not filled out
                 error.append('Repeat requested but not specified')
