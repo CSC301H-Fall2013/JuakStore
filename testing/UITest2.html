@@ -4,16 +4,106 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://juakfront.cloudapp.net/" />
-<title>UiTest1</title>
+<title>UITest2</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">UiTest1</td></tr>
+<tr><td rowspan="1" colspan="3">UITest2</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
 	<td>/accounts/login/?next=/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;button&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_username</td>
+	<td>test1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_email</td>
+	<td>ying.chang@mail.utoronto.ca</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_password1</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_password2</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_company</td>
+	<td>a</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_name</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_info</td>
+	<td>aa</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_program</td>
+	<td>a</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_facilitator</td>
+	<td>a</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_position</td>
+	<td>a</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_address</td>
+	<td>address</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_phones</td>
+	<td>4165752335</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_faxes</td>
+	<td>4165752335</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_astatus</td>
+	<td>tes</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_istatus</td>
+	<td>yes</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Home</td>
 	<td></td>
 </tr>
 <tr>
@@ -33,52 +123,12 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>css=a.office3</td>
+	<td>link=Admin</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@value='Next']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Next']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Bookings</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=ui-id-2</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>xpath=(//a[contains(text(),'Repeat Test Booking')])[9]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>css=button[type=&quot;submit&quot;]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>id=id_start_hour</td>
-	<td>label=05</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=id_updateSeries</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>css=input[type=&quot;submit&quot;]</td>
+	<td>link=more info</td>
 	<td></td>
 </tr>
 <tr>
@@ -88,7 +138,252 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Storefront Home</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_username</td>
+	<td>test1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_password</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a.kitchen</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Repeat Test Booking</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Rooms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Bookings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#tribe-events-content &gt; form &gt; input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_date_month</td>
+	<td>label=September</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_date_month</td>
+	<td>label=December</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_date_day</td>
+	<td>label=31</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_date_year</td>
+	<td>label=2013</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_start_hour</td>
+	<td>label=05</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_start_meridiem</td>
+	<td>label=p.m.</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_end_hour</td>
+	<td>label=06</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_end_meridiem</td>
+	<td>label=p.m.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Office 1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Cooking Time</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Bookings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_name</td>
+	<td>test1booking</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_notes</td>
+	<td>testbooking</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_category</td>
+	<td>label=Education</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_date_month</td>
+	<td>label=December</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_date_day</td>
+	<td>label=31</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_date_year</td>
+	<td>label=2013</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_start_hour</td>
+	<td>label=05</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_start_meridiem</td>
+	<td>label=p.m.</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_end_hour</td>
+	<td>label=06</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=id_end_meridiem</td>
+	<td>label=p.m.</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>id=id_room</td>
+	<td>label=Office 1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Office 1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_password</td>
+	<td>JuakfrontPassword1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//input[@value='Approve'])[17]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@value='Approve'])[17]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_username</td>
+	<td>test1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_password</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Rooms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Bookings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Next']</td>
 	<td></td>
 </tr>
 
