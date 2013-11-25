@@ -22,8 +22,8 @@ from django.conf.urls import include
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
 
-from juakstore.registration.backends.default.views import ActivationView
-from juakstore.registration.backends.default.views import RegistrationView
+from juakstore.juakregister.backends.default.views import ActivationView
+from juakstore.juakregister.backends.default.views import RegistrationView
 
 
 urlpatterns = patterns('',

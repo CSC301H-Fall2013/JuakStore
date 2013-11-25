@@ -7,8 +7,8 @@ from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
-from juakstore.registration.forms import RegistrationForm
-from juakstore.registration import signals
+from juakstore.juakregister.forms import RegistrationForm
+from juakstore.juakregister import signals
 
 
 class _RequestPassingFormView(FormView):

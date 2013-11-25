@@ -4,8 +4,8 @@ from django.contrib.sites.models import Site
 from registration.views import ActivationView as BaseActivationView
 from registration.views import RegistrationView as BaseRegistrationView
 
-from juakstore.registration.models import RegistrationProfile
-from juakstore.registration import signals
+from juakstore.juakregister.models import RegistrationProfile
+from juakstore.juakregister import signals
 
 
 class RegistrationView(BaseRegistrationView):
