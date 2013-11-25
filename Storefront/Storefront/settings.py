@@ -130,7 +130,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'juakstore',
-    'juakstore.registration',
+    'juakstore.juakregister',
+    'registration',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 365

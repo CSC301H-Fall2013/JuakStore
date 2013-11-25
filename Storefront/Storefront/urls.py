@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('juakstore.urls', namespace='juakstore')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'registration/login.html'}),
-    url(r'^accounts/', include('juakstore.registration.backends.default.urls')),
+    url(r'^accounts/', include('juakstore.juakregister.backends.default.urls')),
 
     
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
