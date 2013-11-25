@@ -2,7 +2,11 @@
 This file demonstrates writing tests using the unittest module. These will pass
 when you run "manage.py test".
 
-This testcases include every file in the juakstore file
+Therefore, type: python manage.py test juakstore
+this will run this test cases
+There are 21 test cases in for this file
+
+This testcases include every python file(excpet url.py) in the juakstore file
 files include:
 mycalendar.py
 forms.py
@@ -78,8 +82,7 @@ class ModelTest(unittest.TestCase):
     def test_fail_login(self):
         login_check = self.client.login(username='', password='')
         self.assertEqual(login_check,False)   
-        
-        
+           
     """
     Test login page
     This test case will test if people can login to the admin account
@@ -91,8 +94,54 @@ class ModelTest(unittest.TestCase):
         #self.assertEqual(login_check,True)
         self.assertRaises(TypeError,login_check,False)
         # Raise an type error, check if the login_check is false
-        
+		
+    """
+    Test Boundary
+    This test case test class clientBookingCategory under the models.py file
+    This test case check every input number whether can run successfully
     
+    one error is raised in this function: phone nubmer should be int and cannot 
+    compare with 4aa(string) and should not successfully
+    """        
+    def test_Boundary(self):
+    	user = User.objects.create_user('user22','changyingyu1991@gmail.com','1234');
+        bookCate = BookingCategory.objects.create(name = "Badminton class")        
+        room1 = Room.objects.create(name="BA1190", info="lecture room")
+    	book = Booking.objects.create(name = "booking1", notes = "This is booking 1", 
+    									category = bookCate, date = "2013-12-25", start = "14:00:00",
+    									end = "15:00:00", booker = user, room = room1 )
+    	
+        ClientBook = ClientBooking.objects.create(start = "2013-12-25 14:00:00", 
+        											end = "2013-12-25 15:00:00", client_name = "Ying" , 
+        											client_email = "changyingyu1991@gmail.com", 
+        											phone_number = "4aa", booking = book,)
+        
+    	self.assertEquals(ClientBook.start, "2013-12-25 14:00:00")
+    	self.assertEquals(ClientBook.end, "2013-12-25 15:00:00")
+    	self.assertEquals(ClientBook.client_name, "Ying")
+    	self.assertEquals(ClientBook.client_email, "changyingyu1991@gmail.com")
+    	self.assertRaises(TypeError,ClientBook.phone_number, "4aa") 
+    	# restricted on numbers? some intergers?
+    	self.assertEquals(ClientBook.booking.name, "booking1")
+		
+    """
+    Testexception
+	When 2 users with the same name user22 created,
+	system throw an exception and cannot be created
+	(This test case will fail)
+    """        
+    def test_exception(self):
+    	user = User.objects.create_user('user22','changyingyu1991@gmail.com','1234');
+    	
+        partner = Partner.objects.create(uID= user,company = "BMO", 
+        								info="this is partner1", name = "admin", approved="no")
+    	self.assertEquals(partner.uID.username, "user22")
+    	self.assertEquals(partner.company,"BMO")
+        self.assertEquals(partner.info, "this is partner1")
+    	self.assertEquals(partner.name,"admin")
+    	self.assertEquals(partner.approved,"no")
+				
+
     """
     Test model Room(database)
     This test case test class model room under the models.py file
