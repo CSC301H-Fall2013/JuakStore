@@ -10,11 +10,12 @@ Required:
 ======= Basic Setup ========
 
 1. Installing Python:
-First make sure that you have python 2.7 installed on your computer. To do so type "python" in your console. 
-If you have python installed, then type:
+First make sure that you have python 2.7 installed on your computer. To do so type the following:
 
+python
 import sys
 sys.version
+exit()
 
 If you do not have python installed, download it from http://www.python.org/download/
 
@@ -41,6 +42,11 @@ Change to the directory where juakstore is located and type:
 In the directory you would like to create your Django project type:
 `django-admin.py startproject <name of project>`
 Where <name of project> is replaced with what you would like to name your project
+
+6. Create static folder:
+Navigate to <name of project>/<name of project> and create the folder 'static'. 
+The directory should be structured like this:
+<name of project>/<name of project>/static
  
 =============================
 
@@ -73,13 +79,11 @@ Quick start
 
 ACCOUNT_ACTIVATION_DAYS = 365
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'eaststorefront@gmail.com'
-EMAIL_HOST_PASSWORD = 'JuakfrontPassword1'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT =
+EMAIL_USE_TLS = <Select one of True or False>
 
 3. Add `import os` to the top of the file.
 
@@ -92,10 +96,13 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 5. Set STATIC_URL = '/static/'
 
-6. Setup your database in the DATABASES setting
+6. Setup your database in the DATABASES setting. Use the information in settings.py on how to setup your database.
     Note: you will need to create a database yourself if not using sqlite3
 
-7. Add the following to urls.py:
+7. Change PROJECT_DIR to the following:
+    PROJECT_DIR = os.path.dirname(__file__)
+
+8. Add the following to urls.py:
     
     ...
     from django.conf.urls import patterns, include, url
@@ -113,11 +120,11 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
         url(r'^accounts/', include('juakstore.juakregister.backends.default.urls')),
     )
 
-8. Run `python manage.py collectstatic` to collect the static files.
+9. Run `python manage.py collectstatic` to collect the static files.
 
-9. Run `python manage.py syncdb` to create the juakstore models.
+10. Run `python manage.py syncdb` to create the juakstore models.
 
-10.  Running the app would depend on how you would like to deploy it:
+11.  Running the app would depend on how you would like to deploy it:
 
     a) If deploying on an Apache Server, change:
      WSGIScriptAlias to be the path to wsgi.py in the project
@@ -127,6 +134,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
      <Directory> to be the path to the project
         Example: if your project is named Storefront the the path would be to Storefront/Storefront
      Then run `sudo apachectl restart` to restart the apache server
+     The error log will be found in /var/log/apache2/error.log
     
     
     b) If you would like to run this server locally:
