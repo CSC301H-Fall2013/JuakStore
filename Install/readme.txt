@@ -60,7 +60,7 @@ Quick start
 
 ==== Modify settings.py for steps 1-6==== 
 
-1. Add "juakstore" and "registration" to your INSTALLED_APPS and enable "django.contrib.admin" like this:
+1. Add "juakstore" and "juakstore.register" to your INSTALLED_APPS and uncomment 'django.contrib.admin' like this:
 
       INSTALLED_APPS = (
           ...
