@@ -113,9 +113,11 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
         url(r'^accounts/', include('juakstore.juakregister.backends.default.urls')),
     )
 
-8. Run `python manage.py syncdb` to create the juakstore models.
+8. Run `python manage.py collectstatic` to collect the static files.
 
-9.  Running the app would depend on how you would like to deploy it:
+9. Run `python manage.py syncdb` to create the juakstore models.
+
+10.  Running the app would depend on how you would like to deploy it:
 
     a) If deploying on an Apache Server, change:
      WSGIScriptAlias to be the path to wsgi.py in the project
