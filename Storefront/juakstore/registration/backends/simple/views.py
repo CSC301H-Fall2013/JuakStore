@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 
-from registration import signals
-from registration.views import RegistrationView as BaseRegistrationView
+from juakstore.registration.views import RegistrationView as BaseRegistrationView
+from juakstore.registration import signals
 
 
 class RegistrationView(BaseRegistrationView):
