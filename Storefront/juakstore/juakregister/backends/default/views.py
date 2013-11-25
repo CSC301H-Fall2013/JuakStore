@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
-from registration.views import ActivationView as BaseActivationView
-from registration.views import RegistrationView as BaseRegistrationView
+from juakstore.juakregister.views import ActivationView as BaseActivationView
+from juakstore.juakregister.views import RegistrationView as BaseRegistrationView
 
 from juakstore.juakregister.models import RegistrationProfile
 from juakstore.juakregister import signals
